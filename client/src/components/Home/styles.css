@@ -1,0 +1,70 @@
+.home-wrapper {
+  position: relative;
+  background-color: #f0f0f0;
+  height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.home-header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.home-description {
+  color: #4a4a4a;
+  margin-bottom: 0;
+  margin-top: 2px;
+}
+
+.slick-dots li button:before {
+  font-size: 12px !important;
+}
+
+.jobs-header {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.jobs-slider {
+  background-color: #f8f9fa;
+}
+
+.avatar-city {
+  max-width: 50px;
+}
+
+.title-job {
+  font-size: 16px;
+  margin-bottom: 8px;
+  width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title-city {
+  font-size: 16px;
+  color: #999;
+  margin-bottom: 0;
+  width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.margin-left {
+  margin-left: -8px;
+}
+
+@media only screen and (max-width: 37.5em) {
+  .slick-prev:before,
+  .slick-next:before {
+    display: none;
+  }
+
+  .jobs-header {
+    padding-top: 16px;
+  }
+}

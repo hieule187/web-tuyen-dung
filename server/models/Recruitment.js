@@ -1,0 +1,75 @@
+const mongoose = require('mongoose');
+
+const RecruitmentSchema = new mongoose.Schema(
+  {
+    companyName: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    img: {
+      type: String,
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    salary: {
+      type: String,
+      required: true,
+    },
+    workingForm: {
+      type: String,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    level: {
+      type: String,
+      required: true,
+    },
+    experience: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    career: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: Boolean,
+      default: false,
+    },
+    writer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Account',
+    },
+    cv: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Cv',
+      },
+    ],
+  },
+  { timestamps: true },
+);
+
+module.exports = mongoose.model('Recruitment', RecruitmentSchema);
