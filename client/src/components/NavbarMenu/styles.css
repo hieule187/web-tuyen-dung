@@ -1,0 +1,20 @@
+.dropdown-header {
+  font-size: 14px;
+  font-weight: normal;
+  color: #212529;
+  border-bottom: 1px solid #dadde1;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+  color: #212529;
+  background-color: #f0f0f0;
+}
+
+.dropdown-menu {
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+}
+
+.navbar-light .navbar-nav .nav-link.active {
+  border-radius: 30px;
+}

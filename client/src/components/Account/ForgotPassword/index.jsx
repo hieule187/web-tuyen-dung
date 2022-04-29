@@ -7,23 +7,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AccountContext } from '../../../contexts/AccountContext';
 import Spinner from 'react-bootstrap/Spinner';
 import AlertMessage from '../AlertMessage';
+import { apiUrl } from '../../../contexts/constants';
+import axios from 'axios';
 
-const SignupRecruiter = () => {
+const ForgotPassword = () => {
   let navigate = useNavigate();
 
   // Context
   const {
     accountState: { authLoading, isAuthenticated },
-    signupRecruiter,
   } = useContext(AccountContext);
 
   // Local state
-  const [signupForm, setSignupForm] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+
+  const [email, setEmail] = useState('');
 
   const [alert, setAlert] = useState(null);
 
@@ -31,33 +28,22 @@ const SignupRecruiter = () => {
 
   const [emailed, setEmailed] = useState(false);
 
-  const { fullName, email, password, confirmPassword } = signupForm;
-
-  const onChangeSignupForm = (event) =>
-    setSignupForm({ ...signupForm, [event.target.name]: event.target.value });
-
-  const signup = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (password !== confirmPassword) {
-      setAlert({ type: 'danger', message: 'Mật khẩu nhập không khớp.' });
-      setTimeout(() => setAlert(null), 5000);
-      return; // Dừng ngay không chạy tiếp đoạn dưới nữa
-    }
-
+    const url = `${apiUrl}/account/password-reset`;
     try {
       setLoadingSendEmail(true);
-      const signupData = await signupRecruiter(signupForm);
+      const response = await axios.post(url, { email });
       setLoadingSendEmail(false);
-      if (!signupData.success) {
-        setAlert({ type: 'danger', message: signupData.message });
-        setTimeout(() => setAlert(null), 5000);
-      } else {
+      if (response.data.success) {
         setEmailed(true);
-        setAlert({ type: 'success', message: signupData.message });
+        setAlert({ type: 'success', message: response.data.message });
       }
     } catch (error) {
       setLoadingSendEmail(false);
+      setAlert({ type: 'danger', message: error.response.data.message });
+      setTimeout(() => setAlert(null), 5000);
       console.log(error);
     }
   };
@@ -66,7 +52,7 @@ const SignupRecruiter = () => {
 
   if (authLoading)
     body = (
-      <div className="signup-recruiter-inner mt-2 d-inline text-center">
+      <div className="forgot-password-inner mt-2 d-inline text-center">
         <Spinner
           animation="grow"
           size="sm"
@@ -85,7 +71,7 @@ const SignupRecruiter = () => {
   else if (isAuthenticated) return navigate('/');
   else if (loadingSendEmail)
     body = (
-      <div className="signup-recruiter-inner mt-2 d-inline text-center">
+      <div className="forgot-password-inner mt-2 d-inline text-center">
         <Spinner
           animation="grow"
           size="sm"
@@ -103,14 +89,14 @@ const SignupRecruiter = () => {
     );
   else if (emailed)
     body = (
-      <div className="signup-recruiter-inner mt-2">
+      <div className="forgot-password-inner mt-2">
         <Form>
           <AlertMessage info={alert} />
 
           <div className="divider mt-3"></div>
 
           <Link to="/login">
-            <Button className="mt-3" variant="success">
+            <Button className="mt-3" variant="outline-success">
               Đăng nhập
             </Button>
           </Link>
@@ -119,73 +105,36 @@ const SignupRecruiter = () => {
     );
   else
     body = (
-      <div className="signup-recruiter-inner mt-2">
-        <Form onSubmit={signup}>
+      <div className="forgot-password-inner mt-2">
+        <Form onSubmit={handleSubmit}>
           <AlertMessage info={alert} />
 
           <InputGroup>
-            <Form.Control
-              type="text"
-              placeholder="Họ và tên"
-              name="fullName"
-              required
-              value={fullName}
-              onChange={onChangeSignupForm}
-            />
-          </InputGroup>
-
-          <InputGroup className="mt-3">
             <Form.Control
               type="text"
               placeholder="Địa chỉ email"
               name="email"
               required
               value={email}
-              onChange={onChangeSignupForm}
-            />
-          </InputGroup>
-
-          <InputGroup className="mt-3">
-            <Form.Control
-              type="password"
-              placeholder="Mật khẩu"
-              name="password"
-              required
-              value={password}
-              onChange={onChangeSignupForm}
-            />
-          </InputGroup>
-
-          <InputGroup className="mt-3">
-            <Form.Control
-              type="password"
-              placeholder="Nhập lại mật khẩu"
-              name="confirmPassword"
-              required
-              value={confirmPassword}
-              onChange={onChangeSignupForm}
+              onChange={(event) => setEmail(event.target.value)}
             />
           </InputGroup>
 
           <p className="rule mt-3 text-start text-muted">
-            Bằng việc đăng ký tài khoản, bạn đã đồng ý với{' '}
+            Bằng việc thực hiện đổi mật khẩu, bạn đã đồng ý với{' '}
             <span className="text-success">Điều khoản dịch vụ </span>
             và <span className="text-success">Chính sách bảo mật</span> của
             chúng tôi.
           </p>
 
-          <Button
-            style={{ width: '100%' }}
-            variant="outline-success"
-            type="submit"
-          >
-            Đăng ký
+          <Button style={{ width: '100%' }} variant="success" type="submit">
+            Đổi mật khẩu
           </Button>
 
           <div className="divider mt-3"></div>
 
           <Link to="/login">
-            <Button className="mt-3" variant="success">
+            <Button className="mt-3" variant="outline-success">
               Đăng nhập
             </Button>
           </Link>
@@ -194,33 +143,30 @@ const SignupRecruiter = () => {
     );
 
   return (
-    <div className="signup-recruiter-bg">
-      <div className="signup-recruiter-form">
+    <div className="forgot-password-bg">
+      <div className="forgot-password-form">
         <h2 className="mb-4 fw-bold">
           <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
             Fast<span className="text-success">Job</span>
           </Link>
         </h2>
-        <h3 className="mb-0 mx-2 text-center">
-          Đăng ký tài khoản nhà tuyển dụng
-        </h3>
+        <h3 className="mb-0">Quên mật khẩu</h3>
         <p className="mx-2 text-center">
-          Cùng tạo dựng lợi thế cho doanh nghiệp bằng trải nghiệm công nghệ
-          tuyển dụng online.
+          Vui lòng nhập địa chỉ email của bạn để thực hiện đổi mật khẩu.
         </p>
         {body}
         <p className="mt-4">
           <Link
             style={{ textDecoration: 'none', color: '#2fb380' }}
-            to="/signup-candidate"
+            to="/signup-recruiter"
           >
             Tạo tài khoản
           </Link>{' '}
-          dành cho ứng viên.
+          dành cho nhà tuyển dụng.
         </p>
       </div>
     </div>
   );
 };
 
-export default SignupRecruiter;
+export default ForgotPassword;

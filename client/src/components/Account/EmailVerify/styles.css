@@ -1,10 +1,10 @@
-.signup-recruiter-bg {
+.emailVerify-bg {
   position: relative;
   height: 100vh;
   overflow-x: hidden;
 }
 
-.signup-recruiter-form {
+.emailVerify-form {
   background-color: #f0f0f0;
   height: 100%;
   display: flex;
@@ -13,7 +13,7 @@
   align-items: center;
 }
 
-.signup-recruiter-inner {
+.emailVerify-inner {
   background-color: white;
   width: 400px;
   padding: 16px;
@@ -26,7 +26,7 @@
   box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
 }
 
-.signup-recruiter-inner form {
+.emailVerify-inner form {
   width: 100%;
 }
 
@@ -34,12 +34,8 @@
   border-bottom: 1px solid #dadde1;
 }
 
-.rule {
-  font-size: 14px;
-}
-
 @media only screen and (max-width: 26em) {
-  .signup-recruiter-inner {
+  .emailVerify-inner {
     width: 300px;
   }
 }

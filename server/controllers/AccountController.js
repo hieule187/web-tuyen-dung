@@ -33,7 +33,8 @@ class AccountController {
       const hashPassword = await bcrypt.hash(req.body.password, salt);
 
       account = await new Account({
-        ...req.body,
+        fullName: req.body.fullName,
+        email: req.body.email,
         password: hashPassword,
         role: 'candidate',
       }).save();
@@ -46,13 +47,14 @@ class AccountController {
       const url = `${process.env.BASE_URL}/account/${account._id}/verify/${verifyToken.verifyToken}`;
       await sendEmail(
         account.email,
-        'Xác Minh Email',
+        'Xác minh tài khoản',
         `<a href="${url}">Nhấn vào đây để xác minh tài khoản của bạn.</a>`,
       );
 
       res.status(200).json({
         success: true,
-        message: 'Email đã được gửi đến hộp thư của bạn, vui lòng xác minh.',
+        message:
+          'Kiểm tra hộp thư của bạn sau đó nhấn vào đường dẫn để xác minh tài khoản.',
       });
     } catch (error) {
       console.log(error);
@@ -87,7 +89,8 @@ class AccountController {
       const hashPassword = await bcrypt.hash(req.body.password, salt);
 
       account = await new Account({
-        ...req.body,
+        fullName: req.body.fullName,
+        email: req.body.email,
         password: hashPassword,
         role: 'recruiter',
       }).save();
@@ -100,13 +103,14 @@ class AccountController {
       const url = `${process.env.BASE_URL}/account/${account._id}/verify/${verifyToken.verifyToken}`;
       await sendEmail(
         account.email,
-        'Xác Minh Email',
+        'Xác minh tài khoản',
         `<a href="${url}">Nhấn vào đây để xác minh tài khoản của bạn.</a>`,
       );
 
       res.status(200).json({
         success: true,
-        message: 'Email đã được gửi đến hộp thư của bạn, vui lòng xác minh.',
+        message:
+          'Kiểm tra hộp thư của bạn sau đó nhấn vào đường dẫn để xác minh tài khoản.',
       });
     } catch (error) {
       console.log(error);
@@ -158,13 +162,14 @@ class AccountController {
           const url = `${process.env.BASE_URL}/account/${account._id}/verify/${verifyToken.verifyToken}`;
           await sendEmail(
             account.email,
-            'Xác Minh Email',
+            'Xác minh tài khoản',
             `<a href="${url}">Nhấn vào đây để xác minh tài khoản của bạn.</a>`,
           );
         }
         return res.status(400).json({
           success: false,
-          message: 'Email đã được gửi đến hộp thư của bạn, vui lòng xác minh.',
+          message:
+            'Kiểm tra hộp thư của bạn sau đó nhấn vào đường dẫn để xác minh tài khoản.',
         });
       }
 
@@ -197,7 +202,7 @@ class AccountController {
   }
 
   // [GET] /account/:id/verify/:verifyToken
-  // Xác minh email
+  // Xác minh tài khoản
   async verifyEmail(req, res) {
     try {
       const account = await Account.findOne({ _id: req.params.id });
@@ -236,7 +241,7 @@ class AccountController {
   }
 
   // [POST] /account/password-reset
-  // Gửi link reset mật khẩu
+  // Gửi link Đặt lại mật khẩu
   async passwordReset(req, res) {
     try {
       const emailSchema = Joi.object({
@@ -266,8 +271,8 @@ class AccountController {
       const url = `${process.env.BASE_URL}/account/password-reset/${account._id}/${verifyToken.verifyToken}`;
       await sendEmail(
         account.email,
-        'Reset Mật Khẩu',
-        `<a href="${url}">Nhấn vào đây để reset mật khẩu của bạn.</a>`,
+        'Đặt lại mật khẩu',
+        `<a href="${url}">Nhấn vào đây để đặt lại mật khẩu của bạn.</a>`,
       );
 
       res.status(200).json({
@@ -504,6 +509,30 @@ class AccountController {
           message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
         });
       }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [GET] /account/authenticated
+  // Xác thực tài khoản có đang đăng nhập hay không
+  async authenticatedAccount(req, res) {
+    try {
+      const { _id, fullName, email, role, status } = req.user;
+      res.status(200).json({
+        success: true,
+        isAuthenticated: true,
+        user: {
+          _id,
+          fullName,
+          email,
+          role,
+          status,
+        },
+      });
     } catch (error) {
       console.log(error);
       res

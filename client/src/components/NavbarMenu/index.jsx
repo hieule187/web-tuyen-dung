@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './styles.css';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -7,14 +7,180 @@ import FormControl from 'react-bootstrap/FormControl';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import userIcon from '../../assets/person-circle.svg';
+import searchIcon from '../../assets/search.svg';
+import { AccountContext } from '../../contexts/AccountContext';
+import Spinner from 'react-bootstrap/Spinner';
 
 const NavbarMenu = () => {
+  let navigate = useNavigate();
+
+  const {
+    accountState: { authLoading, user },
+    logoutUser,
+  } = useContext(AccountContext);
+
+  const logout = () => {
+    logoutUser();
+    return navigate('/login');
+  };
+
+  let body;
+
+  if (authLoading)
+    body = (
+      <Nav className="d-inline">
+        <Spinner
+          animation="grow"
+          size="sm"
+          variant="success"
+          className="me-1"
+        />
+        <Spinner
+          animation="grow"
+          size="sm"
+          variant="success"
+          className="me-1"
+        />
+        <Spinner
+          animation="grow"
+          size="sm"
+          variant="success"
+          className="me-4"
+        />
+      </Nav>
+    );
+  else if (user.role === 'candidate')
+    body = (
+      <Nav className="d-flex">
+        <NavDropdown
+          align="end"
+          title={
+            <span>
+              <img
+                src={userIcon}
+                alt="userIcon"
+                width="30"
+                height="30"
+                className="me-2"
+              />{' '}
+              {user.fullName}
+            </span>
+          }
+          className="ms-0 me-0 fw-bold"
+          active
+        >
+          <NavDropdown.Header className="navDropdown-header">
+            Chức vụ: <span className="text-success fw-bold">Ứng Viên</span>
+            <br />
+            Email: <span className="text-success fw-bold">{user.email}</span>
+          </NavDropdown.Header>
+          <NavDropdown.Item href="#action/3.2">
+            Hồ sơ cá nhân & CV
+          </NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.3">
+            Tin tuyển dụng đã gửi CV
+          </NavDropdown.Item>
+          <NavDropdown.Item onClick={logout}>Đăng xuất</NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+    );
+  else if (user.role === 'recruiter')
+    body = (
+      <Nav className="d-flex">
+        <NavDropdown
+          align="end"
+          title={
+            <span>
+              <img
+                src={userIcon}
+                alt="userIcon"
+                width="30"
+                height="30"
+                className="me-2"
+              />{' '}
+              {user.fullName}
+            </span>
+          }
+          className="ms-0 me-0 fw-bold"
+          active
+        >
+          <NavDropdown.Header className="navDropdown-header">
+            Chức vụ:{' '}
+            <span className="text-success fw-bold">Nhà Tuyển Dụng</span>
+            <br />
+            Email: <span className="text-success fw-bold">{user.email}</span>
+          </NavDropdown.Header>
+          <NavDropdown.Item href="#action/3.2">
+            Đăng tin tuyển dụng
+          </NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.3">
+            Quản lý tin tuyển dụng
+          </NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.3">Quản lý hồ sơ</NavDropdown.Item>
+          <NavDropdown.Item onClick={logout}>Đăng xuất</NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+    );
+  else if (user.role === 'admin')
+    body = (
+      <Nav className="d-flex">
+        <NavDropdown
+          align="end"
+          title={
+            <span>
+              <img
+                src={userIcon}
+                alt="userIcon"
+                width="30"
+                height="30"
+                className="me-2"
+              />{' '}
+              {user.fullName}
+            </span>
+          }
+          className="ms-0 me-0 fw-bold"
+          active
+        >
+          <NavDropdown.Header className="navDropdown-header">
+            Chức vụ: <span className="text-success fw-bold">Admin</span>
+          </NavDropdown.Header>
+          <NavDropdown.Item href="#action/3.2">
+            Quản lý tài khoản
+          </NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.3">
+            Quản lý tin tuyển dụng
+          </NavDropdown.Item>
+          <NavDropdown.Item onClick={logout}>Đăng xuất</NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+    );
+  else
+    body = (
+      <Form className="d-flex">
+        <Link to="/login">
+          <Button className="me-2" variant="success">
+            Đăng nhập
+          </Button>
+        </Link>
+        <Link to="/signup-candidate">
+          <Button className="me-2" variant="outline-success">
+            Đăng ký
+          </Button>
+        </Link>
+      </Form>
+    );
+
   return (
     <>
       <Navbar bg="light" expand="lg" className="border-bottom" sticky="top">
         <Container>
-          <Navbar.Brand className="me-4 fw-bold fs-4 text-success" href="#">
-            <span className="text-dark">Fast</span>Job
+          <Navbar.Brand className="me-4 fw-bold fs-4">
+            <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
+              Fast<span className="text-success">Job</span>
+            </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -28,19 +194,11 @@ const NavbarMenu = () => {
               <Nav.Link className="me-2 fw-bold" to="/" as={Link}>
                 Công ty
               </Nav.Link>
+              <Nav.Link className="me-2 fw-bold" to="/" as={Link}>
+                Hỗ trợ
+              </Nav.Link>
             </Nav>
-            <Form className="d-flex">
-              <Link to="/login">
-                <Button className="me-2" variant="outline-success">
-                  Đăng nhập
-                </Button>
-              </Link>
-              <Link to="/signup-recruiter">
-                <Button className="me-2" variant="success">
-                  Đăng ký
-                </Button>
-              </Link>
-            </Form>
+            {body}
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -79,7 +237,14 @@ const NavbarMenu = () => {
                 </Form.Select>
               </Nav>
               <Nav>
-                <Button variant="outline-success">Tìm</Button>
+                <Button variant="success" type="submit">
+                  <img
+                    src={searchIcon}
+                    alt="searchIcon"
+                    width="20"
+                    height="20"
+                  />
+                </Button>
               </Nav>
             </Form>
           </Navbar.Collapse>

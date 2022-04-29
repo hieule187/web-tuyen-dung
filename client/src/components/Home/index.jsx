@@ -93,7 +93,7 @@ const Home = () => {
         <div className="jobs-slider mt-3 p-2 rounded-3">
           <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto">
             <Col className="my-2">
-              <Card className="shadow">
+              <Card className="shadow-card">
                 <Card.Body>
                   <Card.Title className="margin-left">
                     <Row>
@@ -131,7 +131,7 @@ const Home = () => {
             </Col>
 
             <Col className="my-2">
-              <Card className="shadow">
+              <Card className="shadow-card">
                 <Card.Body>
                   <Card.Title className="margin-left">
                     <Row>
@@ -166,7 +166,7 @@ const Home = () => {
               </Card>
             </Col>
             <Col className="my-2">
-              <Card className="shadow">
+              <Card className="shadow-card">
                 <Card.Body>
                   <Card.Title className="margin-left">
                     <Row>
@@ -202,7 +202,7 @@ const Home = () => {
               </Card>
             </Col>
             <Col className="my-2">
-              <Card className="shadow">
+              <Card className="shadow-card">
                 <Card.Body>
                   <Card.Title className="margin-left">
                     <Row>
@@ -235,7 +235,7 @@ const Home = () => {
               </Card>
             </Col>
             <Col className="my-2">
-              <Card className="shadow">
+              <Card className="shadow-card">
                 <Card.Body>
                   <Card.Title className="margin-left">
                     <Row>
@@ -268,7 +268,7 @@ const Home = () => {
               </Card>
             </Col>
             <Col className="my-2">
-              <Card className="shadow">
+              <Card className="shadow-card">
                 <Card.Body>
                   <Card.Title className="margin-left">
                     <Row>

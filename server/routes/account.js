@@ -40,5 +40,10 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   accountController.unLockAccount,
 );
+router.get(
+  '/authenticated',
+  passport.authenticate('jwt', { session: false }),
+  accountController.authenticatedAccount,
+);
 
 module.exports = router;
