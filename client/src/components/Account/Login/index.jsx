@@ -38,7 +38,7 @@ const Login = () => {
       if (!loginData.success) {
         setAlert({ type: 'danger', message: loginData.message });
         setTimeout(() => setAlert(null), 5000);
-      } else return navigate('/');
+      } else return navigate('/', { replace: true });
     } catch (error) {
       console.log(error);
     }

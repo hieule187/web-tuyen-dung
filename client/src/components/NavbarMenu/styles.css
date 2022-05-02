@@ -18,3 +18,17 @@
 .navbar-light .navbar-nav .nav-link.active {
   border-radius: 30px;
 }
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+@media only screen and (max-width: 61.95em) {
+  .btn-mt {
+    margin-top: 8px;
+  }
+
+  .iconUser-ms {
+    margin-left: 10px;
+  }
+}

@@ -1,0 +1,97 @@
+.profile-wrapper {
+  position: relative;
+  background-color: #f0f0f0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.profile-header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.profile-description {
+  color: #4a4a4a;
+  margin-bottom: 0;
+  margin-top: 2px;
+}
+
+.profile-content {
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+}
+
+.profile-name {
+  font-size: 35px;
+  margin-top: -12px;
+  font-weight: 400;
+  color: #2fb380;
+  text-transform: uppercase;
+}
+
+.divider-profile {
+  border-bottom: 3px solid #dadde1;
+  margin-top: 24px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+.divider-end {
+  border-bottom: 3px solid #dadde1;
+  margin-top: 24px;
+  margin-bottom: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.profile-title {
+  margin-top: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2fb380;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.profile-info {
+  margin-bottom: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.profile-target {
+  margin-top: 40px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2fb380;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.edit-btn {
+  margin-top: 12px;
+  margin-left: 12px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 48.0625em) {
+  .profile-content {
+    display: block !important;
+  }
+
+  .content-width {
+    width: 100%;
+  }
+
+  .profile-name {
+    margin-top: 4px;
+  }
+
+  .col-right {
+    padding-bottom: 8px;
+  }
+}

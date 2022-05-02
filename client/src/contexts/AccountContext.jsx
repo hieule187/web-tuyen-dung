@@ -1,8 +1,9 @@
-import React, { createContext, useEffect, useReducer } from 'react';
+import React, { createContext, useReducer, useState } from 'react';
 import { accountReducer } from '../reducers/accountReducer';
 import axios from 'axios';
 import { apiUrl, LOCAL_STORAGE_TOKEN_NAME, SET_AUTH } from './constants';
 import setAuthToken from '../utils/setAuthToken';
+import { useEffectOnce } from '../customHooks/useEffectOnce';
 
 export const AccountContext = createContext();
 
@@ -12,6 +13,8 @@ const AccountContextProvider = ({ children }) => {
     isAuthenticated: false,
     user: {},
   });
+
+  const [showSignupPostModal, setShowSignupPostModal] = useState(false);
 
   // Authenticate user
   const loadUser = async () => {
@@ -43,9 +46,9 @@ const AccountContextProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
+  useEffectOnce(() => {
     loadUser();
-  }, []);
+  });
 
   // Login
   const loginUser = async (userForm) => {
@@ -113,6 +116,8 @@ const AccountContextProvider = ({ children }) => {
     signupCandidate,
     signupRecruiter,
     accountState,
+    showSignupPostModal,
+    setShowSignupPostModal,
   };
 
   // Return provider

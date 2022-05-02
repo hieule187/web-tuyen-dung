@@ -2,6 +2,7 @@ import React from 'react';
 import './styles.css';
 import NavbarMenu from '../NavbarMenu';
 import Container from 'react-bootstrap/Container';
+import SignupModal from '../Account/SignupModal';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -28,26 +29,28 @@ const Home = () => {
     ],
   };
 
-  const settingsJobs = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 10000,
-    dots: true,
-    responsive: [
-      {
-        breakpoint: 600,
-        settings: {
-          dots: true,
-        },
-      },
-    ],
-  };
+  // const settingsJobs = {
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 1,
+  //   slidesToScroll: 1,
+  //   autoplay: true,
+  //   autoplaySpeed: 10000,
+  //   dots: true,
+  //   responsive: [
+  //     {
+  //       breakpoint: 600,
+  //       settings: {
+  //         dots: true,
+  //       },
+  //     },
+  //   ],
+  // };
 
   return (
     <div className="home-wrapper">
+      <SignupModal />
+
       <NavbarMenu />
 
       <Container className="mt-3">
@@ -303,6 +306,8 @@ const Home = () => {
           </Row>
         </div>
       </Container>
+
+      <div style={{ height: '500px' }}></div>
     </div>
   );
 };

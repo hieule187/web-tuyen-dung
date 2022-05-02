@@ -1,4 +1,6 @@
 module.exports = [
+  'Hà Nội',
+  'TP Hồ Chí Minh',
   'An Giang',
   'Bà Rịa – Vũng Tàu',
   'Bắc Giang',
@@ -22,7 +24,6 @@ module.exports = [
   'Gia Lai',
   'Hà Giang',
   'Hà Nam',
-  'Hà Nội',
   'Hà Tĩnh',
   'Hải Dương',
   'Hải Phòng',
@@ -56,10 +57,9 @@ module.exports = [
   'Thanh Hóa',
   'Thừa Thiên Huế',
   'Tiền Giang',
-  'TP Hồ Chí Minh',
   'Trà Vinh',
   'Tuyên Quang',
   'Vĩnh Long',
   'Vĩnh Phúc',
-  'Yên Bái'
+  'Yên Bái',
 ];

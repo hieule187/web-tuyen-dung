@@ -1,9 +1,9 @@
 module.exports = [
-  'Bất Động Sản',
   'Công Nghệ Thông Tin',
   'Công Nghệ Thực Phẩm',
   'Cơ Khí Động Lực',
   'Dược Học',
+  'Bất Động Sản',
   'Kinh Doanh Quốc Tế',
   'Kiến Trúc',
   'Kế Toán',
@@ -25,5 +25,4 @@ module.exports = [
   'Tài Chính Ngân Hàng',
   'Tài Nguyên Môi Trường',
   'Xét Nghiệm Y Học',
-  'Khác'
 ];

@@ -1,7 +1,6 @@
 .home-wrapper {
   position: relative;
   background-color: #f0f0f0;
-  height: 100vh;
   max-width: 100%;
   overflow-x: hidden;
 }

@@ -7,14 +7,17 @@ import Login from '../components/Account/Login';
 import EmailVerify from '../components/Account/EmailVerify';
 import ForgotPassword from '../components/Account/ForgotPassword';
 import PasswordReset from '../components/Account/PasswordReset';
+import CandidateRoute from './CandidateRoute';
+import MyProfile from '../components/Profile/MyProfile';
+import CreateProfile from '../components/Profile/CreateProfile';
 
 const MainRoute = () => {
   return (
     <Routes>
-      <Route path="/" exact element={<Home />} />
-      <Route path="/signup-candidate" exact element={<SignupCandidate />} />
-      <Route path="/signup-recruiter" exact element={<SignupRecruiter />} />
-      <Route path="/login" exact element={<Login />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/signup-candidate" element={<SignupCandidate />} />
+      <Route path="/signup-recruiter" element={<SignupRecruiter />} />
+      <Route path="/login" element={<Login />} />
       <Route
         path="/account/:id/verify/:verifyToken"
         element={<EmailVerify />}
@@ -24,6 +27,10 @@ const MainRoute = () => {
         path="account/password-reset/:id/:verifyToken"
         element={<PasswordReset />}
       />
+      <Route element={<CandidateRoute />}>
+        <Route path="/profile" element={<MyProfile />} />
+        <Route path="/create-profile" element={<CreateProfile />} />
+      </Route>
     </Routes>
   );
 };
