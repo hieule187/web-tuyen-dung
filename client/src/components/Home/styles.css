@@ -2,6 +2,7 @@
   position: relative;
   background-color: #f0f0f0;
   max-width: 100%;
+  height: 100vh;
   overflow-x: hidden;
 }
 
@@ -30,14 +31,10 @@
   background-color: #f8f9fa;
 }
 
-.avatar-city {
-  max-width: 50px;
-}
-
 .title-job {
   font-size: 16px;
   margin-bottom: 8px;
-  width: 130px;
+  width: auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -47,24 +44,29 @@
   font-size: 16px;
   color: #999;
   margin-bottom: 0;
-  width: 130px;
+  width: auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.margin-left {
-  margin-left: -8px;
+.shadow-card {
+  border: none;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
 }
 
-.shadow-card {
-  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+.slick-dots {
+  bottom: 500px !important;
 }
 
 @media only screen and (max-width: 37.5em) {
   .slick-prev:before,
   .slick-next:before {
     display: none;
+  }
+
+  .slick-dots {
+    bottom: -25px !important;
   }
 
   .jobs-header {

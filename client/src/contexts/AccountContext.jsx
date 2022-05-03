@@ -1,9 +1,8 @@
-import React, { createContext, useReducer, useState } from 'react';
+import React, { createContext, useReducer, useState, useEffect } from 'react';
 import { accountReducer } from '../reducers/accountReducer';
 import axios from 'axios';
 import { apiUrl, LOCAL_STORAGE_TOKEN_NAME, SET_AUTH } from './constants';
 import setAuthToken from '../utils/setAuthToken';
-import { useEffectOnce } from '../customHooks/useEffectOnce';
 
 export const AccountContext = createContext();
 
@@ -46,9 +45,9 @@ const AccountContextProvider = ({ children }) => {
     }
   };
 
-  useEffectOnce(() => {
+  useEffect(() => {
     loadUser();
-  });
+  }, []);
 
   // Login
   const loginUser = async (userForm) => {

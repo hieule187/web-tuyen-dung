@@ -22,8 +22,9 @@ const EmailVerify = () => {
         setLoading(false);
         if (response.data.success) {
           setValidUrl(true);
-        } else setValidUrl(false);
+        }
       } catch (error) {
+        setValidUrl(false);
         setLoading(false);
         console.log(error);
       }

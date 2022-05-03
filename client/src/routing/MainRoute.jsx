@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Home from '../components/Home';
 import SignupCandidate from '../components/Account/SignupCandidate';
 import SignupRecruiter from '../components/Account/SignupRecruiter';
@@ -10,28 +10,31 @@ import PasswordReset from '../components/Account/PasswordReset';
 import CandidateRoute from './CandidateRoute';
 import MyProfile from '../components/Profile/MyProfile';
 import CreateProfile from '../components/Profile/CreateProfile';
+import UpdateProfile from '../components/Profile/UpdateProfile';
 
 const MainRoute = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/signup-candidate" element={<SignupCandidate />} />
-      <Route path="/signup-recruiter" element={<SignupRecruiter />} />
-      <Route path="/login" element={<Login />} />
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route exact path="/signup-candidate" component={SignupCandidate} />
+      <Route exact path="/signup-recruiter" component={SignupRecruiter} />
+      <Route exact path="/login" component={Login} />
+      <Route path="/account/:id/verify/:verifyToken" component={EmailVerify} />
+      <Route exact path="/forgot-password" component={ForgotPassword} />
       <Route
-        path="/account/:id/verify/:verifyToken"
-        element={<EmailVerify />}
+        path="/account/password-reset/:id/:verifyToken"
+        component={PasswordReset}
       />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route
-        path="account/password-reset/:id/:verifyToken"
-        element={<PasswordReset />}
+      <CandidateRoute path="/profile" component={MyProfile} />
+      <CandidateRoute
+        path="/create-profile/:fullName"
+        component={CreateProfile}
       />
-      <Route element={<CandidateRoute />}>
-        <Route path="/profile" element={<MyProfile />} />
-        <Route path="/create-profile" element={<CreateProfile />} />
-      </Route>
-    </Routes>
+      <CandidateRoute
+        path="/update-profile/:fullName"
+        component={UpdateProfile}
+      />
+    </Switch>
   );
 };
 

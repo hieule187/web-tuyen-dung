@@ -3,14 +3,12 @@ import './styles.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { AccountContext } from '../../../contexts/AccountContext';
 import Spinner from 'react-bootstrap/Spinner';
 import AlertMessage from '../AlertMessage';
 
 const SignupCandidate = () => {
-  let navigate = useNavigate();
-
   // Context
   const {
     accountState: { authLoading, isAuthenticated },
@@ -82,7 +80,7 @@ const SignupCandidate = () => {
         <Spinner animation="grow" size="sm" variant="success" className="" />
       </div>
     );
-  else if (isAuthenticated) return navigate('/');
+  else if (isAuthenticated) return <Redirect to="/" />;
   else if (loadingSendEmail)
     body = (
       <div className="signup-candidate-inner mt-2 d-inline text-center">

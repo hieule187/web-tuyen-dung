@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { AccountContext } from '../contexts/AccountContext';
 import Spinner from 'react-bootstrap/Spinner';
 import NavbarMenu from '../components/NavbarMenu';
 
-const CandidateRoute = () => {
+const CandidateRoute = ({ component: Component, ...rest }) => {
   // Context
   const {
     accountState: { authLoading, isAuthenticated, user },
@@ -17,13 +17,20 @@ const CandidateRoute = () => {
       </div>
     );
 
-  return isAuthenticated && user.role === 'candidate' ? (
-    <>
-      <NavbarMenu />
-      <Outlet />
-    </>
-  ) : (
-    <Navigate to="/login" replace={true} />
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        isAuthenticated && user.role === 'candidate' ? (
+          <>
+            <NavbarMenu></NavbarMenu>
+            <Component {...rest} {...props} />
+          </>
+        ) : (
+          <Redirect to="/login" />
+        )
+      }
+    />
   );
 };
 

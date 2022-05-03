@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -16,13 +16,18 @@ import { toast } from 'react-toastify';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw } from 'draft-js';
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML,
+} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import vi from 'date-fns/locale/vi';
 registerLocale('vi', vi);
 
-const CreateProfile = () => {
+const UpdateProfile = () => {
   const history = useHistory();
 
   const [info, setInfo] = useState({
@@ -37,6 +42,51 @@ const CreateProfile = () => {
   const [target, setTarget] = useState(EditorState.createEmpty());
   const [experience, setExperience] = useState(EditorState.createEmpty());
   const [degree, setDegree] = useState(EditorState.createEmpty());
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    ProfileAPI.getProfile().then((profileData) => {
+      if (profileData || profileData.success) {
+        const { profile } = profileData;
+        if (profile) {
+          setInfo({
+            fullName: profile.fullName,
+            gender: profile.gender,
+            phoneNumber: profile.phoneNumber,
+            email: profile.email,
+          });
+          setBirthday(new Date(profile.birthday));
+          setDegree(
+            EditorState.createWithContent(
+              ContentState.createFromBlockArray(
+                convertFromHTML(profile.degree),
+              ),
+            ),
+          );
+          setExperience(
+            EditorState.createWithContent(
+              ContentState.createFromBlockArray(
+                convertFromHTML(profile.experience),
+              ),
+            ),
+          );
+          setTarget(
+            EditorState.createWithContent(
+              ContentState.createFromBlockArray(
+                convertFromHTML(profile.target),
+              ),
+            ),
+          );
+          setSkill(
+            EditorState.createWithContent(
+              ContentState.createFromBlockArray(convertFromHTML(profile.skill)),
+            ),
+          );
+        }
+      }
+    });
+  }, []);
 
   const onChangeInfo = (event) =>
     setInfo({ ...info, [event.target.name]: event.target.value });
@@ -81,7 +131,7 @@ const CreateProfile = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    const profileData = await ProfileAPI.createProfile(profileForm);
+    const profileData = await ProfileAPI.updateProfile(profileForm);
     if (profileData.success) {
       toast.success(profileData.message);
       history.push('/profile');
@@ -91,17 +141,17 @@ const CreateProfile = () => {
   };
 
   return (
-    <div className="create-profile-wrapper">
+    <div className="update-profile-wrapper">
       <Container className="mt-3">
-        <h1 className="create-profile-header">Tạo mới hồ sơ xin việc</h1>
-        <p className="create-profile-description">
+        <h1 className="update-profile-header">Cập nhật hồ sơ xin việc</h1>
+        <p className="update-profile-description">
           Xây dựng một hồ sơ nổi bật để nhận được các cơ hội sự nghiệp lý tưởng.
         </p>
       </Container>
 
       <Container className="mt-3">
         <Form onSubmit={onSubmit}>
-          <h1 className="create-profile-title mt-4">
+          <h1 className="update-profile-title mt-4">
             <img
               src={infoIcon}
               alt="infoIcon"
@@ -112,7 +162,7 @@ const CreateProfile = () => {
             Thông tin liên hệ:
           </h1>
           <div className="d-flex justify-content-center">
-            <Row className="create-profile-content">
+            <Row className="update-profile-content">
               <Col xs={12} md={6}>
                 <Form.Group className="mt-2">
                   <Form.Text id="fullName" muted>
@@ -209,7 +259,7 @@ const CreateProfile = () => {
             </Row>
           </div>
 
-          <h1 className="create-profile-title mt-4">
+          <h1 className="update-profile-title mt-4">
             <img
               src={skillIcon}
               alt="skillIcon"
@@ -262,7 +312,7 @@ const CreateProfile = () => {
             />
           </Form.Group>
 
-          <h1 className="create-profile-title mt-4">
+          <h1 className="update-profile-title mt-4">
             <img
               src={targetIcon}
               alt="targetIcon"
@@ -315,7 +365,7 @@ const CreateProfile = () => {
             />
           </Form.Group>
 
-          <h1 className="create-profile-title mt-4">
+          <h1 className="update-profile-title mt-4">
             <img
               src={experienceIcon}
               alt="experienceIcon"
@@ -368,7 +418,7 @@ const CreateProfile = () => {
             />
           </Form.Group>
 
-          <h1 className="create-profile-title mt-4">
+          <h1 className="update-profile-title mt-4">
             <img
               src={degreeIcon}
               alt="degreeIcon"
@@ -428,7 +478,7 @@ const CreateProfile = () => {
               variant="success"
               type="submit"
             >
-              Tạo hồ sơ
+              Cập nhật hồ sơ
             </Button>
           </div>
         </Form>
@@ -439,4 +489,4 @@ const CreateProfile = () => {
   );
 };
 
-export default CreateProfile;
+export default UpdateProfile;

@@ -6,8 +6,7 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import userIcon from '../../assets/user-male.jpg';
 import searchIcon from '../../assets/search.svg';
@@ -17,8 +16,7 @@ import careerData from '../../data/careerData';
 import locationData from '../../data/locationData';
 
 const NavbarMenu = () => {
-  let navigate = useNavigate();
-
+  const history = useHistory();
   // Context
   const {
     accountState: { authLoading, isAuthenticated, user },
@@ -28,7 +26,7 @@ const NavbarMenu = () => {
 
   const logout = () => {
     logoutUser();
-    return navigate('/login');
+    history.push('/login');
   };
 
   let body;

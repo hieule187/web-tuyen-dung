@@ -3,14 +3,12 @@ import './styles.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { AccountContext } from '../../../contexts/AccountContext';
 import Spinner from 'react-bootstrap/Spinner';
 import AlertMessage from '../AlertMessage';
 
 const Login = () => {
-  let navigate = useNavigate();
-
   // Context
   const {
     accountState: { authLoading, isAuthenticated },
@@ -38,7 +36,7 @@ const Login = () => {
       if (!loginData.success) {
         setAlert({ type: 'danger', message: loginData.message });
         setTimeout(() => setAlert(null), 5000);
-      } else return navigate('/', { replace: true });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +62,7 @@ const Login = () => {
         <Spinner animation="grow" size="sm" variant="success" className="" />
       </div>
     );
-  else if (isAuthenticated) return navigate('/');
+  else if (isAuthenticated) return <Redirect to="/" />;
   else
     body = (
       <div className="login-inner mt-2">

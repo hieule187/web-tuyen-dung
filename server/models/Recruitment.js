@@ -14,6 +14,10 @@ const RecruitmentSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    deadline: {
+      type: Date,
+      required: true,
+    },
     description: {
       type: String,
       required: true,

@@ -1,27 +1,27 @@
-.create-profile-wrapper {
+.update-profile-wrapper {
   position: relative;
   background-color: #f0f0f0;
   max-width: 100%;
   overflow-x: hidden;
 }
 
-.create-profile-header {
+.update-profile-header {
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 0;
 }
 
-.create-profile-description {
+.update-profile-description {
   color: #4a4a4a;
   margin-bottom: 0;
   margin-top: 2px;
 }
 
-.create-profile-form {
+.update-profile-form {
   box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
 }
 
-.create-profile-title {
+.update-profile-title {
   font-size: 20px;
   font-weight: 700;
   color: #2fb380;
@@ -52,7 +52,7 @@
 }
 
 @media only screen and (min-width: 64em) {
-  .create-profile-content {
+  .update-profile-content {
     width: 80%;
   }
 

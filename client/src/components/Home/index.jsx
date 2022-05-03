@@ -19,14 +19,7 @@ const Home = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 10000,
-    responsive: [
-      {
-        breakpoint: 600,
-        settings: {
-          dots: true,
-        },
-      },
-    ],
+    dots: true,
   };
 
   // const settingsJobs = {
@@ -97,210 +90,199 @@ const Home = () => {
           <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto">
             <Col className="my-2">
               <Card className="shadow-card">
-                <Card.Body>
-                  <Card.Title className="margin-left">
-                    <Row>
-                      <Col className="avatar-city">
-                        <img
-                          src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                          alt="img"
-                          width="50"
-                          height="50"
-                          className="rounded"
-                        />
-                      </Col>
-                      <Col className="ms-3">
-                        <p className="title-job fw-bold">
-                          Nhân Viên Kinh Doanh Quốc Tế (Lương Cứng Từ 7- 20
-                          Triệu + Hoa Hồng + Phụ Cấp)
-                        </p>
-                        <p className="title-city">
-                          HVCG SoftwareCÔNG TY TNHH THƯƠNG MẠI VÀ DỊCH VỤ NÔNG
-                          NGHIỆP NUVISRAEL
-                        </p>
-                      </Col>
-                    </Row>
-                  </Card.Title>
-                  <Card.Text className="d-flex mt-3 margin-left">
+                <div className="m-3">
+                  <div className="d-flex">
+                    <Card.Img
+                      variant="left"
+                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
+                      width={50}
+                      height={50}
+                      className="rounded"
+                    />
+                    <Card.Title className="title-job ms-3">
+                      <p className="title-job fw-bold">
+                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
+                      </p>
+                      <p className="title-city">
+                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
+                      </p>
+                    </Card.Title>
+                  </div>
+
+                  <div className="d-flex mt-2">
                     <Badge className="bg-secondary fw-normal">
-                      15-20 triệu
+                      15-20 tỷ
                     </Badge>
                     <Badge className="bg-secondary fw-normal ms-2">
                       Bà Rịa – Vũng Tàu
                     </Badge>
-                  </Card.Text>
-                </Card.Body>
+                  </div>
+                </div>
               </Card>
             </Col>
 
             <Col className="my-2">
               <Card className="shadow-card">
-                <Card.Body>
-                  <Card.Title className="margin-left">
-                    <Row>
-                      <Col className="avatar-city">
-                        <img
-                          src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                          alt="img"
-                          width="50"
-                          height="50"
-                          className="rounded"
-                        />
-                      </Col>
-                      <Col className="ms-3">
-                        <p className="title-job fw-bold">
-                          Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
-                        </p>
-                        <p className="title-city">
-                          Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
-                        </p>
-                      </Col>
-                    </Row>
-                  </Card.Title>
-                  <Card.Text className="d-flex mt-3 margin-left">
+                <div className="m-3">
+                  <div className="d-flex">
+                    <Card.Img
+                      variant="left"
+                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
+                      width={50}
+                      height={50}
+                      className="rounded"
+                    />
+                    <Card.Title className="title-job ms-3">
+                      <p className="title-job fw-bold">
+                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
+                      </p>
+                      <p className="title-city">
+                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
+                      </p>
+                    </Card.Title>
+                  </div>
+
+                  <div className="d-flex mt-2">
                     <Badge className="bg-secondary fw-normal">
                       15-20 triệu
                     </Badge>
                     <Badge className="bg-secondary fw-normal ms-2">
                       Bà Rịa – Vũng Tàu
                     </Badge>
-                  </Card.Text>
-                </Card.Body>
+                  </div>
+                </div>
               </Card>
             </Col>
+
             <Col className="my-2">
               <Card className="shadow-card">
-                <Card.Body>
-                  <Card.Title className="margin-left">
-                    <Row>
-                      <Col className="avatar-city">
-                        <img
-                          src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                          alt="img"
-                          width="50"
-                          height="50"
-                          className="rounded"
-                        />
-                      </Col>
-                      <Col className="ms-3">
-                        <p className="title-job fw-bold">
-                          Nhân Viên Kiểm Tra Và Điều Phối Đơn Hàng Online (Làm
-                          Việc Tại Nhà)
-                        </p>
-                        <p className="title-city">
-                          Công ty Cổ phần Truyền thông Nam Việt
-                        </p>
-                      </Col>
-                    </Row>
-                  </Card.Title>
-                  <Card.Text className="d-flex mt-3 margin-left">
+                <div className="m-3">
+                  <div className="d-flex">
+                    <Card.Img
+                      variant="left"
+                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
+                      width={50}
+                      height={50}
+                      className="rounded"
+                    />
+                    <Card.Title className="title-job ms-3">
+                      <p className="title-job fw-bold">
+                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
+                      </p>
+                      <p className="title-city">
+                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
+                      </p>
+                    </Card.Title>
+                  </div>
+
+                  <div className="d-flex mt-2">
                     <Badge className="bg-secondary fw-normal">
                       15-20 triệu
                     </Badge>
                     <Badge className="bg-secondary fw-normal ms-2">
                       Bà Rịa – Vũng Tàu
                     </Badge>
-                  </Card.Text>
-                </Card.Body>
+                  </div>
+                </div>
               </Card>
             </Col>
+
             <Col className="my-2">
               <Card className="shadow-card">
-                <Card.Body>
-                  <Card.Title className="margin-left">
-                    <Row>
-                      <Col className="avatar-city">
-                        <img
-                          src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                          alt="img"
-                          width="50"
-                          height="50"
-                          className="rounded"
-                        />
-                      </Col>
-                      <Col className="ms-3">
-                        <p className="title-job fw-bold">
-                          Lập Trình Viên - Developer
-                        </p>
-                        <p className="title-city">HVCG Software</p>
-                      </Col>
-                    </Row>
-                  </Card.Title>
-                  <Card.Text className="d-flex mt-3 margin-left">
+                <div className="m-3">
+                  <div className="d-flex">
+                    <Card.Img
+                      variant="left"
+                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
+                      width={50}
+                      height={50}
+                      className="rounded"
+                    />
+                    <Card.Title className="title-job ms-3">
+                      <p className="title-job fw-bold">
+                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
+                      </p>
+                      <p className="title-city">
+                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
+                      </p>
+                    </Card.Title>
+                  </div>
+
+                  <div className="d-flex mt-2">
                     <Badge className="bg-secondary fw-normal">
                       15-20 triệu
                     </Badge>
                     <Badge className="bg-secondary fw-normal ms-2">
                       Bà Rịa – Vũng Tàu
                     </Badge>
-                  </Card.Text>
-                </Card.Body>
+                  </div>
+                </div>
               </Card>
             </Col>
+
             <Col className="my-2">
               <Card className="shadow-card">
-                <Card.Body>
-                  <Card.Title className="margin-left">
-                    <Row>
-                      <Col className="avatar-city">
-                        <img
-                          src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                          alt="img"
-                          width="50"
-                          height="50"
-                          className="rounded"
-                        />
-                      </Col>
-                      <Col className="ms-3">
-                        <p className="title-job fw-bold">
-                          Lập Trình Viên - Developer
-                        </p>
-                        <p className="title-city">HVCG Software</p>
-                      </Col>
-                    </Row>
-                  </Card.Title>
-                  <Card.Text className="d-flex mt-3 margin-left">
+                <div className="m-3">
+                  <div className="d-flex">
+                    <Card.Img
+                      variant="left"
+                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
+                      width={50}
+                      height={50}
+                      className="rounded"
+                    />
+                    <Card.Title className="title-job ms-3">
+                      <p className="title-job fw-bold">
+                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
+                      </p>
+                      <p className="title-city">
+                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
+                      </p>
+                    </Card.Title>
+                  </div>
+
+                  <div className="d-flex mt-2">
                     <Badge className="bg-secondary fw-normal">
                       15-20 triệu
                     </Badge>
                     <Badge className="bg-secondary fw-normal ms-2">
                       Bà Rịa – Vũng Tàu
                     </Badge>
-                  </Card.Text>
-                </Card.Body>
+                  </div>
+                </div>
               </Card>
             </Col>
+
             <Col className="my-2">
               <Card className="shadow-card">
-                <Card.Body>
-                  <Card.Title className="margin-left">
-                    <Row>
-                      <Col className="avatar-city">
-                        <img
-                          src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                          alt="img"
-                          width="50"
-                          height="50"
-                          className="rounded"
-                        />
-                      </Col>
-                      <Col className="ms-3">
-                        <p className="title-job fw-bold">
-                          Lập Trình Viên - Developer
-                        </p>
-                        <p className="title-city">HVCG Software</p>
-                      </Col>
-                    </Row>
-                  </Card.Title>
-                  <Card.Text className="d-flex mt-3 margin-left">
+                <div className="m-3">
+                  <div className="d-flex">
+                    <Card.Img
+                      variant="left"
+                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
+                      width={50}
+                      height={50}
+                      className="rounded"
+                    />
+                    <Card.Title className="title-job ms-3">
+                      <p className="title-job fw-bold">
+                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
+                      </p>
+                      <p className="title-city">
+                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
+                      </p>
+                    </Card.Title>
+                  </div>
+
+                  <div className="d-flex mt-2">
                     <Badge className="bg-secondary fw-normal">
                       15-20 triệu
                     </Badge>
                     <Badge className="bg-secondary fw-normal ms-2">
                       Bà Rịa – Vũng Tàu
                     </Badge>
-                  </Card.Text>
-                </Card.Body>
+                  </div>
+                </div>
               </Card>
             </Col>
           </Row>
