@@ -1,19 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 import NavbarMenu from '../NavbarMenu';
+import Footer from '../Footer';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
 import SignupModal from '../Account/SignupModal';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Badge from 'react-bootstrap/Badge';
+import { imgUrl } from '../../contexts/constants';
+import InfoRecruitment from '../Recruitment/InfoRecruitment';
+import ReactPaginate from 'react-paginate';
+import RecruitmentAPI from '../../API/RecruitmentAPI';
+import bagIcon from '../../assets/bag.svg';
+import { Link } from 'react-router-dom';
+import convertSlugUrl from '../../utils/convertSlugUrl';
 
 const Home = () => {
+  const [recruitments, setRecruitments] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+
+  useEffect(() => {
+    const getRecruitment = async () => {
+      const recruitmentData = await RecruitmentAPI.getRecruitment();
+      setRecruitments(recruitmentData.recruitment);
+      setPageCount(recruitmentData.totalPages);
+    };
+    getRecruitment();
+  }, []);
+
+  const handlePageClick = async (data) => {
+    let currentPage = data.selected;
+    const dataInPage = await RecruitmentAPI.getRecruitmentPage(currentPage);
+    setRecruitments(dataInPage.recruitment);
+  };
+
   const settings = {
     infinite: true,
+    fade: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -22,23 +48,73 @@ const Home = () => {
     dots: true,
   };
 
-  // const settingsJobs = {
-  //   infinite: true,
-  //   speed: 500,
-  //   slidesToShow: 1,
-  //   slidesToScroll: 1,
-  //   autoplay: true,
-  //   autoplaySpeed: 10000,
-  //   dots: true,
-  //   responsive: [
-  //     {
-  //       breakpoint: 600,
-  //       settings: {
-  //         dots: true,
-  //       },
-  //     },
-  //   ],
-  // };
+  const settingsJobs = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 10000,
+    dots: true,
+    centerMode: true,
+    responsive: [
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1,
+        },
+      },
+    ],
+  };
+
+  const banner = ['banner-1.png', 'banner-2.png', 'banner-3.png'];
+
+  const jobsOutstanding = [
+    'Kinh doanh / Bán hàng',
+    'Kế toán / Kiểm toán',
+    'Ngân hàng / Tài chính',
+    'Hành chính / Văn phòng',
+    'IT phần mềm',
+    'Marketing / Truyền thông',
+  ];
+
+  const aboutUs = [
+    {
+      title: '30.000+',
+      description: 'Ứng viên đang bật tìm việc trung bình/thời điểm',
+    },
+    { title: '90.000+', description: 'Doanh nghiệp sử dụng dịch vụ' },
+    { title: '120.000+', description: 'Nhà tuyển dụng sử dụng thường xuyên' },
+    { title: '200.000+', description: 'Ứng viên mới mỗi tháng' },
+    { title: '3.000.000+', description: 'Lượt ứng viên truy cập hàng tháng' },
+    { title: '4.000.000+', description: 'Ứng viên tiềm năng' },
+    { title: '60%', description: 'Ứng viên có trên 2 năm kinh nghiệm' },
+  ];
+
+  const topCompany = [
+    { img: 'cmc.png', link: 'https://cmcglobal.com.vn/' },
+    { img: 'itp.png', link: 'https://itp29.com/' },
+    { img: 'vh.png', link: 'https://vuihoc.vn/' },
+    { img: 'tc.png', link: 'https://trans-cosmos.com.vn/' },
+    { img: 'dkra.png', link: 'http://dkravega.vn/' },
+    { img: 'cl.png', link: 'https://www.chailease.com.vn/' },
+    { img: 'mls.png', link: 'https://milensea.com.vn/' },
+    { img: 'mcrd.png', link: 'https://mcredit.com.vn/' },
+    { img: 'ifi.png', link: 'https://www.ifisolution.com/' },
+    { img: 'sc.png', link: 'https://www.smartosc.com/' },
+    { img: 'gg.png', link: 'https://g-group.vn/' },
+  ];
 
   return (
     <div className="home-wrapper">
@@ -46,250 +122,167 @@ const Home = () => {
 
       <NavbarMenu />
 
-      <Container className="mt-3">
-        <h1 className="home-header">
-          Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc
-        </h1>
-        <p className="home-description">
-          Tiếp cận 30,000+ tin tuyển dụng việc làm mới mỗi ngày từ hàng nghìn
-          doanh nghiệp uy tín tại Việt Nam
-        </p>
-      </Container>
+      <div className="div-slider-color">
+        <Container className="">
+          <h1 className="home-header">
+            Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc
+          </h1>
+          <p className="home-description">
+            Tiếp cận 30,000+ tin tuyển dụng việc làm mới mỗi ngày từ hàng nghìn
+            doanh nghiệp uy tín tại Việt Nam
+          </p>
 
-      <Container className="mt-3">
-        <Slider {...settings}>
-          <div>
-            <img
-              className="w-100 rounded-3"
-              src="https://static.topcv.vn/img/bannerT1.jpg"
-              alt="First slide"
+          <Slider {...settings} className="pointer mt-4">
+            {banner.map((imgName, index) => {
+              return (
+                <div key={index}>
+                  <img
+                    className="w-100 rounded-3"
+                    src={`${imgUrl}/uploads/${imgName}`}
+                    alt={imgName}
+                  />
+                </div>
+              );
+            })}
+          </Slider>
+        </Container>
+      </div>
+
+      <div className="div-jobs-color">
+        <Container className="">
+          <h1 className="jobs-header">Tin tuyển dụng, việc làm tốt nhất</h1>
+
+          <div className="jobs-wrapper mt-4 p-2 rounded-3">
+            <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto no-select">
+              {recruitments.map((recruitment) => (
+                <Col key={recruitment._id} className="my-2">
+                  <InfoRecruitment recruitment={recruitment} />
+                </Col>
+              ))}
+            </Row>
+          </div>
+
+          <div className="mt-3">
+            <ReactPaginate
+              previousLabel={'Trước'}
+              nextLabel={'Tiếp'}
+              breakLabel={'...'}
+              pageCount={pageCount}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageClick}
+              containerClassName={'pagination justify-content-center mb-0'}
+              pageClassName={'page-item'}
+              pageLinkClassName={'page-link no-select'}
+              previousClassName={'page-item'}
+              previousLinkClassName={'page-link no-select'}
+              nextClassName={'page-item'}
+              nextLinkClassName={'page-link no-select'}
+              breakClassName={'page-item'}
+              breakLinkClassName={'page-link no-select'}
+              activeClassName={'active'}
             />
           </div>
-          <div>
-            <img
-              className="w-100 rounded-3"
-              src="https://static.topcv.vn/img/Banner%20cho%20TopCV-01.png"
-              alt="First slide"
-            />
+        </Container>
+      </div>
+
+      <div className="div-jobs-outstanding-color">
+        <Container className="">
+          <h1 className="jobs-outstanding">Top ngành nghề nổi bật</h1>
+
+          <Slider {...settingsJobs} className="mt-3">
+            {jobsOutstanding.map((job, index) => {
+              return (
+                <div key={index} className="pe-4 mt-2 mb-2">
+                  <Card className="card-jobs-outstanding">
+                    <Card.Body className="d-flex">
+                      <img
+                        src={bagIcon}
+                        alt="bagIcon"
+                        width="40"
+                        height="40"
+                        className="bagIcon no-select"
+                      />
+                      <Card.Title className="title-card">
+                        <Link
+                          to={`/search/${convertSlugUrl(job)}`}
+                          target="_blank"
+                          style={{ textDecoration: 'none', color: '#212529' }}
+                        >
+                          <p className="title-job-outstanding fw-bold">{job}</p>
+                        </Link>
+                      </Card.Title>
+                    </Card.Body>
+                  </Card>
+                </div>
+              );
+            })}
+          </Slider>
+        </Container>
+      </div>
+
+      <div className="div-about-us-color">
+        <Container className="">
+          <div className="header-about-us">
+            <h1 className="title-about-us">Về chúng tôi</h1>
+
+            <p className="description-about-us mt-3">
+              FastJob là công ty công nghệ nhân sự (HR Tech) hàng đầu Việt Nam.
+              Với năng lực lõi là công nghệ, đặc biệt là trí tuệ nhân tạo (AI),
+              sứ mệnh của FastJob đặt ra cho mình là thay đổi thị trường tuyển
+              dụng - nhân sự ngày một hiệu quả hơn. Bằng công nghệ, chúng tôi
+              tạo ra nền tảng cho phép người lao động tạo CV, phát triển được
+              các kỹ năng cá nhân, xây dựng hình ảnh chuyên nghiệp trong mắt nhà
+              tuyển dụng và tiếp cận với các cơ hội việc làm phù hợp.
+            </p>
           </div>
-          <div>
-            <img
-              className="w-100 rounded-3"
-              src="https://static.topcv.vn/img/banner%20t4%20(1)%20(1).png"
-              alt="First slide"
-            />
+
+          <div className="p-3 mt-4 details-about-us">
+            <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 mx-3">
+              {aboutUs.map((about, index) => {
+                return (
+                  <Col key={index}>
+                    <div className="mt-2 mb-2">
+                      <h3 style={{ color: '#3d6089' }}>{about.title}</h3>
+                      <p>{about.description}</p>
+                    </div>
+                  </Col>
+                );
+              })}
+            </Row>
           </div>
-        </Slider>
-      </Container>
+        </Container>
+      </div>
 
-      <Container className="mt-3 jobs-wrapper">
-        <div className="jobs-title">
-          <h1 className="jobs-header">TIN TUYỂN DỤNG, VIỆC LÀM TỐT NHẤT</h1>
-        </div>
-        <div className="jobs-slider mt-3 p-2 rounded-3">
-          <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto">
-            <Col className="my-2">
-              <Card className="shadow-card">
-                <div className="m-3">
-                  <div className="d-flex">
-                    <Card.Img
-                      variant="left"
-                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                      width={50}
-                      height={50}
-                      className="rounded"
-                    />
-                    <Card.Title className="title-job ms-3">
-                      <p className="title-job fw-bold">
-                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
-                      </p>
-                      <p className="title-city">
-                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
-                      </p>
-                    </Card.Title>
-                  </div>
+      <div className="div-jobs-top-company-color">
+        <Container className="">
+          <h1 className="title-top-company">Các công ty tuyển dụng hàng đầu</h1>
 
-                  <div className="d-flex mt-2">
-                    <Badge className="bg-secondary fw-normal">
-                      15-20 tỷ
-                    </Badge>
-                    <Badge className="bg-secondary fw-normal ms-2">
-                      Bà Rịa – Vũng Tàu
-                    </Badge>
-                  </div>
-                </div>
-              </Card>
-            </Col>
-
-            <Col className="my-2">
-              <Card className="shadow-card">
-                <div className="m-3">
-                  <div className="d-flex">
-                    <Card.Img
-                      variant="left"
-                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                      width={50}
-                      height={50}
-                      className="rounded"
-                    />
-                    <Card.Title className="title-job ms-3">
-                      <p className="title-job fw-bold">
-                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
-                      </p>
-                      <p className="title-city">
-                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
-                      </p>
-                    </Card.Title>
-                  </div>
-
-                  <div className="d-flex mt-2">
-                    <Badge className="bg-secondary fw-normal">
-                      15-20 triệu
-                    </Badge>
-                    <Badge className="bg-secondary fw-normal ms-2">
-                      Bà Rịa – Vũng Tàu
-                    </Badge>
-                  </div>
-                </div>
-              </Card>
-            </Col>
-
-            <Col className="my-2">
-              <Card className="shadow-card">
-                <div className="m-3">
-                  <div className="d-flex">
-                    <Card.Img
-                      variant="left"
-                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                      width={50}
-                      height={50}
-                      className="rounded"
-                    />
-                    <Card.Title className="title-job ms-3">
-                      <p className="title-job fw-bold">
-                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
-                      </p>
-                      <p className="title-city">
-                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
-                      </p>
-                    </Card.Title>
-                  </div>
-
-                  <div className="d-flex mt-2">
-                    <Badge className="bg-secondary fw-normal">
-                      15-20 triệu
-                    </Badge>
-                    <Badge className="bg-secondary fw-normal ms-2">
-                      Bà Rịa – Vũng Tàu
-                    </Badge>
-                  </div>
-                </div>
-              </Card>
-            </Col>
-
-            <Col className="my-2">
-              <Card className="shadow-card">
-                <div className="m-3">
-                  <div className="d-flex">
-                    <Card.Img
-                      variant="left"
-                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                      width={50}
-                      height={50}
-                      className="rounded"
-                    />
-                    <Card.Title className="title-job ms-3">
-                      <p className="title-job fw-bold">
-                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
-                      </p>
-                      <p className="title-city">
-                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
-                      </p>
-                    </Card.Title>
-                  </div>
-
-                  <div className="d-flex mt-2">
-                    <Badge className="bg-secondary fw-normal">
-                      15-20 triệu
-                    </Badge>
-                    <Badge className="bg-secondary fw-normal ms-2">
-                      Bà Rịa – Vũng Tàu
-                    </Badge>
-                  </div>
-                </div>
-              </Card>
-            </Col>
-
-            <Col className="my-2">
-              <Card className="shadow-card">
-                <div className="m-3">
-                  <div className="d-flex">
-                    <Card.Img
-                      variant="left"
-                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                      width={50}
-                      height={50}
-                      className="rounded"
-                    />
-                    <Card.Title className="title-job ms-3">
-                      <p className="title-job fw-bold">
-                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
-                      </p>
-                      <p className="title-city">
-                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
-                      </p>
-                    </Card.Title>
-                  </div>
-
-                  <div className="d-flex mt-2">
-                    <Badge className="bg-secondary fw-normal">
-                      15-20 triệu
-                    </Badge>
-                    <Badge className="bg-secondary fw-normal ms-2">
-                      Bà Rịa – Vũng Tàu
-                    </Badge>
-                  </div>
-                </div>
-              </Card>
-            </Col>
-
-            <Col className="my-2">
-              <Card className="shadow-card">
-                <div className="m-3">
-                  <div className="d-flex">
-                    <Card.Img
-                      variant="left"
-                      src="https://cdn.topcv.vn/44/company_logos/dc55c053482ce14996cb6fc34fbfdb72-6255445896df2.jpg"
-                      width={50}
-                      height={50}
-                      className="rounded"
-                    />
-                    <Card.Title className="title-job ms-3">
-                      <p className="title-job fw-bold">
-                        Nhân Viên Trực Page/ Sales Hàng Tiêu Dùng (8-15 Triệu)
-                      </p>
-                      <p className="title-city">
-                        Công ty TNHH sản phẩm thiên nhiên và hữu cơ Ona Global
-                      </p>
-                    </Card.Title>
-                  </div>
-
-                  <div className="d-flex mt-2">
-                    <Badge className="bg-secondary fw-normal">
-                      15-20 triệu
-                    </Badge>
-                    <Badge className="bg-secondary fw-normal ms-2">
-                      Bà Rịa – Vũng Tàu
-                    </Badge>
-                  </div>
-                </div>
-              </Card>
-            </Col>
+          <Row className="row-cols-2 row-cols-md-3 row-cols-lg-6 mt-4">
+            {topCompany.map((company, index) => {
+              return (
+                <Link
+                  key={index}
+                  to={{ pathname: company.link }}
+                  target="_blank"
+                >
+                  <Col>
+                    <div className="img-top-company rounded-3">
+                      <img
+                        src={`${imgUrl}/uploads/${company.img}`}
+                        alt={company.img}
+                        className="img-company no-select"
+                      />
+                    </div>
+                  </Col>
+                </Link>
+              );
+            })}
           </Row>
-        </div>
-      </Container>
+        </Container>
+      </div>
 
-      <div style={{ height: '500px' }}></div>
+      <Footer />
     </div>
   );
 };

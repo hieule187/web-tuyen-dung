@@ -96,6 +96,7 @@ class CvController {
         const page = parseInt(req.query.page || '0');
         const total = await Cv.countDocuments({ writer: _id });
         const cv = await Cv.find({ writer: _id })
+          .sort({ _id: -1 })
           .limit(PAGE_SIZE)
           .skip(PAGE_SIZE * page);
         if (cv.length > 0) {
@@ -136,6 +137,7 @@ class CvController {
         const page = parseInt(req.query.page || '0');
         const total = await Cv.countDocuments({ receiver: _id, status: true });
         const cv = await Cv.find({ receiver: _id, status: true })
+          .sort({ _id: -1 })
           .limit(PAGE_SIZE)
           .skip(PAGE_SIZE * page);
         if (cv.length > 0) {
@@ -176,6 +178,7 @@ class CvController {
         const page = parseInt(req.query.page || '0');
         const total = await Cv.countDocuments({ receiver: _id, status: false });
         const cv = await Cv.find({ receiver: _id, status: false })
+          .sort({ _id: -1 })
           .limit(PAGE_SIZE)
           .skip(PAGE_SIZE * page);
         if (cv.length > 0) {

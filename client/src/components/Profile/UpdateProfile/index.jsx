@@ -9,7 +9,7 @@ import infoIcon from '../../../assets/info.svg';
 import skillIcon from '../../../assets/skill.svg';
 import targetIcon from '../../../assets/target.svg';
 import experienceIcon from '../../../assets/experience.svg';
-import degreeIcon from '../../../assets/degree.svg';
+import degreeIcon from '../../../assets/mortarboard-fill.svg';
 import ProfileAPI from '../../../API/ProfileAPI';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -37,7 +37,7 @@ const UpdateProfile = () => {
     email: '',
   });
 
-  const [birthday, setBirthday] = useState(new Date('01/01/2022'));
+  const [birthday, setBirthday] = useState(new Date());
   const [skill, setSkill] = useState(EditorState.createEmpty());
   const [target, setTarget] = useState(EditorState.createEmpty());
   const [experience, setExperience] = useState(EditorState.createEmpty());
@@ -130,11 +130,14 @@ const UpdateProfile = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     const profileData = await ProfileAPI.updateProfile(profileForm);
     if (profileData.success) {
       toast.success(profileData.message);
-      history.push('/profile');
+      setTimeout(() => {
+        history.push('/profile');
+      }, 1000);
     } else {
       toast.error(profileData.message);
     }
@@ -149,7 +152,7 @@ const UpdateProfile = () => {
         </p>
       </Container>
 
-      <Container className="mt-3">
+      <Container className="mt-3 mb-5">
         <Form onSubmit={onSubmit}>
           <h1 className="update-profile-title mt-4">
             <img
@@ -483,8 +486,6 @@ const UpdateProfile = () => {
           </div>
         </Form>
       </Container>
-
-      <div style={{ height: '500px' }}></div>
     </div>
   );
 };

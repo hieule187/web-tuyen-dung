@@ -1,0 +1,51 @@
+.jobs-header {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.jobs-wrapper {
+  background-color: #f8f9fa;
+}
+
+.title-card {
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title-job {
+  font-size: 16px;
+  margin-bottom: 8px;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.title-company {
+  font-size: 16px;
+  color: #999;
+  margin-bottom: 0;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.title-job:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.shadow-card {
+  border: none;
+  box-shadow: -1px 1px 4px #0000000d;
+}
+
+.shadow-card:hover {
+  background-color: #f5f5f5;
+  transition: 0.2s;
+}

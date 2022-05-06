@@ -10,6 +10,14 @@
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 0;
+  color: #2fb380;
+}
+
+.jobs-outstanding {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0;
+  color: #2fb380;
 }
 
 .home-description {
@@ -25,38 +33,138 @@
 .jobs-header {
   font-size: 20px;
   font-weight: 700;
+  color: #2fb380;
 }
 
-.jobs-slider {
+.jobs-wrapper {
   background-color: #f8f9fa;
 }
 
-.title-job {
-  font-size: 16px;
-  margin-bottom: 8px;
-  width: auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.title-city {
-  font-size: 16px;
-  color: #999;
-  margin-bottom: 0;
-  width: auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.shadow-card {
-  border: none;
-  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
-}
-
 .slick-dots {
-  bottom: 500px !important;
+  right: 65em !important;
+}
+
+:focus-visible {
+  outline: none;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.page-item.active .page-link {
+  background-color: #2fb380;
+  border-color: #2fb380;
+}
+
+.card-jobs-outstanding {
+  border-radius: 10px;
+  border: none;
+  box-shadow: -1px 1px 4px #0000000d;
+}
+
+.card-jobs-outstanding:hover {
+  background-color: #e9f7ef;
+  transition: 0.2s;
+}
+
+.title-card {
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bagIcon {
+  margin-top: 10px;
+}
+
+.title-job-outstanding {
+  font-size: 20px;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 20px;
+  margin-top: 16px;
+}
+
+.title-job-outstanding:hover {
+  color: #2fb380;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.header-about-us {
+  text-align: center;
+}
+
+.title-about-us {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2fb380;
+}
+
+.description-about-us {
+  color: #4a4a4a;
+}
+
+.details-about-us {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+}
+
+.title-top-company {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2fb380;
+}
+
+.img-top-company {
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+  box-shadow: -1px 1px 4px #0000000d;
+  margin-bottom: 20px;
+}
+
+.img-top-company:hover {
+  cursor: pointer;
+}
+
+.img-company {
+  width: 180px;
+  height: 120px;
+}
+
+.div-slider-color {
+  background: linear-gradient(#d5f5e3, #f0f0f0);
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+
+.div-jobs-color {
+  background: linear-gradient(#f0f0f0, #d5f5e3);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.div-jobs-outstanding-color {
+  background: linear-gradient(#d5f5e3, #f0f0f0);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.div-about-us-color {
+  background: linear-gradient(#f0f0f0, #d5f5e3);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.div-jobs-top-company-color {
+  background: linear-gradient(#d5f5e3, #f0f0f0);
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 @media only screen and (max-width: 37.5em) {
@@ -66,22 +174,32 @@
   }
 
   .slick-dots {
-    bottom: -25px !important;
+    right: 0 !important;
   }
 
   .jobs-header {
     padding-top: 16px;
   }
+
+  .title-about-us {
+    padding-top: 16px;
+  }
+
+  .header-about-us {
+    text-align: start !important;
+  }
 }
 
-/* Mobile: width < 740px */
-@media only screen and (max-width: 739px) {
+@media only screen and (max-width: 27.4375em) {
+  .img-company {
+    width: 122px;
+    height: 70px;
+  }
 }
 
-/* Tablet: width >= 740px and width < 1024px*/
-@media only screen and (min-width: 740px) and (max-width: 1023) {
-}
-
-/* PC: width >= 1024px */
-@media only screen and (max-width: 1024px) {
+@media only screen and (min-width: 62em) and (max-width: 87.4375em) {
+  .img-company {
+    width: 130px;
+    height: 90px;
+  }
 }

@@ -67,7 +67,7 @@ const NavbarMenu = () => {
                 alt="userIcon"
                 width="30"
                 height="30"
-                className="me-2 iconUser-ms rounded-circle"
+                className="me-2 iconUser-ms rounded-circle no-select"
               />{' '}
               {user.fullName}
             </span>
@@ -103,7 +103,7 @@ const NavbarMenu = () => {
                 alt="userIcon"
                 width="30"
                 height="30"
-                className="me-2 iconUser-ms rounded-circle"
+                className="me-2 iconUser-ms rounded-circle no-select"
               />{' '}
               {user.fullName}
             </span>
@@ -141,7 +141,7 @@ const NavbarMenu = () => {
                 alt="userIcon"
                 width="30"
                 height="30"
-                className="me-2 iconUser-ms rounded-circle"
+                className="me-2 iconUser-ms rounded-circle no-select"
               />{' '}
               {user.fullName}
             </span>
@@ -182,7 +182,7 @@ const NavbarMenu = () => {
 
   return (
     <>
-      <Navbar bg="light" expand="lg" className="border-bottom" sticky="top">
+      <Navbar bg="light" expand="lg" className="shadow-card" sticky="top">
         <Container>
           <Navbar.Brand className="me-4 fw-bold fs-4">
             <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
@@ -218,7 +218,13 @@ const NavbarMenu = () => {
               </Form.Select>
 
               <Button variant="success" type="submit">
-                <img src={searchIcon} alt="searchIcon" width="20" height="20" />
+                <img
+                  src={searchIcon}
+                  alt="searchIcon"
+                  width="20"
+                  height="20"
+                  className="no-select"
+                />
               </Button>
             </Form>
             {body}

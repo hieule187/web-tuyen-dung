@@ -101,10 +101,7 @@ const Login = () => {
           </Button>
 
           <p className="mt-3">
-            <Link
-              style={{ textDecoration: 'none', color: '#2fb380' }}
-              to="/forgot-password"
-            >
+            <Link className="forgot-pas" to="/forgot-password">
               Quên mật khẩu?
             </Link>
           </p>

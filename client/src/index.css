@@ -17,6 +17,14 @@ code {
   background-color: #efefef !important;
 }
 
+.no-select {
+  user-select: none;
+  user-zoom: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
 .spinner-container {
   position: absolute;
   top: 50%;

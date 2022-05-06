@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { AccountContext } from '../contexts/AccountContext';
 import Spinner from 'react-bootstrap/Spinner';
 import NavbarMenu from '../components/NavbarMenu';
+import Footer from '../components/Footer';
 
 const CandidateRoute = ({ component: Component, ...rest }) => {
   // Context
@@ -23,8 +24,9 @@ const CandidateRoute = ({ component: Component, ...rest }) => {
       render={(props) =>
         isAuthenticated && user.role === 'candidate' ? (
           <>
-            <NavbarMenu></NavbarMenu>
+            <NavbarMenu />
             <Component {...rest} {...props} />
+            <Footer />
           </>
         ) : (
           <Redirect to="/login" />

@@ -383,6 +383,7 @@ class AccountController {
         const page = parseInt(req.query.page || '0');
         const total = await Account.countDocuments({ status: true });
         const account = await Account.find({ status: true })
+          .sort({ _id: -1 })
           .limit(PAGE_SIZE)
           .skip(PAGE_SIZE * page);
         if (account.length > 0) {
@@ -423,6 +424,7 @@ class AccountController {
         const page = parseInt(req.query.page || '0');
         const total = await Account.countDocuments({ status: false });
         const account = await Account.find({ status: false })
+          .sort({ _id: -1 })
           .limit(PAGE_SIZE)
           .skip(PAGE_SIZE * page);
         if (account.length > 0) {

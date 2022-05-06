@@ -1,0 +1,23 @@
+.footer {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.col-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.icon-bct:hover {
+  cursor: pointer;
+}
+
+.divider-footer {
+  border-bottom: 1px solid #dadde1;
+}
+
+@media only screen and (max-width: 768px) {
+  .col-footer {
+    justify-content: start;
+  }
+}

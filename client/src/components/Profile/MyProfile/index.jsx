@@ -11,7 +11,7 @@ import infoIcon from '../../../assets/info.svg';
 import skillIcon from '../../../assets/skill.svg';
 import targetIcon from '../../../assets/target.svg';
 import experienceIcon from '../../../assets/experience.svg';
-import degreeIcon from '../../../assets/degree.svg';
+import degreeIcon from '../../../assets/mortarboard-fill.svg';
 import editIcon from '../../../assets/pencil-square.svg';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -54,14 +54,17 @@ const MyProfile = () => {
 
   if (loading) {
     return (
-      <div className="spinner-container">
-        <Spinner animation="border" variant="success" />
-      </div>
+      <>
+        <div className="spinner-container">
+          <Spinner animation="border" variant="success" />
+        </div>
+        <div style={{ paddingBottom: '2000px' }}></div>
+      </>
     );
   } else {
     return (
       <div className="profile-wrapper">
-        <Container className="mt-3">
+        <Container className="mt-4">
           <h1 className="profile-header">Hồ sơ xin việc</h1>
           <p className="profile-description">
             Xây dựng một hồ sơ nổi bật để nhận được các cơ hội sự nghiệp lý
@@ -70,7 +73,7 @@ const MyProfile = () => {
         </Container>
 
         {existProfile ? (
-          <Container className="mt-4">
+          <Container className="mt-3 pb-5">
             <div
               className="d-flex profile-content rounded-3"
               style={{ backgroundColor: '#f8f9fa' }}
@@ -231,7 +234,7 @@ const MyProfile = () => {
             </div>
           </Container>
         ) : (
-          <Container className="mt-4">
+          <Container className="mt-3" style={{ paddingBottom: '350px' }}>
             <Card className="text-center rounded-3">
               <Card.Header as="h1" className="profile-header">
                 Xin chào <span className="text-success">{user.fullName}</span>
@@ -259,8 +262,6 @@ const MyProfile = () => {
             </Card>
           </Container>
         )}
-
-        <div style={{ height: '500px' }}></div>
       </div>
     );
   }

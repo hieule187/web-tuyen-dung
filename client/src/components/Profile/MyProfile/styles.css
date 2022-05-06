@@ -1,6 +1,6 @@
 .profile-wrapper {
   position: relative;
-  background-color: #f0f0f0;
+  background: linear-gradient(#d5f5e3, #f0f0f0);
   max-width: 100%;
   overflow-x: hidden;
 }

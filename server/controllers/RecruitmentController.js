@@ -9,6 +9,7 @@ class RecruitmentController {
       const {
         companyName,
         title,
+        deadline,
         description,
         salary,
         workingForm,
@@ -21,7 +22,7 @@ class RecruitmentController {
         address,
       } = req.body;
 
-      const img = req.file ? req.file.path : 'uploads\\tuyen-dung.jpg';
+      const img = req.file ? req.file.path : 'uploads\\tuyen-dung.png';
       const writer = req.user._id;
       const { status, role } = req.user;
 
@@ -41,6 +42,7 @@ class RecruitmentController {
             companyName,
             title,
             img,
+            deadline,
             description,
             salary,
             workingForm,
@@ -91,6 +93,7 @@ class RecruitmentController {
       const page = parseInt(req.query.page || '0');
       const total = await Recruitment.countDocuments({ status: true });
       const recruitment = await Recruitment.find({ status: true })
+        .sort({ _id: -1 })
         .limit(PAGE_SIZE)
         .skip(PAGE_SIZE * page);
       if (recruitment.length > 0) {
@@ -123,6 +126,7 @@ class RecruitmentController {
       const page = parseInt(req.query.page || '0');
       const total = await Recruitment.countDocuments({ writer: req.user._id });
       const recruitment = await Recruitment.find({ writer: req.user._id })
+        .sort({ _id: -1 })
         .limit(PAGE_SIZE)
         .skip(PAGE_SIZE * page);
       if (recruitment.length > 0) {
@@ -155,7 +159,7 @@ class RecruitmentController {
       if (!recruitment)
         return res.status(400).json({
           success: false,
-          message: 'Tin tuyển dụng không tồn tại.',
+          message: 'Tin tuyển dụng không tồn tại hoặc đã bị xóa.',
         });
       return res.status(200).json({
         success: true,
@@ -177,6 +181,7 @@ class RecruitmentController {
       const {
         companyName,
         title,
+        deadline,
         description,
         salary,
         workingForm,
@@ -189,13 +194,14 @@ class RecruitmentController {
         address,
       } = req.body;
 
-      const img = req.body.img ? req.body.img : 'uploads\\tuyen-dung.jpg';
+      const img = req.body.img ? req.body.img : 'uploads\\tuyen-dung.png';
       const writer = req.user._id;
       const { status, role } = req.user;
       let updatedRecruitment = {
         companyName,
         title,
         img,
+        deadline,
         description,
         salary,
         workingForm,
@@ -280,7 +286,7 @@ class RecruitmentController {
               'Tin tuyển dụng không tồn tại hoặc tài khoản không có quyền.',
           });
 
-        if (deletedRecruitment.img !== 'uploads\\tuyen-dung.jpg') {
+        if (deletedRecruitment.img !== 'uploads\\tuyen-dung.png') {
           fs.unlink(deletedRecruitment.img, (err) => {
             if (err) {
               console.error(err);
@@ -306,7 +312,7 @@ class RecruitmentController {
               'Tin tuyển dụng không tồn tại hoặc tài khoản không có quyền.',
           });
 
-        if (deletedRecruitment.img !== 'uploads\\tuyen-dung.jpg') {
+        if (deletedRecruitment.img !== 'uploads\\tuyen-dung.png') {
           fs.unlink(deletedRecruitment.img, (err) => {
             if (err) {
               console.error(err);
@@ -436,6 +442,7 @@ class RecruitmentController {
         const page = parseInt(req.query.page || '0');
         const total = await Recruitment.countDocuments({ status: true });
         const recruitment = await Recruitment.find({ status: true })
+          .sort({ _id: -1 })
           .limit(PAGE_SIZE)
           .skip(PAGE_SIZE * page);
         if (recruitment.length > 0) {
@@ -476,6 +483,7 @@ class RecruitmentController {
         const page = parseInt(req.query.page || '0');
         const total = await Recruitment.countDocuments({ status: false });
         const recruitment = await Recruitment.find({ status: false })
+          .sort({ _id: -1 })
           .limit(PAGE_SIZE)
           .skip(PAGE_SIZE * page);
         if (recruitment.length > 0) {
