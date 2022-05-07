@@ -10,6 +10,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Alert from 'react-bootstrap/Alert';
+import Modal from 'react-bootstrap/Modal';
 import salaryIcon from '../../../assets/salary.svg';
 import workingFormIcon from '../../../assets/bag.svg';
 import genderIcon from '../../../assets/gender.svg';
@@ -18,9 +19,12 @@ import levelIcon from '../../../assets/experience.svg';
 import experienceIcon from '../../../assets/degree.svg';
 import sendIcon from '../../../assets/send.svg';
 import RecruitmentAPI from '../../../API/RecruitmentAPI';
-import { useParams } from 'react-router-dom';
+import ProfileAPI from '../../../API/ProfileAPI';
+import { Link, useParams } from 'react-router-dom';
 import { AccountContext } from '../../../contexts/AccountContext';
 import { toast } from 'react-toastify';
+import convertSlugUrl from '../../../utils/convertSlugUrl';
+import CvAPI from '../../../API/CvAPI';
 import moment from 'moment';
 import 'moment/locale/vi';
 
@@ -32,6 +36,11 @@ const DetailsRecruitment = () => {
   } = useContext(AccountContext);
 
   const [recruitment, setRecruitment] = useState({});
+  const [profile, setProfile] = useState({});
+  const [existProfile, setExitsProfile] = useState(false);
+
+  const [showModalSendCv, setShowModalSendCv] = useState(false);
+  const [showModalExistCv, setShowModalExistCv] = useState(false);
 
   useEffect(() => {
     const getRecruitmentById = async () => {
@@ -42,9 +51,60 @@ const DetailsRecruitment = () => {
     getRecruitmentById();
   }, [param]);
 
+  useEffect(() => {
+    if (user.role === 'candidate') {
+      const getProfile = async () => {
+        const dataProfile = await ProfileAPI.getProfile();
+        setExitsProfile(dataProfile.existProfile);
+        setProfile(dataProfile.profile);
+      };
+
+      getProfile();
+    }
+  }, [user.role]);
+
   const formatDate = moment(recruitment ? recruitment.deadline : null).format(
     'DD/MM/YYYY',
   );
+
+  const openModal = () => {
+    if (!isAuthenticated) {
+      window.open('/login', '_blank');
+    } else if (existProfile) {
+      setShowModalSendCv(true);
+    } else {
+      setShowModalExistCv(true);
+    }
+  };
+
+  const closeModalSendCv = () => {
+    setShowModalSendCv(false);
+  };
+
+  const closeModalExistCv = () => {
+    setShowModalExistCv(false);
+    window.open(`/create-profile/${convertSlugUrl(user.fullName)}`, '_blank');
+  };
+
+  const sendCv = async () => {
+    setShowModalSendCv(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (existProfile) {
+      const formCv = {
+        profileId: profile._id,
+        recruitmentId: recruitment._id,
+        receiver: recruitment.writer,
+      };
+
+      const cvData = await CvAPI.createCv(formCv);
+      if (cvData.success) {
+        toast.success(cvData.message);
+      } else {
+        toast.error(cvData.message);
+      }
+    }
+  };
 
   return (
     <div className="details-recruitment-wrapper">
@@ -63,7 +123,7 @@ const DetailsRecruitment = () => {
                   <img
                     src={`${imgUrl}/${recruitment.img}`}
                     alt="img"
-                    className="rounded-circle border border-gray no-select"
+                    className="img-wrapper rounded-circle border border-gray no-select"
                   />
                 </div>
                 <div className="header-details-recruitment-wrapper">
@@ -79,7 +139,11 @@ const DetailsRecruitment = () => {
 
               <Col md={12} lg={2}>
                 {(user.role === 'candidate' || !isAuthenticated) && (
-                  <Button className="btn-recruitment" variant="success">
+                  <Button
+                    className="btn-recruitment"
+                    variant="success"
+                    onClick={openModal}
+                  >
                     <img
                       src={sendIcon}
                       alt="sendIcon"
@@ -128,7 +192,7 @@ const DetailsRecruitment = () => {
                       <p className="fw-bold mb-0 text-success">
                         Số lượng tuyển
                       </p>
-                      <p>{recruitment.quantity} người</p>
+                      <p>{recruitment.quantity}</p>
                     </div>
                   </Col>
 
@@ -239,7 +303,12 @@ const DetailsRecruitment = () => {
                 Ứng viên nộp hồ sơ trực tuyến bằng cách bấm{' '}
                 <span className="text-success">Ứng tuyển ngay</span> dưới đây.
               </p>
-              <Button size="lg" className="btn-recruitment" variant="success">
+              <Button
+                size="lg"
+                className="btn-recruitment"
+                variant="success"
+                onClick={openModal}
+              >
                 <img
                   src={sendIcon}
                   alt="sendIcon"
@@ -262,6 +331,60 @@ const DetailsRecruitment = () => {
           </Alert>
         </Container>
       )}
+
+      <Modal centered show={showModalSendCv} onHide={closeModalSendCv}>
+        <Modal.Header style={{ display: 'block', backgroundColor: '#f8f9fa' }}>
+          <Modal.Title>
+            <h4 className="text-center">Lưu ý!</h4>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h6 className="text-center">
+            Bạn có chắc chắn muốn gửi hồ sơ? Hoặc có thể kiểm tra lại thông tin
+            hồ sơ{' '}
+            <Link to="/profile" target="_blank" style={{ color: '#2fb380' }}>
+              tại đây
+            </Link>{' '}
+            trước khi gửi.
+          </h6>
+        </Modal.Body>
+        <Modal.Footer>
+          <Container>
+            <Row>
+              <Col className="text-center">
+                <Button variant="success" onClick={sendCv}>
+                  Gửi hồ sơ
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal centered show={showModalExistCv} onHide={closeModalExistCv}>
+        <Modal.Header style={{ display: 'block', backgroundColor: '#f8f9fa' }}>
+          <Modal.Title>
+            <h4 className="text-center">Lưu ý!</h4>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h6 className="text-center">
+            Bạn chưa tạo hồ sơ ứng tuyển, vui lòng nhấn vào nút bên dưới để bắt
+            đầu tạo hồ sơ.
+          </h6>
+        </Modal.Body>
+        <Modal.Footer>
+          <Container>
+            <Row>
+              <Col className="text-center">
+                <Button variant="success" onClick={closeModalExistCv}>
+                  Tạo hồ sơ
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Footer>
+      </Modal>
 
       <Footer />
     </div>

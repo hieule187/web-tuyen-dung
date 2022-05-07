@@ -95,7 +95,7 @@ const CreateProfile = () => {
 
   return (
     <div className="create-profile-wrapper">
-      <Container className="mt-3">
+      <Container className="mt-4">
         <h1 className="create-profile-header">Tạo mới hồ sơ xin việc</h1>
         <p className="create-profile-description">
           Xây dựng một hồ sơ nổi bật để nhận được các cơ hội sự nghiệp lý tưởng.
@@ -110,7 +110,7 @@ const CreateProfile = () => {
               alt="infoIcon"
               width="24"
               height="24"
-              className="mb-1 me-2"
+              className="mb-1 me-2 no-select"
             />
             Thông tin liên hệ:
           </h1>
@@ -177,8 +177,7 @@ const CreateProfile = () => {
                       <Form.Text id="gender" muted>
                         Giới tính
                       </Form.Text>
-                      <Form.Control
-                        as="select"
+                      <Form.Select
                         name="gender"
                         className="mt-1"
                         id="gender"
@@ -187,7 +186,7 @@ const CreateProfile = () => {
                       >
                         <option value="Nam">Nam</option>
                         <option value="Nữ">Nữ</option>
-                      </Form.Control>
+                      </Form.Select>
                     </Form.Group>
                   </Col>
                 </Row>
@@ -218,7 +217,7 @@ const CreateProfile = () => {
               alt="skillIcon"
               width="24"
               height="24"
-              className="mb-1 me-2"
+              className="mb-1 me-2 no-select"
             />
             Các kỹ năng:
           </h1>
@@ -271,7 +270,7 @@ const CreateProfile = () => {
               alt="targetIcon"
               width="24"
               height="24"
-              className="mb-1 me-2"
+              className="mb-1 me-2 no-select"
             />
             Mục tiêu nghề nghiệp:
           </h1>
@@ -324,7 +323,7 @@ const CreateProfile = () => {
               alt="experienceIcon"
               width="24"
               height="24"
-              className="mb-1 me-2"
+              className="mb-1 me-2 no-select"
             />
             Kinh nghiệm làm việc:
           </h1>
@@ -377,7 +376,7 @@ const CreateProfile = () => {
               alt="degreeIcon"
               width="24"
               height="24"
-              className="mb-1 me-2"
+              className="mb-1 me-2 no-select"
             />
             Học vấn:
           </h1>

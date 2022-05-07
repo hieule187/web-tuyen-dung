@@ -12,6 +12,8 @@ import MyProfile from '../components/Profile/MyProfile';
 import CreateProfile from '../components/Profile/CreateProfile';
 import UpdateProfile from '../components/Profile/UpdateProfile';
 import DetailsRecruitment from '../components/Recruitment/DetailsRecruitment';
+import RecruiterRoute from '../routing/RecruiterRoute';
+import CreateRecruitment from '../components/Recruitment/CreateRecruitment';
 
 const MainRoute = () => {
   return (
@@ -35,7 +37,11 @@ const MainRoute = () => {
         path="/update-profile/:fullName"
         component={UpdateProfile}
       />
-      <Route exact path="/recruitment/:title/:id" component={DetailsRecruitment} />
+      <Route path="/recruitment/:title/:id" component={DetailsRecruitment} />
+      <RecruiterRoute
+        path="/create-recruitment/:fullName"
+        component={CreateRecruitment}
+      />
     </Switch>
   );
 };

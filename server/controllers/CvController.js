@@ -16,7 +16,7 @@ class CvController {
         if (!profile)
           return res.status(400).json({
             success: false,
-            message: 'Profile không tồn tại.',
+            message: 'Hồ sơ không tồn tại.',
           });
 
         const recruitment = await Recruitment.findOne({ _id: recruitmentId });
@@ -33,7 +33,7 @@ class CvController {
         if (cv.length > 0) {
           return res.status(400).json({
             success: false,
-            message: 'Bạn đã gửi thông tin đến nhà tuyển dụng này rồi.',
+            message: 'Bạn đã gửi hồ sơ đến nhà tuyển dụng này rồi.',
           });
         } else {
           const newCv = new Cv({
@@ -66,7 +66,7 @@ class CvController {
               );
               return res.status(200).json({
                 success: true,
-                message: 'Gửi thông tin thành công',
+                message: 'Gửi hồ sơ ứng tuyển thành công.',
                 result,
               });
             }

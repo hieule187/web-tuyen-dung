@@ -85,7 +85,7 @@ const Home = () => {
     'Kế toán / Kiểm toán',
     'Ngân hàng / Tài chính',
     'Hành chính / Văn phòng',
-    'IT phần mềm',
+    'Công nghệ thông tin',
     'Marketing / Truyền thông',
   ];
 
@@ -187,7 +187,7 @@ const Home = () => {
       </div>
 
       <div className="div-jobs-outstanding-color">
-        <Container className="">
+        <Container className="no-select">
           <h1 className="jobs-outstanding">Top ngành nghề nổi bật</h1>
 
           <Slider {...settingsJobs} className="mt-3">

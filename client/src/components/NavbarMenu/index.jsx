@@ -14,6 +14,7 @@ import { AccountContext } from '../../contexts/AccountContext';
 import Spinner from 'react-bootstrap/Spinner';
 import careerData from '../../data/careerData';
 import locationData from '../../data/locationData';
+import convertSlugUrl from '../../utils/convertSlugUrl';
 
 const NavbarMenu = () => {
   const history = useHistory();
@@ -117,7 +118,10 @@ const NavbarMenu = () => {
             <br />
             Email: <span className="text-success fw-bold">{user.email}</span>
           </NavDropdown.Header>
-          <NavDropdown.Item href="#action/3.2">
+          <NavDropdown.Item
+            to={`/create-recruitment/${convertSlugUrl(user.fullName)}`}
+            as={Link}
+          >
             Đăng tin tuyển dụng
           </NavDropdown.Item>
           <NavDropdown.Item href="#action/3.3">

@@ -32,10 +32,11 @@ class RecruitmentController {
           status: false,
         });
         if (recruitment.length >= 1) {
-          res.status(203).json({
+          res.status(400).json({
             success: false,
             message:
-              'Bạn có bài viết chưa được phê duyệt, vui lòng chờ quá trình phê duyệt hoàn tất.',
+              'Bạn có tin tuyển dụng chưa được phê duyệt, vui lòng chờ quá trình phê duyệt hoàn tất.',
+            browse: false,
           });
         } else {
           const newRecruitment = new Recruitment({
@@ -91,8 +92,14 @@ class RecruitmentController {
     try {
       const PAGE_SIZE = 12;
       const page = parseInt(req.query.page || '0');
-      const total = await Recruitment.countDocuments({ status: true });
-      const recruitment = await Recruitment.find({ status: true })
+      const total = await Recruitment.countDocuments({
+        status: true,
+        display: true,
+      });
+      const recruitment = await Recruitment.find({
+        status: true,
+        display: true,
+      })
         .sort({ _id: -1 })
         .limit(PAGE_SIZE)
         .skip(PAGE_SIZE * page);

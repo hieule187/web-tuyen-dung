@@ -1,0 +1,64 @@
+.create-recruitment-wrapper {
+  position: relative;
+  background-color: #f0f0f0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.create-recruitment-header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.create-recruitment-description {
+  color: #4a4a4a;
+  margin-bottom: 0;
+  margin-top: 2px;
+}
+
+.create-recruitment-form {
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+}
+
+.create-recruitment-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2fb380;
+  text-align: center;
+  margin-bottom: 0px;
+}
+
+.rdw-editor-wrapper {
+  border: 1px solid #ccd2d8;
+}
+
+.rdw-editor-toolbar {
+  margin-bottom: 0 !important;
+}
+
+.rdw-editor-main {
+  background-color: white;
+  padding-left: 10px;
+}
+
+.rdw-dropdown-selectedtext {
+  color: #2fb380;
+  text-decoration: none;
+}
+
+.rdw-dropdown-selectedtext:hover {
+  color: #2fb380;
+}
+
+@media only screen and (min-width: 64em) {
+  .create-recruitment-content {
+    width: 80%;
+  }
+
+  .rdw-editor-wrapper {
+    width: 78%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

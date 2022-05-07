@@ -1,9 +1,6 @@
 .details-recruitment-wrapper {
   position: relative;
   background: linear-gradient(#d5f5e3, #f0f0f0);
-  max-width: 100%;
-  height: 100vh;
-  overflow-x: hidden;
 }
 
 .header-details-recruitment {

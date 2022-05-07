@@ -88,7 +88,7 @@ const MyProfile = () => {
                     alt="editIcon"
                     width="40"
                     height="40"
-                    className="edit-btn"
+                    className="edit-btn no-select"
                   />
                 </Link>
                 <Container className="text-center">
@@ -98,7 +98,7 @@ const MyProfile = () => {
                     alt="userImg"
                     width="150"
                     height="150"
-                    className="mt-2 rounded-circle border border-success"
+                    className="mt-2 rounded-circle border border-success no-select"
                   />
 
                   <div className="divider-profile"></div>
@@ -111,7 +111,7 @@ const MyProfile = () => {
                       alt="infoIcon"
                       width="24"
                       height="24"
-                      className="mb-1 me-2"
+                      className="mb-1 me-2 no-select"
                     />
                     Thông tin liên hệ
                   </h1>
@@ -121,7 +121,7 @@ const MyProfile = () => {
                       alt="calendarIcon"
                       width="16"
                       height="16"
-                      className="mb-1 me-2"
+                      className="mb-1 me-2 no-select"
                     />
                     Ngày sinh: {formatDate}
                   </p>
@@ -131,7 +131,7 @@ const MyProfile = () => {
                       alt="genderIcon"
                       width="18"
                       height="18"
-                      className="mb-1 me-2"
+                      className="mb-1 me-2 no-select"
                     />
                     Giới tính: {profile.gender}
                   </p>
@@ -141,7 +141,7 @@ const MyProfile = () => {
                       alt="phoneIcon"
                       width="16"
                       height="16"
-                      className="mb-1 me-2"
+                      className="mb-1 me-2 no-select"
                     />
                     Số điện thoại: {profile.phoneNumber}
                   </p>
@@ -151,7 +151,7 @@ const MyProfile = () => {
                       alt="emailIcon"
                       width="16"
                       height="16"
-                      className="mb-1 me-2"
+                      className="mb-1 me-2 no-select"
                     />
                     Email: {profile.email}
                   </p>
@@ -164,7 +164,7 @@ const MyProfile = () => {
                       alt="skillIcon"
                       width="24"
                       height="24"
-                      className="mb-1 me-2"
+                      className="mb-1 me-2 no-select"
                     />
                     Các kỹ năng
                   </h1>
@@ -185,7 +185,7 @@ const MyProfile = () => {
                       alt="targetIcon"
                       width="24"
                       height="24"
-                      className="mb-1 me-2"
+                      className="mb-1 me-2 no-select"
                     />
                     Mục tiêu nghề nghiệp
                   </h1>
@@ -202,7 +202,7 @@ const MyProfile = () => {
                       alt="experienceIcon"
                       width="24"
                       height="24"
-                      className="mb-1 me-2"
+                      className="mb-1 me-2 no-select"
                     />
                     Kinh nghiệm làm việc
                   </h1>
@@ -219,7 +219,7 @@ const MyProfile = () => {
                       alt="degreeIcon"
                       width="24"
                       height="24"
-                      className="mb-1 me-2"
+                      className="mb-1 me-2 no-select"
                     />
                     Học vấn
                   </h1>
