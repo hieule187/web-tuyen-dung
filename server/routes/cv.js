@@ -13,9 +13,14 @@ router.post(
   cvController.createCv,
 );
 router.get(
-  '/my-cv',
+  '/',
   passport.authenticate('jwt', { session: false }),
   cvController.getMyCv,
+);
+router.get(
+  '/by-recruitment/:id',
+  passport.authenticate('jwt', { session: false }),
+  cvController.getCvByRecruitmentId,
 );
 router.get(
   '/cv-true',
@@ -27,10 +32,15 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   cvController.getFalseCv,
 );
-router.post(
-  '/:id',
+router.put(
+  '/browse-cv/:id',
   passport.authenticate('jwt', { session: false }),
-  cvController.updateStatusCv,
+  cvController.browseCv,
+);
+router.put(
+  '/miss-cv/:id',
+  passport.authenticate('jwt', { session: false }),
+  cvController.missCv,
 );
 router.delete(
   '/:id',

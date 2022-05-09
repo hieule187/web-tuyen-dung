@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -8,29 +8,33 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import infoIcon from '../../../assets/info.svg';
 import RecruitmentAPI from '../../../API/RecruitmentAPI';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import careerData from '../../../data/careerData';
 import locationData from '../../../data/locationData';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw } from 'draft-js';
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML,
+} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import vi from 'date-fns/locale/vi';
 registerLocale('vi', vi);
 
-const CreateRecruitment = () => {
+const UpdateRecruitment = () => {
+  const param = useParams();
   const history = useHistory();
 
-  const [showModalSuccess, setShowModalSuccess] = useState(false);
-  const [showModalFail, setShowModalFail] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [infoRecruitment, setInfoRecruitment] = useState({
     title: '',
     companyName: '',
-    img: '',
     salary: '',
     workingForm: 'Toàn thời gian',
     quantity: '',
@@ -45,6 +49,39 @@ const CreateRecruitment = () => {
   const [deadline, setDeadline] = useState(new Date());
   const [description, setDescription] = useState(EditorState.createEmpty());
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    RecruitmentAPI.getRecruitmentById(param.id).then((recruitmentData) => {
+      if (recruitmentData || recruitmentData.success) {
+        const { recruitment } = recruitmentData;
+        if (recruitment) {
+          setInfoRecruitment({
+            title: recruitment.title,
+            companyName: recruitment.companyName,
+            salary: recruitment.salary,
+            workingForm: recruitment.workingForm,
+            quantity: recruitment.quantity,
+            level: recruitment.level,
+            experience: recruitment.experience,
+            gender: recruitment.gender,
+            location: recruitment.location,
+            career: recruitment.career,
+            address: recruitment.address,
+          });
+          setDeadline(new Date(recruitment.deadline));
+          setDescription(
+            EditorState.createWithContent(
+              ContentState.createFromBlockArray(
+                convertFromHTML(recruitment.description),
+              ),
+            ),
+          );
+        }
+      }
+    });
+  }, [param]);
+
   const onChangeInfoRecruitment = (event) =>
     setInfoRecruitment({
       ...infoRecruitment,
@@ -55,13 +92,6 @@ const CreateRecruitment = () => {
     setDeadline(date);
   };
 
-  const onChangeImgLogo = (event) => {
-    setInfoRecruitment({
-      ...infoRecruitment,
-      img: event.target.files[0],
-    });
-  };
-
   const onEditorDescription = (value) => {
     setDescription(value);
   };
@@ -70,51 +100,47 @@ const CreateRecruitment = () => {
     convertToRaw(description.getCurrentContent()),
   );
 
-  const formData = new FormData();
-  formData.append('title', infoRecruitment.title);
-  formData.append('companyName', infoRecruitment.companyName);
-  formData.append('img', infoRecruitment.img);
-  formData.append('salary', infoRecruitment.salary);
-  formData.append('workingForm', infoRecruitment.workingForm);
-  formData.append('quantity', infoRecruitment.quantity);
-  formData.append('level', infoRecruitment.level);
-  formData.append('experience', infoRecruitment.experience);
-  formData.append('gender', infoRecruitment.gender);
-  formData.append('location', infoRecruitment.location);
-  formData.append('career', infoRecruitment.career);
-  formData.append('address', infoRecruitment.address);
-  formData.append('deadline', deadline);
-  formData.append('description', _description);
+  const formUpdateData = {
+    title: infoRecruitment.title,
+    companyName: infoRecruitment.companyName,
+    salary: infoRecruitment.salary,
+    workingForm: infoRecruitment.workingForm,
+    quantity: infoRecruitment.quantity,
+    level: infoRecruitment.level,
+    experience: infoRecruitment.experience,
+    gender: infoRecruitment.gender,
+    location: infoRecruitment.location,
+    career: infoRecruitment.career,
+    address: infoRecruitment.address,
+    deadline: deadline,
+    description: _description,
+  };
 
   const onSubmit = async (event) => {
     event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    const recruitmentData = await RecruitmentAPI.createRecruitment(formData);
-    if (recruitmentData.success) {
-      setShowModalSuccess(true);
-    } else if (!recruitmentData.browse) {
-      setShowModalFail(true);
+    const recruitmentUpdateData = await RecruitmentAPI.updateRecruitmentById(
+      param.id,
+      formUpdateData,
+    );
+    if (recruitmentUpdateData.success) {
+      setShowModal(true);
     } else {
-      toast.error(recruitmentData.message);
+      toast.error(recruitmentUpdateData.message);
     }
   };
 
-  const closeModalSuccess = () => {
-    setShowModalSuccess(false);
-    history.push('/my-recruitment');
-  };
-
-  const closeModalFail = () => {
-    setShowModalFail(false);
+  const closeModal = () => {
+    setShowModal(false);
     history.push('/my-recruitment');
   };
 
   return (
-    <div className="create-recruitment-wrapper">
+    <div className="update-recruitment-wrapper">
       <Container className="mt-4">
-        <h1 className="create-recruitment-header">Đăng tin tuyển dụng</h1>
-        <p className="create-recruitment-description">
+        <h1 className="update-recruitment-header">Cập nhật tuyển dụng</h1>
+        <p className="update-recruitment-description">
           Xây dựng một tin tuyển dụng nổi bật để nhận được những ứng viên tiềm
           năng.
         </p>
@@ -122,7 +148,7 @@ const CreateRecruitment = () => {
 
       <Container className="mt-3 mb-5">
         <Form onSubmit={onSubmit}>
-          <h1 className="create-recruitment-title mt-4">
+          <h1 className="update-recruitment-title mt-4">
             <img
               src={infoIcon}
               alt="infoIcon"
@@ -133,7 +159,7 @@ const CreateRecruitment = () => {
             Thông tin tuyển dụng:
           </h1>
           <div className="d-flex justify-content-center">
-            <Row className="create-recruitment-content">
+            <Row className="update-recruitment-content">
               <Col xs={12} md={12}>
                 <Form.Group className="mt-2">
                   <Form.Text id="title" muted>
@@ -169,14 +195,13 @@ const CreateRecruitment = () => {
                 </Form.Group>
                 <Form.Group className="mt-2">
                   <Form.Text id="imgLogo" muted>
-                    Ảnh logo công ty (Nên chọn logo hình vuông / tròn)
+                    Ảnh logo công ty
                   </Form.Text>
                   <Form.Control
                     className="mt-1"
                     type="file"
                     name="img"
                     aria-describedby="imgLogo"
-                    onChange={onChangeImgLogo}
                   />
                 </Form.Group>
                 <Row>
@@ -380,7 +405,7 @@ const CreateRecruitment = () => {
             </Row>
           </div>
 
-          <h1 className="create-recruitment-title mt-4">
+          <h1 className="update-recruitment-title mt-4">
             <img
               src={infoIcon}
               alt="infoIcon"
@@ -440,63 +465,40 @@ const CreateRecruitment = () => {
               variant="success"
               type="submit"
             >
-              Đăng tin tuyển dụng
+              Cập nhật tin tuyển dụng
             </Button>
           </div>
         </Form>
+
+        <Modal show={showModal} onHide={closeModal}>
+          <Modal.Header
+            style={{ display: 'block', backgroundColor: '#f8f9fa' }}
+          >
+            <Modal.Title>
+              <h4 className="text-center">Cập nhật tin thành công!</h4>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h6 className="text-center">
+              Cập nhật tin tuyển dụng thành công, tin tuyển dụng của bạn sẽ được
+              phê duyệt sau ít phút.
+            </h6>
+          </Modal.Body>
+          <Modal.Footer>
+            <Container>
+              <Row>
+                <Col className="text-center">
+                  <Button variant="success" onClick={closeModal}>
+                    Đồng ý
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+          </Modal.Footer>
+        </Modal>
       </Container>
-
-      <Modal show={showModalSuccess} onHide={closeModalSuccess}>
-        <Modal.Header style={{ display: 'block', backgroundColor: '#f8f9fa' }}>
-          <Modal.Title>
-            <h4 className="text-center">Tạo tin tuyển dụng thành công!</h4>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h6 className="text-center">
-            Tạo tin tuyển dụng thành công, tin tuyển dụng của bạn sẽ được phê
-            duyệt sau ít phút.
-          </h6>
-        </Modal.Body>
-        <Modal.Footer>
-          <Container>
-            <Row>
-              <Col className="text-center">
-                <Button variant="success" onClick={closeModalSuccess}>
-                  Đồng ý
-                </Button>
-              </Col>
-            </Row>
-          </Container>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={showModalFail} onHide={closeModalFail}>
-        <Modal.Header style={{ display: 'block', backgroundColor: '#f8f9fa' }}>
-          <Modal.Title>
-            <h4 className="text-center">Thông báo!</h4>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h6 className="text-center">
-            Bạn đang có tin tuyển dụng chưa được phê duyệt, vui lòng chờ quá
-            trình phê duyệt hoàn tất.
-          </h6>
-        </Modal.Body>
-        <Modal.Footer>
-          <Container>
-            <Row>
-              <Col className="text-center">
-                <Button variant="success" onClick={closeModalFail}>
-                  Đồng ý
-                </Button>
-              </Col>
-            </Row>
-          </Container>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };
 
-export default CreateRecruitment;
+export default UpdateRecruitment;

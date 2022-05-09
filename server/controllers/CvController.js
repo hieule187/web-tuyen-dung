@@ -86,7 +86,7 @@ class CvController {
     }
   }
 
-  // [GET] /cv/my-cv
+  // [GET] /cv
   // Lấy dữ liệu tất cả cv phía người gửi
   async getMyCv(req, res) {
     try {
@@ -111,6 +111,55 @@ class CvController {
           return res.status(400).json({
             success: false,
             message: 'Bạn chưa gửi cv ứng tuyển nào.',
+          });
+        }
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [GET] /cv/by-recruitment/:id
+  // Lấy dữ liệu tất cả cv theo recruitmentId
+  async getCvByRecruitmentId(req, res) {
+    try {
+      const { status, role, _id } = req.user;
+      if (status && role === 'recruiter') {
+        const PAGE_SIZE = 6;
+        const page = parseInt(req.query.page || '0');
+        const total = await Cv.countDocuments({
+          receiver: _id,
+          recruitmentId: req.params.id,
+          failed: false,
+        });
+        const cv = await Cv.find({
+          receiver: _id,
+          recruitmentId: req.params.id,
+          failed: false,
+        })
+          .sort({ _id: -1 })
+          .limit(PAGE_SIZE)
+          .skip(PAGE_SIZE * page);
+        if (cv.length > 0) {
+          return res.status(200).json({
+            success: true,
+            message: 'Load danh sách cv thành công.',
+            totalPages: Math.ceil(total / PAGE_SIZE),
+            quantity: cv.length,
+            cv: cv,
+          });
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: 'Tin tuyển dụng chưa nhận được cv nào.',
           });
         }
       } else {
@@ -209,9 +258,9 @@ class CvController {
     }
   }
 
-  // [POST] /cv/:id
+  // [PUT] /cv/browse-cv/:id
   // Duyệt cv
-  async updateStatusCv(req, res) {
+  async browseCv(req, res) {
     try {
       const { status, role, _id } = req.user;
       if (status && role === 'recruiter') {
@@ -226,6 +275,38 @@ class CvController {
         return res.status(200).json({
           success: true,
           message: 'Cv đã được phê duyệt.',
+        });
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [PUT] /cv/miss-cv/:id
+  // Loại cv
+  async missCv(req, res) {
+    try {
+      const { status, role, _id } = req.user;
+      if (status && role === 'recruiter') {
+        const cv = await Cv.findOne({ _id: req.params.id, receiver: _id });
+        if (!cv)
+          return res.status(400).json({
+            success: false,
+            message: 'Cv không tồn tại.',
+          });
+        cv.failed = true;
+        await cv.save();
+        return res.status(200).json({
+          success: true,
+          message: 'Cv đã bị loại.',
         });
       } else {
         res.status(403).json({

@@ -1,0 +1,53 @@
+.seeCv-wrapper {
+  position: relative;
+  background: linear-gradient(#d5f5e3, #f0f0f0);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.seeCv-header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.seeCv-description {
+  color: #4a4a4a;
+  margin-bottom: 0;
+  margin-top: 2px;
+}
+
+.title-card-seeCv {
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title-seeCv {
+  font-size: 18px;
+  font-weight: 700;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.card-border {
+  border-radius: 10px;
+}
+
+.showCv-btn {
+  margin-bottom: 3px;
+}
+
+.deleteCv-btn {
+  margin-bottom: 3px;
+  margin-right: 4px;
+}
+
+.browseCv-btn {
+  margin-bottom: 3px;
+  margin-right: 4px;
+}

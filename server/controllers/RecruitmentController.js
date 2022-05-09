@@ -129,10 +129,11 @@ class RecruitmentController {
   // Lấy dữ liệu tin tuyển dụng của tôi
   async getMyRecruitment(req, res) {
     try {
-      const PAGE_SIZE = 5;
+      const PAGE_SIZE = 6;
       const page = parseInt(req.query.page || '0');
       const total = await Recruitment.countDocuments({ writer: req.user._id });
       const recruitment = await Recruitment.find({ writer: req.user._id })
+        .populate('cv', ['profile'])
         .sort({ _id: -1 })
         .limit(PAGE_SIZE)
         .skip(PAGE_SIZE * page);
@@ -201,13 +202,11 @@ class RecruitmentController {
         address,
       } = req.body;
 
-      const img = req.body.img ? req.body.img : 'uploads\\tuyen-dung.png';
       const writer = req.user._id;
       const { status, role } = req.user;
       let updatedRecruitment = {
         companyName,
         title,
-        img,
         deadline,
         description,
         salary,
@@ -219,6 +218,7 @@ class RecruitmentController {
         location,
         career,
         address,
+        status: false,
       };
 
       if (status && role === 'recruiter') {
@@ -407,9 +407,9 @@ class RecruitmentController {
     }
   }
 
-  // [POST] /recruitment/:id
+  // [PUT] /browse-recruitment/:id
   // Duyệt tin tuyển dụng
-  async updateStatusRecruitment(req, res) {
+  async browseRecruitment(req, res) {
     try {
       const { status, role } = req.user;
       if (status && role === 'admin') {
@@ -424,6 +424,38 @@ class RecruitmentController {
         return res.status(200).json({
           success: true,
           message: 'Tin tuyển dụng đã được phê duyệt.',
+        });
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [PUT] /miss-recruitment/:id
+  // Khóa tin tuyển dụng
+  async missRecruitment(req, res) {
+    try {
+      const { status, role } = req.user;
+      if (status && role === 'admin') {
+        const recruitment = await Recruitment.findOne({ _id: req.params.id });
+        if (!recruitment)
+          return res.status(400).json({
+            success: false,
+            message: 'Tin tuyển dụng không tồn tại.',
+          });
+        recruitment.status = false;
+        await recruitment.save();
+        return res.status(200).json({
+          success: true,
+          message: 'Đã khóa tin tuyển dụng.',
         });
       } else {
         res.status(403).json({
@@ -507,6 +539,78 @@ class RecruitmentController {
             message: 'Hiện tất cả các tin tuyển dụng đã được phê duyệt.',
           });
         }
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [PUT] /lock-recruitment/:id
+  // Khóa hiển thị tin tuyển dụng role nhà tuyển dụng
+  async lockRecruitment(req, res) {
+    try {
+      const writer = req.user._id;
+      const { status, role } = req.user;
+      if (status && role === 'recruiter') {
+        const recruitment = await Recruitment.findOne({
+          _id: req.params.id,
+          writer: writer,
+        });
+        if (!recruitment)
+          return res.status(400).json({
+            success: false,
+            message: 'Tin tuyển dụng không tồn tại.',
+          });
+        recruitment.display = false;
+        await recruitment.save();
+        return res.status(200).json({
+          success: true,
+          message: 'Đã khóa hiển thị tin tuyển dụng.',
+        });
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [PUT] /unlock-recruitment/:id
+  // Khóa hiển thị tin tuyển dụng role nhà tuyển dụng
+  async unlockRecruitment(req, res) {
+    try {
+      const writer = req.user._id;
+      const { status, role } = req.user;
+      if (status && role === 'recruiter') {
+        const recruitment = await Recruitment.findOne({
+          _id: req.params.id,
+          writer: writer,
+        });
+        if (!recruitment)
+          return res.status(400).json({
+            success: false,
+            message: 'Tin tuyển dụng không tồn tại.',
+          });
+        recruitment.display = true;
+        await recruitment.save();
+        return res.status(200).json({
+          success: true,
+          message: 'Đã mở hiển thị tin tuyển dụng.',
+        });
       } else {
         res.status(403).json({
           success: false,

@@ -124,10 +124,9 @@ const NavbarMenu = () => {
           >
             Đăng tin tuyển dụng
           </NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3">
+          <NavDropdown.Item to="/my-recruitment" as={Link}>
             Quản lý tin tuyển dụng
           </NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3">Quản lý hồ sơ</NavDropdown.Item>
           <NavDropdown.Item onClick={logout}>Đăng xuất</NavDropdown.Item>
         </NavDropdown>
       </Nav>

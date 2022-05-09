@@ -43,10 +43,25 @@ router.delete(
 );
 router.post('/search', recruitmentController.searchRecruitment);
 router.post('/quick-search', recruitmentController.quickSearchRecruitment);
-router.post(
-  '/:id',
+router.put(
+  '/browse-recruitment/:id',
   passport.authenticate('jwt', { session: false }),
-  recruitmentController.updateStatusRecruitment,
+  recruitmentController.browseRecruitment,
+);
+router.put(
+  '/miss-recruitment/:id',
+  passport.authenticate('jwt', { session: false }),
+  recruitmentController.missRecruitment,
+);
+router.put(
+  '/lock-recruitment/:id',
+  passport.authenticate('jwt', { session: false }),
+  recruitmentController.lockRecruitment,
+);
+router.put(
+  '/unlock-recruitment/:id',
+  passport.authenticate('jwt', { session: false }),
+  recruitmentController.unlockRecruitment,
 );
 
 module.exports = router;

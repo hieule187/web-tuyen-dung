@@ -14,6 +14,9 @@ import UpdateProfile from '../components/Profile/UpdateProfile';
 import DetailsRecruitment from '../components/Recruitment/DetailsRecruitment';
 import RecruiterRoute from '../routing/RecruiterRoute';
 import CreateRecruitment from '../components/Recruitment/CreateRecruitment';
+import MyRecruitment from '../components/Recruitment/MyRecruitment';
+import UpdateRecruitment from '../components/Recruitment/UpdateRecruitment';
+import SeeCv from '../components/Cv/SeeCv';
 
 const MainRoute = () => {
   return (
@@ -42,6 +45,12 @@ const MainRoute = () => {
         path="/create-recruitment/:fullName"
         component={CreateRecruitment}
       />
+      <RecruiterRoute path="/my-recruitment" component={MyRecruitment} />
+      <RecruiterRoute
+        path="/update-recruitment/:title/:id"
+        component={UpdateRecruitment}
+      />
+      <RecruiterRoute path="/see-cv/:title/:id" component={SeeCv} />
     </Switch>
   );
 };

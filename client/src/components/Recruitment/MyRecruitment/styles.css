@@ -1,0 +1,64 @@
+.my-recruitment-wrapper {
+  position: relative;
+  background: linear-gradient(#d5f5e3, #f0f0f0);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.my-recruitment-header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.my-recruitment-description {
+  color: #4a4a4a;
+  margin-bottom: 0;
+  margin-top: 2px;
+}
+
+.title-card-my-recruitment {
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title-my-recruitment {
+  font-size: 18px;
+  font-weight: 700;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.card-border {
+  border-radius: 10px;
+}
+
+.open-cv:hover {
+  border-radius: 5px;
+  padding: 4px 8px 4px;
+  background-color: #efefef;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-my-recruitment {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-my-recruitment:hover {
+  cursor: pointer;
+}
+
+.show-btn {
+  margin-top: 3px;
+}
+
+.delete-btn {
+  margin-top: 3px;
+}

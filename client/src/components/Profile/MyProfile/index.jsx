@@ -73,7 +73,7 @@ const MyProfile = () => {
         </Container>
 
         {existProfile ? (
-          <Container className="mt-3 pb-5">
+          <Container className="mt-4 pb-5">
             <div
               className="d-flex profile-content rounded-3"
               style={{ backgroundColor: '#f8f9fa' }}
@@ -234,7 +234,7 @@ const MyProfile = () => {
             </div>
           </Container>
         ) : (
-          <Container className="mt-3" style={{ paddingBottom: '350px' }}>
+          <Container className="mt-4" style={{ paddingBottom: '350px' }}>
             <Card className="text-center rounded-3">
               <Card.Header as="h1" className="profile-header">
                 Xin chào <span className="text-success">{user.fullName}</span>

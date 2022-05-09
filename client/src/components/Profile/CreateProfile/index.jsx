@@ -102,7 +102,7 @@ const CreateProfile = () => {
         </p>
       </Container>
 
-      <Container className="mt-3 mb-5">
+      <Container className="mt-4 mb-5">
         <Form onSubmit={onSubmit}>
           <h1 className="create-profile-title mt-4">
             <img

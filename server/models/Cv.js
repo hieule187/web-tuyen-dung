@@ -24,6 +24,10 @@ const CvSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    failed: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );
