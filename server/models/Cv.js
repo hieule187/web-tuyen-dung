@@ -28,6 +28,22 @@ const CvSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    fullName: {
+      type: String,
+      required: true,
+    },
+    keyName: {
+      type: String,
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true },
 );

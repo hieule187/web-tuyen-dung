@@ -1,6 +1,7 @@
 const Cv = require('../models/Cv');
 const Profile = require('../models/Profile');
 const Recruitment = require('../models/Recruitment');
+const convertString = require('../utils/convertString');
 
 class CvController {
   // [POST] /cv
@@ -42,6 +43,10 @@ class CvController {
             recruitment: recruitment,
             writer,
             receiver,
+            fullName: profile.fullName,
+            keyName: convertString(profile.fullName),
+            phoneNumber: profile.phoneNumber,
+            email: profile.email,
           });
           await newCv.save((err, result) => {
             if (err) {
@@ -162,6 +167,100 @@ class CvController {
             message: 'Tin tuyển dụng chưa nhận được cv nào.',
           });
         }
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [GET] /cv/search-by-recruitment/:id
+  // Tìm kiếm cv theo recruitmentId
+  async getSearchCvByRecruitmentId(req, res) {
+    try {
+      const { status, role, _id } = req.user;
+      if (status && role === 'recruiter') {
+        const PAGE_SIZE = 6;
+        const page = parseInt(req.query.page || '0');
+        const key = decodeURI(req.query.key.trim());
+        const total = await Cv.countDocuments({
+          receiver: _id,
+          recruitmentId: req.params.id,
+          failed: false,
+          $or: [
+            { fullName: { $regex: new RegExp(key, 'i') } },
+            { keyName: { $regex: new RegExp(key, 'i') } },
+            { phoneNumber: { $regex: new RegExp(key, 'i') } },
+            { email: { $regex: new RegExp(key, 'i') } },
+          ],
+        });
+        const cv = await Cv.find({
+          receiver: _id,
+          recruitmentId: req.params.id,
+          failed: false,
+          $or: [
+            { fullName: { $regex: new RegExp(key, 'i') } },
+            { keyName: { $regex: new RegExp(key, 'i') } },
+            { phoneNumber: { $regex: new RegExp(key, 'i') } },
+            { email: { $regex: new RegExp(key, 'i') } },
+          ],
+        })
+          .sort({ _id: -1 })
+          .limit(PAGE_SIZE)
+          .skip(PAGE_SIZE * page);
+        if (cv.length > 0) {
+          return res.status(200).json({
+            success: true,
+            message: 'Load danh sách cv thành công.',
+            totalPages: Math.ceil(total / PAGE_SIZE),
+            quantity: cv.length,
+            cv: cv,
+            totalQuantity: total,
+          });
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: 'Không tìm thấy cv nào phù hợp.',
+          });
+        }
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [GET] /cv/:id
+  // Lấy dữ liệu cv theo id
+  async getCvById(req, res) {
+    try {
+      const { status, role, _id } = req.user;
+      if (status && role === 'recruiter') {
+        const cv = await Cv.findOne({ _id: req.params.id, receiver: _id });
+        if (!cv)
+          return res.status(400).json({
+            success: false,
+            message: 'Cv không tồn tại hoặc đã bị xóa.',
+          });
+        return res.status(200).json({
+          success: true,
+          message: 'Lấy dữ liệu thành công.',
+          cv: cv,
+        });
       } else {
         res.status(403).json({
           success: false,

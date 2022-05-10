@@ -7,7 +7,7 @@
 
 .dropdown-item:focus,
 .dropdown-item:hover {
-  color: #212529;
+  color: #2fb380;
   background-color: #f0f0f0;
 }
 
@@ -21,6 +21,32 @@
 
 .navbar-toggler:focus {
   box-shadow: none;
+}
+
+.user-email {
+  font-size: small;
+  margin-top: -2px;
+}
+
+.iconUser-me {
+  margin-right: 12px;
+  margin-top: 3px;
+}
+
+.createIcon {
+  margin-right: 13px;
+  margin-bottom: 3px;
+}
+
+.manageIcon {
+  margin-right: 13px;
+  margin-bottom: 3px;
+}
+
+.logoutIcon {
+  margin-right: 12px;
+  margin-bottom: 3px;
+  margin-left: 1px;
 }
 
 @media only screen and (max-width: 61.95em) {

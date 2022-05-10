@@ -70,6 +70,22 @@ const RecruitmentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Account',
     },
+    keyTitle: {
+      type: String,
+      required: true,
+    },
+    keyCompany: {
+      type: String,
+      required: true,
+    },
+    keyLocation: {
+      type: String,
+      required: true,
+    },
+    keyCareer: {
+      type: String,
+      required: true,
+    },
     cv: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -18,7 +18,6 @@ import phoneIcon from '../../../assets/telephone.svg';
 import emailIcon from '../../../assets/email.svg';
 import CvAPI from '../../../API/CvAPI';
 import RecruitmentAPI from '../../../API/RecruitmentAPI';
-import { AccountContext } from '../../../contexts/AccountContext';
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import convertSlugUrl from '../../../utils/convertSlugUrl';
@@ -29,15 +28,15 @@ import 'moment/locale/vi';
 const SeeCv = () => {
   const param = useParams();
 
-  const {
-    accountState: { user },
-  } = useContext(AccountContext);
-
   const [loading, setLoading] = useState(false);
   const [existCv, setExistCv] = useState(true);
   const [cvs, setCvs] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [recruitment, setRecruitment] = useState({});
+  const [key, setKey] = useState('');
+  const [searched, setSearched] = useState(false);
+  const [pageCountSearch, setPageCountSearch] = useState(0);
+  const [totalQuantitySearch, setTotalQuantitySearch] = useState(0);
 
   useEffect(() => {
     const getCvByRecruitmentId = async () => {
@@ -101,6 +100,31 @@ const SeeCv = () => {
     }
   };
 
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    const cvSearchData = await CvAPI.getSearchCvByRecruitmentId(param.id, key);
+    if (cvSearchData.success) {
+      setSearched(true);
+      setCvs(cvSearchData.cv);
+      setPageCountSearch(cvSearchData.totalPages);
+      setTotalQuantitySearch(cvSearchData.totalQuantity);
+    } else {
+      setSearched(true);
+      setExistCv(false);
+    }
+  };
+
+  const handlePageSearchClick = async (data) => {
+    let currentPage = data.selected;
+    const dataInPageSearch = await CvAPI.getSearchCvByRecruitmentIdPage(
+      param.id,
+      key,
+      currentPage,
+    );
+    setSearched(true);
+    setCvs(dataInPageSearch.cv);
+  };
+
   if (loading) {
     return (
       <>
@@ -124,13 +148,17 @@ const SeeCv = () => {
           <Container className="mt-4 pb-5">
             <Row>
               <Col md={12} lg={6}>
-                <Form className="d-flex">
+                <Form className="d-flex" onSubmit={handleSearch}>
                   <Form.Control
                     type="search"
-                    placeholder="Tìm kiếm theo họ tên, email ứng viên"
+                    placeholder="Tìm kiếm theo họ tên, số điện thoại, email ứng viên"
                     className="me-2"
+                    name="key"
+                    required
+                    value={key}
+                    onChange={(e) => setKey(e.target.value)}
                   />
-                  <Button variant="success">
+                  <Button variant="success" type="submit">
                     <img
                       src={searchIcon}
                       alt="searchIcon"
@@ -143,10 +171,15 @@ const SeeCv = () => {
               </Col>
             </Row>
 
-            <p className="mt-4 mb-0">
-              Tìm thấy <span className="fw-bold text-success">?</span> cv ứng
-              tuyển
-            </p>
+            {searched && (
+              <p className="mt-4 mb-0">
+                Tìm thấy{' '}
+                <span className="fw-bold text-success">
+                  {totalQuantitySearch}
+                </span>{' '}
+                CV ứng tuyển
+              </p>
+            )}
 
             <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3">
               {cvs.map((cv) => {
@@ -204,7 +237,14 @@ const SeeCv = () => {
                         </Card.Text>
 
                         <div className="d-flex justify-content-between">
-                          <Button variant="light">
+                          <Button
+                            to={`/see-profile/${convertSlugUrl(
+                              cv.profile.fullName,
+                            )}/${cv._id}`}
+                            as={Link}
+                            target="_blank"
+                            variant="light"
+                          >
                             <img
                               className="no-select showCv-btn"
                               src={showIcon}
@@ -253,10 +293,12 @@ const SeeCv = () => {
                 previousLabel={'Trước'}
                 nextLabel={'Tiếp'}
                 breakLabel={'...'}
-                pageCount={pageCount}
+                pageCount={searched ? pageCountSearch : pageCount}
                 marginPagesDisplayed={1}
                 pageRangeDisplayed={5}
-                onPageChange={handlePageClick}
+                onPageChange={
+                  searched ? handlePageSearchClick : handlePageClick
+                }
                 containerClassName={'pagination justify-content-center mb-0'}
                 pageClassName={'page-item'}
                 pageLinkClassName={'page-link no-select'}
@@ -269,6 +311,10 @@ const SeeCv = () => {
                 activeClassName={'active'}
               />
             </div>
+          </Container>
+        ) : searched ? (
+          <Container className="mt-4" style={{ paddingBottom: '500px' }}>
+            <Alert variant="warning">Không tìm thầy CV nào phù hợp.</Alert>
           </Container>
         ) : (
           <Container className="mt-4" style={{ paddingBottom: '500px' }}>

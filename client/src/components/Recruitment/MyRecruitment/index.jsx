@@ -9,6 +9,7 @@ import Badge from 'react-bootstrap/Badge';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import Alert from 'react-bootstrap/Alert';
 import showIcon from '../../../assets/show.svg';
 import editIcon from '../../../assets/edit.svg';
 import deleteIcon from '../../../assets/delete.svg';
@@ -35,6 +36,10 @@ const MyRecruitment = () => {
   const [pageCount, setPageCount] = useState(0);
   const [recruitmentSelect, setRecruitmentSelect] = useState({});
   const [showModalDelete, setShowModalDelete] = useState(false);
+  const [key, setKey] = useState('');
+  const [searched, setSearched] = useState(false);
+  const [pageCountSearch, setPageCountSearch] = useState(0);
+  const [totalQuantitySearch, setTotalQuantitySearch] = useState(0);
 
   useEffect(() => {
     const getMyRecruitment = async () => {
@@ -112,6 +117,32 @@ const MyRecruitment = () => {
     }
   };
 
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    const recruitmentSearchData = await RecruitmentAPI.getSearchMyRecruitment(
+      key,
+    );
+    if (recruitmentSearchData.success) {
+      setSearched(true);
+      setRecruitments(recruitmentSearchData.recruitment);
+      setPageCountSearch(recruitmentSearchData.totalPages);
+      setTotalQuantitySearch(recruitmentSearchData.totalQuantity);
+    } else {
+      setSearched(true);
+      setExistRecruitment(false);
+    }
+  };
+
+  const handlePageSearchClick = async (data) => {
+    let currentPage = data.selected;
+    const dataInPageSearch = await RecruitmentAPI.getSearchMyRecruitmentPage(
+      key,
+      currentPage,
+    );
+    setSearched(true);
+    setRecruitments(dataInPageSearch.recruitment);
+  };
+
   if (loading) {
     return (
       <>
@@ -132,13 +163,17 @@ const MyRecruitment = () => {
           <Container className="mt-4 pb-5">
             <Row>
               <Col md={12} lg={6}>
-                <Form className="d-flex">
+                <Form className="d-flex" onSubmit={handleSearch}>
                   <Form.Control
                     type="search"
-                    placeholder="Tìm kiếm theo tiêu đề tin"
+                    placeholder="Tìm kiếm theo tiêu đề tin tuyển dụng"
                     className="me-2"
+                    name="key"
+                    required
+                    value={key}
+                    onChange={(e) => setKey(e.target.value)}
                   />
-                  <Button variant="success">
+                  <Button variant="success" type="submit">
                     <img
                       src={searchIcon}
                       alt="searchIcon"
@@ -151,10 +186,15 @@ const MyRecruitment = () => {
               </Col>
             </Row>
 
-            <p className="mt-4 mb-0">
-              Tìm thấy <span className="fw-bold text-success">?</span> tin tuyển
-              dụng
-            </p>
+            {searched && (
+              <p className="mt-4 mb-0">
+                Tìm thấy{' '}
+                <span className="fw-bold text-success">
+                  {totalQuantitySearch}
+                </span>{' '}
+                tin tuyển dụng
+              </p>
+            )}
 
             <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3">
               {recruitments.map((recruitment) => {
@@ -278,10 +318,12 @@ const MyRecruitment = () => {
                 previousLabel={'Trước'}
                 nextLabel={'Tiếp'}
                 breakLabel={'...'}
-                pageCount={pageCount}
+                pageCount={searched ? pageCountSearch : pageCount}
                 marginPagesDisplayed={1}
                 pageRangeDisplayed={5}
-                onPageChange={handlePageClick}
+                onPageChange={
+                  searched ? handlePageSearchClick : handlePageClick
+                }
                 containerClassName={'pagination justify-content-center mb-0'}
                 pageClassName={'page-item'}
                 pageLinkClassName={'page-link no-select'}
@@ -294,6 +336,12 @@ const MyRecruitment = () => {
                 activeClassName={'active'}
               />
             </div>
+          </Container>
+        ) : searched ? (
+          <Container className="mt-4" style={{ paddingBottom: '500px' }}>
+            <Alert variant="warning">
+              Không tìm thầy tin tuyển dụng nào phù hợp.
+            </Alert>
           </Container>
         ) : (
           <Container className="mt-4" style={{ paddingBottom: '350px' }}>

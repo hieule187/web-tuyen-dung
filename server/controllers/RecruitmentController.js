@@ -1,5 +1,6 @@
 const Recruitment = require('../models/Recruitment');
 const fs = require('fs');
+const convertString = require('../utils/convertString');
 
 class RecruitmentController {
   // [POST] /recruitment
@@ -55,6 +56,10 @@ class RecruitmentController {
             career,
             address,
             writer,
+            keyTitle: convertString(title),
+            keyCompany: convertString(companyName),
+            keyLocation: convertString(location),
+            keyCareer: convertString(career),
           });
           await newRecruitment.save((err, result) => {
             if (err) {
@@ -159,6 +164,54 @@ class RecruitmentController {
     }
   }
 
+  // [GET] /recruitment/search-my-recruitment
+  // Tìm kiếm trong tin tuyển dụng của tôi
+  async getSearchMyRecruitment(req, res) {
+    try {
+      const PAGE_SIZE = 6;
+      const page = parseInt(req.query.page || '0');
+      const key = decodeURI(req.query.key.trim());
+      const total = await Recruitment.countDocuments({
+        writer: req.user._id,
+        $or: [
+          { title: { $regex: new RegExp(key, 'i') } },
+          { keyTitle: { $regex: new RegExp(key, 'i') } },
+        ],
+      });
+      const recruitment = await Recruitment.find({
+        writer: req.user._id,
+        $or: [
+          { title: { $regex: new RegExp(key, 'i') } },
+          { keyTitle: { $regex: new RegExp(key, 'i') } },
+        ],
+      })
+        .populate('cv', ['profile'])
+        .sort({ _id: -1 })
+        .limit(PAGE_SIZE)
+        .skip(PAGE_SIZE * page);
+      if (recruitment.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: 'Load danh sách tin tuyển dụng thành công.',
+          totalPages: Math.ceil(total / PAGE_SIZE),
+          quantity: recruitment.length,
+          recruitment: recruitment,
+          totalQuantity: total,
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'Không tìm thấy tin tuyển dụng nào.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
   // [GET] /recruitment/:id
   // Lấy dữ liệu tin tuyển dụng theo id
   async getRecruitmentById(req, res) {
@@ -219,6 +272,10 @@ class RecruitmentController {
         career,
         address,
         status: false,
+        keyTitle: convertString(title),
+        keyCompany: convertString(companyName),
+        keyLocation: convertString(location),
+        keyCareer: convertString(career),
       };
 
       if (status && role === 'recruiter') {

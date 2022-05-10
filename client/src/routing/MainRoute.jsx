@@ -17,6 +17,7 @@ import CreateRecruitment from '../components/Recruitment/CreateRecruitment';
 import MyRecruitment from '../components/Recruitment/MyRecruitment';
 import UpdateRecruitment from '../components/Recruitment/UpdateRecruitment';
 import SeeCv from '../components/Cv/SeeCv';
+import SeeProfile from '../components/Profile/SeeProfile';
 
 const MainRoute = () => {
   return (
@@ -51,6 +52,10 @@ const MainRoute = () => {
         component={UpdateRecruitment}
       />
       <RecruiterRoute path="/see-cv/:title/:id" component={SeeCv} />
+      <RecruiterRoute
+        path="/see-profile/:fullName/:id"
+        component={SeeProfile}
+      />
     </Switch>
   );
 };

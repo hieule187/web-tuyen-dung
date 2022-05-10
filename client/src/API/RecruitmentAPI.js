@@ -131,6 +131,36 @@ const RecruitmentAPI = {
       else return { success: false, message: error.message };
     }
   },
+
+  getSearchMyRecruitment: async (variable) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/recruitment/search-my-recruitment/?key=${variable}&page=0`,
+        variable,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getSearchMyRecruitmentPage: async (variable, currentPage) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/recruitment/search-my-recruitment?key=${variable}&page=${currentPage}`,
+        variable,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
 };
 
 export default RecruitmentAPI;

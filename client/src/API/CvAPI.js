@@ -65,6 +65,46 @@ const CvAPI = {
       else return { success: false, message: error.message };
     }
   },
+
+  getCvById: async (id) => {
+    try {
+      const response = await axios.get(`${apiUrl}/cv/${id}`);
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getSearchCvByRecruitmentId: async (id, key) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/cv/search-by-recruitment/${id}?key=${key}&page=0`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getSearchCvByRecruitmentIdPage: async (id, key, currentPage) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/cv/search-by-recruitment/${id}?key=${key}&page=${currentPage}`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
 };
 
 export default CvAPI;

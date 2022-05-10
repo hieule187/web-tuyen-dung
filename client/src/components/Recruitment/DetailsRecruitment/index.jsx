@@ -319,7 +319,7 @@ const DetailsRecruitment = () => {
                 <h1 className="title-details-recruitment">
                   Cách thức ứng tuyển
                 </h1>
-                <p>
+                <p className="mb-2">
                   Ứng viên nộp hồ sơ trực tuyến bằng cách bấm{' '}
                   <span className="text-success">Ứng tuyển ngay</span> dưới đây.
                 </p>
@@ -345,7 +345,7 @@ const DetailsRecruitment = () => {
             )}
           </Container>
         ) : (
-          <Container className="alert-recruitment">
+          <Container className="alert-recruitment mt-4">
             <Alert className="mt-3" variant="warning">
               Tin tuyển dụng không tồn tại hoặc đã bị xóa.
             </Alert>

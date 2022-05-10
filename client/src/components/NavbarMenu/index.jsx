@@ -9,6 +9,9 @@ import Button from 'react-bootstrap/Button';
 import { Link, useHistory } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import userIcon from '../../assets/user-male.jpg';
+import createIcon from '../../assets/create.svg';
+import manageIcon from '../../assets/manage.svg';
+import logoutIcon from '../../assets/logout.svg';
 import searchIcon from '../../assets/search.svg';
 import { AccountContext } from '../../contexts/AccountContext';
 import Spinner from 'react-bootstrap/Spinner';
@@ -76,18 +79,51 @@ const NavbarMenu = () => {
           className="ms-0 me-0"
           active
         >
-          <NavDropdown.Header className="navDropdown-header">
-            Chức vụ: <span className="text-success fw-bold">Ứng Viên</span>
-            <br />
-            Email: <span className="text-success fw-bold">{user.email}</span>
+          <NavDropdown.Header className="navDropdown-header d-flex">
+            <img
+              src={userIcon}
+              alt="userIcon"
+              width="30"
+              height="30"
+              className="iconUser-me rounded-circle no-select"
+            />
+            <div>
+              <span className="text-success fw-bold">Ứng Viên</span>
+              <div className="user-email">
+                <span>{user.email}</span>
+              </div>
+            </div>
           </NavDropdown.Header>
           <NavDropdown.Item to="/profile" as={Link}>
+            <img
+              src={createIcon}
+              alt="createIcon"
+              width="17"
+              height="17"
+              className="createIcon no-select"
+            />
             Hồ sơ xin việc
           </NavDropdown.Item>
           <NavDropdown.Item href="#action/3.3">
+            <img
+              src={manageIcon}
+              alt="manageIcon"
+              width="16"
+              height="16"
+              className="manageIcon no-select"
+            />
             Tin tuyển dụng đã gửi hồ sơ
           </NavDropdown.Item>
-          <NavDropdown.Item onClick={logout}>Đăng xuất</NavDropdown.Item>
+          <NavDropdown.Item onClick={logout}>
+            <img
+              src={logoutIcon}
+              alt="logoutIcon"
+              width="18"
+              height="18"
+              className="logoutIcon no-select"
+            />
+            Đăng xuất
+          </NavDropdown.Item>
         </NavDropdown>
       </Nav>
     );
@@ -112,22 +148,54 @@ const NavbarMenu = () => {
           className="ms-0 me-0"
           active
         >
-          <NavDropdown.Header className="navDropdown-header">
-            Chức vụ:{' '}
-            <span className="text-success fw-bold">Nhà Tuyển Dụng</span>
-            <br />
-            Email: <span className="text-success fw-bold">{user.email}</span>
+          <NavDropdown.Header className="navDropdown-header d-flex">
+            <img
+              src={userIcon}
+              alt="userIcon"
+              width="30"
+              height="30"
+              className="iconUser-me rounded-circle no-select"
+            />
+            <div>
+              <span className="text-success fw-bold">Nhà Tuyển Dụng</span>
+              <div className="user-email">
+                <span>{user.email}</span>
+              </div>
+            </div>
           </NavDropdown.Header>
           <NavDropdown.Item
             to={`/create-recruitment/${convertSlugUrl(user.fullName)}`}
             as={Link}
           >
+            <img
+              src={createIcon}
+              alt="createIcon"
+              width="17"
+              height="17"
+              className="createIcon no-select"
+            />
             Đăng tin tuyển dụng
           </NavDropdown.Item>
           <NavDropdown.Item to="/my-recruitment" as={Link}>
+            <img
+              src={manageIcon}
+              alt="manageIcon"
+              width="16"
+              height="16"
+              className="manageIcon no-select"
+            />
             Quản lý tin tuyển dụng
           </NavDropdown.Item>
-          <NavDropdown.Item onClick={logout}>Đăng xuất</NavDropdown.Item>
+          <NavDropdown.Item onClick={logout}>
+            <img
+              src={logoutIcon}
+              alt="logoutIcon"
+              width="18"
+              height="18"
+              className="logoutIcon no-select"
+            />
+            Đăng xuất
+          </NavDropdown.Item>
         </NavDropdown>
       </Nav>
     );
@@ -152,16 +220,51 @@ const NavbarMenu = () => {
           className="ms-0 me-0"
           active
         >
-          <NavDropdown.Header className="navDropdown-header">
-            Chức vụ: <span className="text-success fw-bold">Admin</span>
+          <NavDropdown.Header className="navDropdown-header d-flex">
+            <img
+              src={userIcon}
+              alt="userIcon"
+              width="30"
+              height="30"
+              className="iconUser-me rounded-circle no-select"
+            />
+            <div>
+              <span className="text-success fw-bold">Admin</span>
+              <div className="user-email">
+                <span>admin</span>
+              </div>
+            </div>
           </NavDropdown.Header>
           <NavDropdown.Item href="#action/3.2">
+            <img
+              src={manageIcon}
+              alt="manageIcon"
+              width="16"
+              height="16"
+              className="manageIcon no-select"
+            />
             Quản lý tài khoản
           </NavDropdown.Item>
           <NavDropdown.Item href="#action/3.3">
+            <img
+              src={manageIcon}
+              alt="manageIcon"
+              width="16"
+              height="16"
+              className="manageIcon no-select"
+            />
             Quản lý tin tuyển dụng
           </NavDropdown.Item>
-          <NavDropdown.Item onClick={logout}>Đăng xuất</NavDropdown.Item>
+          <NavDropdown.Item onClick={logout}>
+            <img
+              src={logoutIcon}
+              alt="logoutIcon"
+              width="18"
+              height="18"
+              className="logoutIcon no-select"
+            />
+            Đăng xuất
+          </NavDropdown.Item>
         </NavDropdown>
       </Nav>
     );
