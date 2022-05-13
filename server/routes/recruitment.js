@@ -26,6 +26,16 @@ router.get(
   recruitmentController.getSearchMyRecruitment,
 );
 router.get(
+  '/recruitment-management',
+  passport.authenticate('jwt', { session: false }),
+  recruitmentController.getRecruitmentManagement,
+);
+router.get(
+  '/search-recruitment-management',
+  passport.authenticate('jwt', { session: false }),
+  recruitmentController.getSearchRecruitmentManagement,
+);
+router.get(
   '/recruitment-true',
   passport.authenticate('jwt', { session: false }),
   recruitmentController.getTrueRecruitment,

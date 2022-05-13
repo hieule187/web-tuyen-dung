@@ -28,6 +28,16 @@ router.get(
   cvController.getSearchCvByRecruitmentId,
 );
 router.get(
+  '/my-cv',
+  passport.authenticate('jwt', { session: false }),
+  cvController.getMyCv,
+);
+router.get(
+  '/search-my-cv',
+  passport.authenticate('jwt', { session: false }),
+  cvController.getSearchMyCv,
+);
+router.get(
   '/:id',
   passport.authenticate('jwt', { session: false }),
   cvController.getCvById,

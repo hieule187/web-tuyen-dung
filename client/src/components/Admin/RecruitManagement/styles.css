@@ -1,0 +1,68 @@
+.recruitment-management-wrapper {
+  position: relative;
+  background: linear-gradient(#d5f5e3, #f0f0f0);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.recruitment-management-header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.recruitment-management-description {
+  color: #4a4a4a;
+  margin-bottom: 0;
+  margin-top: 2px;
+}
+
+.title-card-recruitment-management {
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title-recruitment-management {
+  font-size: 18px;
+  font-weight: 700;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.company-recruitment-management {
+  font-size: 16px;
+  color: #999;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.card-border {
+  border-radius: 10px;
+}
+
+.btn-recruitment-management {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-recruitment-management:hover {
+  cursor: pointer;
+}
+
+.show-btn {
+  margin-top: 3px;
+}
+
+.delete-btn {
+  margin-top: 3px;
+}

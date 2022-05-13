@@ -12,12 +12,16 @@ import MyProfile from '../components/Profile/MyProfile';
 import CreateProfile from '../components/Profile/CreateProfile';
 import UpdateProfile from '../components/Profile/UpdateProfile';
 import DetailsRecruitment from '../components/Recruitment/DetailsRecruitment';
-import RecruiterRoute from '../routing/RecruiterRoute';
+import MyCv from '../components/Cv/MyCv';
+import RecruiterRoute from './RecruiterRoute';
 import CreateRecruitment from '../components/Recruitment/CreateRecruitment';
 import MyRecruitment from '../components/Recruitment/MyRecruitment';
 import UpdateRecruitment from '../components/Recruitment/UpdateRecruitment';
 import SeeCv from '../components/Cv/SeeCv';
 import SeeProfile from '../components/Profile/SeeProfile';
+import AdminRoute from './AdminRoute';
+import RecruitmentManagement from '../components/Admin/RecruitManagement';
+import AccountManagement from '../components/Admin/AccountManagement';
 
 const MainRoute = () => {
   return (
@@ -41,6 +45,8 @@ const MainRoute = () => {
         path="/update-profile/:fullName"
         component={UpdateProfile}
       />
+      <CandidateRoute path="/my-cv" component={MyCv} />
+      <AdminRoute path="/account-management" component={AccountManagement} />
       <Route path="/recruitment/:title/:id" component={DetailsRecruitment} />
       <RecruiterRoute
         path="/create-recruitment/:fullName"
@@ -56,6 +62,11 @@ const MainRoute = () => {
         path="/see-profile/:fullName/:id"
         component={SeeProfile}
       />
+      <AdminRoute
+        path="/recruitment-management"
+        component={RecruitmentManagement}
+      />
+      <AdminRoute path="/account-management" component={AccountManagement} />
     </Switch>
   );
 };

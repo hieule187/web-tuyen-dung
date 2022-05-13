@@ -6,6 +6,7 @@ const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
 const Joi = require('joi');
 const passwordComplexity = require('joi-password-complexity');
+const convertString = require('../utils/convertString');
 
 class AccountController {
   // [POST] /account/signup-candidate
@@ -37,6 +38,8 @@ class AccountController {
         email: req.body.email,
         password: hashPassword,
         role: 'candidate',
+        keyName: convertString(req.body.fullName),
+        keyRole: 'ung vien',
       }).save();
 
       const verifyToken = await new VerifyToken({
@@ -93,6 +96,8 @@ class AccountController {
         email: req.body.email,
         password: hashPassword,
         role: 'recruiter',
+        keyName: convertString(req.body.fullName),
+        keyRole: 'nha tuyen dung',
       }).save();
 
       const verifyToken = await new VerifyToken({
@@ -326,7 +331,7 @@ class AccountController {
   async resetPassword(req, res) {
     try {
       const passwordSchema = Joi.object({
-        password: passwordComplexity().required().label('Password'),
+        password: passwordComplexity().required().label('Mật khẩu'),
       });
       const { error } = passwordSchema.validate(req.body);
       if (error)
@@ -365,6 +370,110 @@ class AccountController {
         success: true,
         message: 'Thay đổi mật khẩu thành công.',
       });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [GET] /account/account-management
+  // Lấy dữ liệu tất cả account phía admin
+  async getAccountManagement(req, res) {
+    try {
+      const { status, role } = req.user;
+      if (status && role === 'admin') {
+        const PAGE_SIZE = 6;
+        const page = parseInt(req.query.page || '0');
+        const total = await Account.countDocuments({
+          $or: [{ role: 'candidate' }, { role: 'recruiter' }],
+        });
+        const account = await Account.find({
+          $or: [{ role: 'candidate' }, { role: 'recruiter' }],
+        })
+          .sort({ _id: -1 })
+          .limit(PAGE_SIZE)
+          .skip(PAGE_SIZE * page);
+        if (account.length > 0) {
+          return res.status(200).json({
+            success: true,
+            message: 'Load danh sách tài khoản thành công.',
+            totalPages: Math.ceil(total / PAGE_SIZE),
+            quantity: account.length,
+            account: account,
+          });
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: 'Hiện tại chưa có tài khoản nào.',
+          });
+        }
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [GET] /account/search-account-management
+  // Tìm kiếm account phía admin
+  async getSearchAccountManagement(req, res) {
+    try {
+      const { status, role } = req.user;
+      if (status && role === 'admin') {
+        const PAGE_SIZE = 6;
+        const page = parseInt(req.query.page || '0');
+        const key = decodeURI(req.query.key.trim());
+        const total = await Account.countDocuments({
+          $or: [
+            { fullName: { $regex: new RegExp(key, 'i') } },
+            { keyName: { $regex: new RegExp(key, 'i') } },
+            { role: { $regex: new RegExp(key, 'i') } },
+            { keyRole: { $regex: new RegExp(key, 'i') } },
+            { email: { $regex: new RegExp(key, 'i') } },
+          ],
+        });
+        const account = await Account.find({
+          $or: [
+            { fullName: { $regex: new RegExp(key, 'i') } },
+            { keyName: { $regex: new RegExp(key, 'i') } },
+            { role: { $regex: new RegExp(key, 'i') } },
+            { keyRole: { $regex: new RegExp(key, 'i') } },
+            { email: { $regex: new RegExp(key, 'i') } },
+          ],
+        })
+          .sort({ _id: -1 })
+          .limit(PAGE_SIZE)
+          .skip(PAGE_SIZE * page);
+        if (account.length > 0) {
+          return res.status(200).json({
+            success: true,
+            message: 'Load danh sách tài khoản thành công.',
+            totalPages: Math.ceil(total / PAGE_SIZE),
+            quantity: account.length,
+            account: account,
+            totalQuantity: total,
+          });
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: 'Không tìm thấy tài khoản nào phù hợp.',
+          });
+        }
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
     } catch (error) {
       console.log(error);
       res
@@ -455,7 +564,7 @@ class AccountController {
     }
   }
 
-  // [POST] /account/lock/:id
+  // [PUT] /account/lock/:id
   // Khóa tài khoản
   async lockAccount(req, res) {
     try {
@@ -487,7 +596,7 @@ class AccountController {
     }
   }
 
-  // [POST] /account/unlock/:id
+  // [PUT] /account/unlock/:id
   // Khóa tài khoản
   async unLockAccount(req, res) {
     try {

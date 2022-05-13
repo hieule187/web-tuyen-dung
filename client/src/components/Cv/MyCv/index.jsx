@@ -8,40 +8,34 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import showIcon from '../../../assets/show.svg';
-import browseIcon from '../../../assets/browse.svg';
-import missIcon from '../../../assets/miss.svg';
+import deleteIcon from '../../../assets/delete.svg';
 import searchIcon from '../../../assets/search.svg';
-import userIcon from '../../../assets/person-circle.svg';
-import phoneIcon from '../../../assets/telephone.svg';
-import emailIcon from '../../../assets/email.svg';
 import CvAPI from '../../../API/CvAPI';
-import RecruitmentAPI from '../../../API/RecruitmentAPI';
 import ReactPaginate from 'react-paginate';
-import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import convertSlugUrl from '../../../utils/convertSlugUrl';
-import { Link, useParams } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/vi';
 
-const SeeCv = () => {
-  const param = useParams();
-
+const MyCv = () => {
   const [loading, setLoading] = useState(false);
   const [existCv, setExistCv] = useState(true);
   const [cvs, setCvs] = useState([]);
   const [pageCount, setPageCount] = useState(0);
-  const [recruitment, setRecruitment] = useState({});
+  const [cvSelect, setCvSelect] = useState({});
+  const [showModalDelete, setShowModalDelete] = useState(false);
   const [key, setKey] = useState('');
   const [searched, setSearched] = useState(false);
   const [pageCountSearch, setPageCountSearch] = useState(0);
   const [totalQuantitySearch, setTotalQuantitySearch] = useState(0);
 
   useEffect(() => {
-    const getCvByRecruitmentId = async () => {
+    const getMyCv = async () => {
       setLoading(true);
-      const cvData = await CvAPI.getCvByRecruitmentId(param.id);
+      const cvData = await CvAPI.getMyCv();
       if (cvData.success) {
         setCvs(cvData.cv);
         setPageCount(cvData.totalPages);
@@ -51,29 +45,17 @@ const SeeCv = () => {
         setLoading(false);
       }
     };
-    getCvByRecruitmentId();
-  }, [param]);
-
-  useEffect(() => {
-    const getRecruitmentById = async () => {
-      const dataRecruitment = await RecruitmentAPI.getRecruitmentById(param.id);
-      setRecruitment(dataRecruitment.recruitment);
-    };
-
-    getRecruitmentById();
-  }, [param]);
+    getMyCv();
+  }, []);
 
   const handlePageClick = async (data) => {
     let currentPage = data.selected;
-    const dataInPage = await CvAPI.getCvByRecruitmentIdPage(
-      param.id,
-      currentPage,
-    );
+    const dataInPage = await CvAPI.getMyCvPage(currentPage);
     setCvs(dataInPage.cv);
   };
 
   const reloadDataInPage = async () => {
-    const cvData = await CvAPI.getCvByRecruitmentId(param.id);
+    const cvData = await CvAPI.getMyCv();
     if (cvData.success) {
       setCvs(cvData.cv);
       setPageCount(cvData.totalPages);
@@ -82,29 +64,29 @@ const SeeCv = () => {
     }
   };
 
-  const handleBrowseCv = async (cvId) => {
-    const browseCv = await CvAPI.browseCvById(cvId);
-    if (browseCv.success) {
-      reloadDataInPage();
-      toast.success(browseCv.message);
-    } else {
-      toast.error(browseCv.message);
-    }
+  const findCv = (cvId) => {
+    const cvSelected = cvs.find((cv) => cv._id === cvId);
+    setCvSelect(cvSelected);
   };
 
-  const handleMissCv = async (cvId) => {
-    const missCv = await CvAPI.missCvById(cvId);
-    if (missCv.success) {
-      reloadDataInPage();
-      toast.success(missCv.message);
-    } else {
-      toast.error(missCv.message);
-    }
+  const openModalDelete = (cvId) => {
+    findCv(cvId);
+    setShowModalDelete(true);
+  };
+
+  const closeModalDelete = () => {
+    setShowModalDelete(false);
+  };
+
+  const handleDeleteCv = async () => {
+    await CvAPI.deleteCvById(cvSelect._id);
+    reloadDataInPage();
+    closeModalDelete();
   };
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    const cvSearchData = await CvAPI.getSearchCvByRecruitmentId(param.id, key);
+    const cvSearchData = await CvAPI.getSearchMyCv(key);
     if (cvSearchData.success) {
       setSearched(true);
       setCvs(cvSearchData.cv);
@@ -118,11 +100,7 @@ const SeeCv = () => {
 
   const handlePageSearchClick = async (data) => {
     let currentPage = data.selected;
-    const dataInPageSearch = await CvAPI.getSearchCvByRecruitmentIdPage(
-      param.id,
-      key,
-      currentPage,
-    );
+    const dataInPageSearch = await CvAPI.getSearchMyCvPage(key, currentPage);
     setSearched(true);
     setCvs(dataInPageSearch.cv);
   };
@@ -138,12 +116,9 @@ const SeeCv = () => {
     );
   } else {
     return (
-      <div className="seeCv-wrapper">
+      <div className="my-cv-wrapper">
         <Container className="mt-4">
-          <h1 className="seeCv-header text-capitalize">{recruitment.title}</h1>
-          <p className="seeCv-description text-capitalize">
-            {recruitment.companyName}
-          </p>
+          <h1 className="my-cv-header">Tin tuyển dụng đã gửi hồ sơ</h1>
         </Container>
 
         {existCv ? (
@@ -153,7 +128,7 @@ const SeeCv = () => {
                 <Form className="d-flex" onSubmit={handleSearch}>
                   <Form.Control
                     type="search"
-                    placeholder="Tìm kiếm theo họ tên, số điện thoại, email ứng viên"
+                    placeholder="Tìm kiếm theo tiêu đề, tên công ty tin tuyển dụng"
                     className="me-2"
                     name="key"
                     required
@@ -179,7 +154,7 @@ const SeeCv = () => {
                 <span className="fw-bold text-success">
                   {totalQuantitySearch}
                 </span>{' '}
-                CV ứng tuyển
+                tin tuyển dụng
               </p>
             )}
 
@@ -192,95 +167,76 @@ const SeeCv = () => {
                         <div className="d-flex justify-content-between">
                           <Badge
                             className={
-                              cv.status
+                              cv.status && !cv.failed
                                 ? 'bg-success fw-normal'
+                                : !cv.status && cv.failed
+                                ? 'bg-danger fw-normal'
                                 : 'bg-secondary fw-normal'
                             }
                           >
-                            {cv.status ? 'Đã phê duyệt' : 'Chưa phê duyệt'}
+                            {cv.status && !cv.failed
+                              ? 'Đã phê duyệt'
+                              : !cv.status && cv.failed
+                              ? 'Bị loại'
+                              : 'Chờ phê duyệt'}
                           </Badge>
                           <Badge className="bg-secondary fw-normal">
-                            {moment(cv ? cv.createdAt : null).format(
-                              'HH:mm-DD/MM/YYYY',
-                            )}
+                            {cv.recruitment.location}
                           </Badge>
                         </div>
-                        <Card.Title className="title-card-seeCv">
-                          <h1 className="title-seeCv mt-3 mb-0">
-                            <img
-                              src={userIcon}
-                              alt="userIcon"
-                              width="20"
-                              height="20"
-                              className="mb-1 me-2 no-select"
-                            />
-                            {cv.profile.fullName}
+                        <Card.Title className="title-card-my-cv">
+                          <h1 className="title-my-cv text-capitalize mt-3 mb-0">
+                            {cv.title}
                           </h1>
+
+                          <p className="company-my-cv">{cv.companyName}</p>
                         </Card.Title>
-                        <Card.Text className="mb-1">
-                          <span>
-                            <img
-                              src={phoneIcon}
-                              alt="phoneIcon"
-                              className="mb-1 me-2 no-select"
-                            />
-                            {cv.profile.phoneNumber}
-                          </span>
-                        </Card.Text>
-                        <Card.Text className="mb-3">
-                          <span>
-                            <img
-                              src={emailIcon}
-                              alt="emailIcon"
-                              className="email-seeCv me-2 no-select"
-                            />
-                            {cv.profile.email}
-                          </span>
-                        </Card.Text>
+
+                        {cv.status && !cv.failed ? (
+                          <Alert variant="success">
+                            Vui lòng kiểm tra hộp thư của bạn thường xuyên để
+                            nhận thư mời phỏng vấn.
+                          </Alert>
+                        ) : !cv.status && cv.failed ? (
+                          <Alert variant="danger">
+                            Rất tiếc hồ sơ xin việc của bạn chưa đạt yêu cầu đối
+                            với vị trí ứng tuyển.
+                          </Alert>
+                        ) : (
+                          <Alert variant="warning">
+                            Hồ sơ của bạn đã được gửi đi thành công, vui lòng
+                            chờ phản hồi từ nhà tuyển dụng.
+                          </Alert>
+                        )}
 
                         <div className="d-flex justify-content-between">
-                          <Button
-                            to={`/see-profile/${convertSlugUrl(
-                              cv.profile.fullName,
-                            )}/${cv._id}`}
-                            as={Link}
-                            target="_blank"
-                            variant="light"
-                          >
-                            <img
-                              className="no-select showCv-btn"
-                              src={showIcon}
-                              alt="showIcon"
-                            />
-                          </Button>
                           <div>
-                            {!cv.status && (
-                              <Button
-                                variant="light"
-                                onClick={() => handleBrowseCv(cv._id)}
-                              >
-                                <img
-                                  className="no-select browseCv-btn"
-                                  src={browseIcon}
-                                  alt="browseIcon"
-                                />
-                                Duyệt
-                              </Button>
-                            )}
-                            {!cv.status && !cv.failed && (
-                              <Button
-                                className="ms-2"
-                                variant="light"
-                                onClick={() => handleMissCv(cv._id)}
-                              >
-                                <img
-                                  className="no-select deleteCv-btn"
-                                  src={missIcon}
-                                  alt="missIcon"
-                                />
-                                Loại
-                              </Button>
-                            )}
+                            <Link
+                              to={`/recruitment/${convertSlugUrl(
+                                cv.recruitment.title,
+                              )}/${cv.recruitmentId}`}
+                              target="_blank"
+                            >
+                              <img
+                                className="no-select show-btn me-4 btn-my-cv"
+                                src={showIcon}
+                                alt="showIcon"
+                              />
+                            </Link>
+                            <img
+                              className="no-select delete-btn me-4 btn-my-cv"
+                              src={deleteIcon}
+                              alt="deleteIcon"
+                              onClick={() => openModalDelete(cv._id)}
+                            />
+                          </div>
+                          <div>
+                            <Badge className="bg-secondary fw-normal">
+                              Ngày gửi:{' '}
+                              {moment(cv ? cv.createdAt : null).format(
+                                'DD/MM/YYYY',
+                              )}
+                            </Badge>
                           </div>
                         </div>
                       </Card.Body>
@@ -316,18 +272,49 @@ const SeeCv = () => {
           </Container>
         ) : searched ? (
           <Container className="mt-4" style={{ paddingBottom: '500px' }}>
-            <Alert variant="warning">Không tìm thấy CV nào phù hợp.</Alert>
+            <Alert variant="warning">
+              Không tìm thấy tin tuyển dụng nào phù hợp.
+            </Alert>
           </Container>
         ) : (
           <Container className="mt-4" style={{ paddingBottom: '500px' }}>
-            <Alert variant="warning">
-              Tin tuyển dụng hiện chưa có cv ứng tuyển.
-            </Alert>
+            <Alert variant="warning">Bạn chưa gửi hồ sơ ứng tuyển nào.</Alert>
           </Container>
         )}
+
+        <Modal centered show={showModalDelete} onHide={closeModalDelete}>
+          <Modal.Header
+            style={{ display: 'block', backgroundColor: '#f8f9fa' }}
+          >
+            <Modal.Title>
+              <h4 className="text-center">Lưu ý!</h4>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h6 className="text-center">
+              Sau khi xóa sẽ không thể khôi phục, bạn có chắc chắn muốn xóa?
+            </h6>
+          </Modal.Body>
+          <Modal.Footer>
+            <Container>
+              <Row>
+                <Col className="text-center">
+                  <Button variant="light" onClick={handleDeleteCv}>
+                    Xóa
+                  </Button>
+                </Col>
+                <Col className="text-center">
+                  <Button variant="success" onClick={closeModalDelete}>
+                    Hủy bỏ
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
 };
 
-export default SeeCv;
+export default MyCv;

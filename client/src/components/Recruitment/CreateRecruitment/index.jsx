@@ -31,7 +31,7 @@ const CreateRecruitment = () => {
     title: '',
     companyName: '',
     img: '',
-    salary: '',
+    salary: 'Thỏa thuận',
     workingForm: 'Toàn thời gian',
     quantity: '',
     level: 'Nhân viên',
@@ -185,16 +185,31 @@ const CreateRecruitment = () => {
                       <Form.Text id="salary" muted>
                         Mức lương
                       </Form.Text>
-                      <Form.Control
-                        className="mt-1"
-                        type="text"
-                        placeholder="Nhập mức lương"
+                      <Form.Select
                         name="salary"
-                        required
-                        aria-describedby="salary"
+                        className="mt-1"
+                        id="salary"
                         value={infoRecruitment.salary}
                         onChange={onChangeInfoRecruitment}
-                      />
+                      >
+                        <option value="Thỏa thuận">Thỏa thuận</option>
+                        <option value="1 - 3 triệu">1 - 3 triệu</option>
+                        <option value="3 - 5 triệu">3 - 5 triệu</option>
+                        <option value="5 - 7 triệu">5 - 7 triệu</option>
+                        <option value="7 - 10 triệu">7 - 10 triệu</option>
+                        <option value="10 - 12 triệu">10 - 12 triệu</option>
+                        <option value="12 - 15 triệu">12 - 15 triệu</option>
+                        <option value="15 - 20 triệu">15 - 20 triệu</option>
+                        <option value="20 - 25 triệu">20 - 25 triệu</option>
+                        <option value="25 - 30 triệu">25 - 30 triệu</option>
+                        <option value="30 - 35 triệu">30 - 35 triệu</option>
+                        <option value="35 - 40 triệu">35 - 40 triệu</option>
+                        <option value="40 - 50 triệu">40 - 50 triệu</option>
+                        <option value="50 - 60 triệu">50 - 60 triệu</option>
+                        <option value="60 - 70 triệu">60 - 70 triệu</option>
+                        <option value="70 - 80 triệu">70 - 80 triệu</option>
+                        <option value="Trên 80 triệu">Trên 80 triệu</option>
+                      </Form.Select>
                     </Form.Group>
                   </Col>
                   <Col xs={12} md={6}>
@@ -211,6 +226,10 @@ const CreateRecruitment = () => {
                       >
                         <option value="Toàn thời gian">Toàn thời gian</option>
                         <option value="Bán thời gian">Bán thời gian</option>
+                        <option value="Thực tập">Thực tập</option>
+                        <option value="Remote - Làm việc từ xa">
+                          Remote - Làm việc từ xa
+                        </option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -228,6 +247,7 @@ const CreateRecruitment = () => {
                         value={infoRecruitment.level}
                         onChange={onChangeInfoRecruitment}
                       >
+                        <option value="Thực tập sinh">Thực tập sinh</option>
                         <option value="Nhân viên">Nhân viên</option>
                         <option value="Trưởng nhóm">Trưởng nhóm</option>
                         <option value="Phó phòng">Phó phòng</option>
@@ -251,6 +271,7 @@ const CreateRecruitment = () => {
                         onChange={onChangeInfoRecruitment}
                       >
                         <option value="Không yêu cầu">Không yêu cầu</option>
+                        <option value="Dưới 1 năm">Dưới 1 năm</option>
                         <option value="1 năm">1 năm</option>
                         <option value="2 năm">2 năm</option>
                         <option value="3 năm">3 năm</option>
@@ -306,7 +327,7 @@ const CreateRecruitment = () => {
                       <Form.Control
                         className="mt-1"
                         type="text"
-                        placeholder="Nhập số lượng tuyển"
+                        placeholder="VD: 10 người"
                         name="quantity"
                         required
                         aria-describedby="quantity"

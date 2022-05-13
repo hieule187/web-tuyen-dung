@@ -44,6 +44,22 @@ const CvSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
+    keyTitle: {
+      type: String,
+      required: true,
+    },
+    companyName: {
+      type: String,
+      required: true,
+    },
+    keyCompany: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true },
 );

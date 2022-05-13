@@ -47,6 +47,10 @@ class CvController {
             keyName: convertString(profile.fullName),
             phoneNumber: profile.phoneNumber,
             email: profile.email,
+            title: recruitment.title,
+            keyTitle: recruitment.keyTitle,
+            companyName: recruitment.companyName,
+            keyCompany: recruitment.keyCompany,
           });
           await newCv.save((err, result) => {
             if (err) {
@@ -60,7 +64,7 @@ class CvController {
               Recruitment.updateOne(
                 { _id: recruitmentId },
                 { $push: { cv: newCv } },
-                (err, cpl) => {
+                (err) => {
                   if (err) {
                     return res.status(400).json({
                       success: false,
@@ -210,6 +214,110 @@ class CvController {
             { keyName: { $regex: new RegExp(key, 'i') } },
             { phoneNumber: { $regex: new RegExp(key, 'i') } },
             { email: { $regex: new RegExp(key, 'i') } },
+          ],
+        })
+          .sort({ _id: -1 })
+          .limit(PAGE_SIZE)
+          .skip(PAGE_SIZE * page);
+        if (cv.length > 0) {
+          return res.status(200).json({
+            success: true,
+            message: 'Load danh sách cv thành công.',
+            totalPages: Math.ceil(total / PAGE_SIZE),
+            quantity: cv.length,
+            cv: cv,
+            totalQuantity: total,
+          });
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: 'Không tìm thấy cv nào phù hợp.',
+          });
+        }
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [GET] /cv/my-cv
+  // Lấy dữ liệu tất cả cv của tôi
+  async getMyCv(req, res) {
+    try {
+      const { status, role, _id } = req.user;
+      if (status && role === 'candidate') {
+        const PAGE_SIZE = 6;
+        const page = parseInt(req.query.page || '0');
+        const total = await Cv.countDocuments({
+          writer: _id,
+        });
+        const cv = await Cv.find({
+          writer: _id,
+        })
+          .sort({ _id: -1 })
+          .limit(PAGE_SIZE)
+          .skip(PAGE_SIZE * page);
+        if (cv.length > 0) {
+          return res.status(200).json({
+            success: true,
+            message: 'Load danh sách cv thành công.',
+            totalPages: Math.ceil(total / PAGE_SIZE),
+            quantity: cv.length,
+            cv: cv,
+          });
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: 'Bạn chưa gửi cv ứng tuyển nào.',
+          });
+        }
+      } else {
+        res.status(403).json({
+          success: false,
+          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [GET] /cv/search-my-cv
+  // Tìm kiếm cv của tôi
+  async getSearchMyCv(req, res) {
+    try {
+      const { status, role, _id } = req.user;
+      if (status && role === 'candidate') {
+        const PAGE_SIZE = 6;
+        const page = parseInt(req.query.page || '0');
+        const key = decodeURI(req.query.key.trim());
+        const total = await Cv.countDocuments({
+          writer: _id,
+          $or: [
+            { title: { $regex: new RegExp(key, 'i') } },
+            { keyTitle: { $regex: new RegExp(key, 'i') } },
+            { companyName: { $regex: new RegExp(key, 'i') } },
+            { keyCompany: { $regex: new RegExp(key, 'i') } },
+          ],
+        });
+        const cv = await Cv.find({
+          writer: _id,
+          $or: [
+            { title: { $regex: new RegExp(key, 'i') } },
+            { keyTitle: { $regex: new RegExp(key, 'i') } },
+            { companyName: { $regex: new RegExp(key, 'i') } },
+            { keyCompany: { $regex: new RegExp(key, 'i') } },
           ],
         })
           .sort({ _id: -1 })
@@ -426,10 +534,10 @@ class CvController {
   async deleteCv(req, res) {
     try {
       const { status, role, _id } = req.user;
-      if (status && role === 'recruiter') {
+      if (status && role === 'candidate') {
         const deletedCv = await Cv.findOneAndDelete({
           _id: req.params.id,
-          receiver: _id,
+          writer: _id,
         });
 
         if (!deletedCv)

@@ -161,6 +161,90 @@ const RecruitmentAPI = {
       else return { success: false, message: error.message };
     }
   },
+
+  getRecruitmentManagement: async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/recruitment/recruitment-management?page=0`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getRecruitmentManagementPage: async (currentPage) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/recruitment/recruitment-management?page=${currentPage}`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getSearchRecruitmentManagement: async (key) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/recruitment/search-recruitment-management?key=${key}&page=0`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getSearchRecruitmentManagementPage: async (key, currentPage) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/recruitment/search-recruitment-management?key=${key}&page=${currentPage}`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  browseRecruitmentById: async (id) => {
+    try {
+      const response = await axios.put(
+        `${apiUrl}/recruitment/browse-recruitment/${id}`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  missRecruitmentById: async (id) => {
+    try {
+      const response = await axios.put(
+        `${apiUrl}/recruitment/miss-recruitment/${id}`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
 };
 
 export default RecruitmentAPI;

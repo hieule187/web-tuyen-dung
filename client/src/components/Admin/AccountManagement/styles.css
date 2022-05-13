@@ -1,0 +1,64 @@
+.account-management-wrapper {
+  position: relative;
+  background: linear-gradient(#d5f5e3, #f0f0f0);
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.account-management-header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.account-management-description {
+  color: #4a4a4a;
+  margin-bottom: 0;
+  margin-top: 2px;
+}
+
+.title-card-account-management {
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title-account-management {
+  font-size: 18px;
+  font-weight: 700;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.company-account-management {
+  font-size: 16px;
+  color: #999;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-border {
+  border-radius: 10px;
+}
+
+.lockAcc-btn {
+  margin-bottom: 4px;
+  margin-right: 4px;
+}
+
+.unlockAcc-btn {
+  margin-bottom: 4px;
+  margin-right: 4px;
+}
+
+.badge-status {
+  margin-top: 20px;
+}

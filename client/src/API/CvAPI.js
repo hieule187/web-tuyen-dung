@@ -105,6 +105,72 @@ const CvAPI = {
       else return { success: false, message: error.message };
     }
   },
+
+  getMyCv: async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/cv/my-cv?page=0`);
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getMyCvPage: async (currentPage) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/cv/my-cv?page=${currentPage}`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getSearchMyCv: async (key) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/cv/search-my-cv?key=${key}&page=0`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getSearchMyCvPage: async (key, currentPage) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/cv/search-my-cv?key=${key}&page=${currentPage}`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  deleteCvById: async (id) => {
+    try {
+      const response = await axios.delete(`${apiUrl}/cv/${id}`);
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
 };
 
 export default CvAPI;

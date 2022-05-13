@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -11,13 +11,11 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import showIcon from '../../../assets/show.svg';
-import editIcon from '../../../assets/edit.svg';
 import deleteIcon from '../../../assets/delete.svg';
 import lockIcon from '../../../assets/lock.svg';
 import unlockIcon from '../../../assets/unlock.svg';
 import searchIcon from '../../../assets/search.svg';
 import RecruitmentAPI from '../../../API/RecruitmentAPI';
-import { AccountContext } from '../../../contexts/AccountContext';
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -25,11 +23,7 @@ import convertSlugUrl from '../../../utils/convertSlugUrl';
 import moment from 'moment';
 import 'moment/locale/vi';
 
-const MyRecruitment = () => {
-  const {
-    accountState: { user },
-  } = useContext(AccountContext);
-
+const RecruitmentManagement = () => {
   const [loading, setLoading] = useState(false);
   const [existRecruitment, setExistRecruitment] = useState(true);
   const [recruitments, setRecruitments] = useState([]);
@@ -42,9 +36,9 @@ const MyRecruitment = () => {
   const [totalQuantitySearch, setTotalQuantitySearch] = useState(0);
 
   useEffect(() => {
-    const getMyRecruitment = async () => {
+    const getRecruitmentManagement = async () => {
       setLoading(true);
-      const recruitmentData = await RecruitmentAPI.getMyRecruitment();
+      const recruitmentData = await RecruitmentAPI.getRecruitmentManagement();
       if (recruitmentData.success) {
         setRecruitments(recruitmentData.recruitment);
         setPageCount(recruitmentData.totalPages);
@@ -54,17 +48,19 @@ const MyRecruitment = () => {
         setLoading(false);
       }
     };
-    getMyRecruitment();
+    getRecruitmentManagement();
   }, []);
 
   const handlePageClick = async (data) => {
     let currentPage = data.selected;
-    const dataInPage = await RecruitmentAPI.getMyRecruitmentPage(currentPage);
+    const dataInPage = await RecruitmentAPI.getRecruitmentManagementPage(
+      currentPage,
+    );
     setRecruitments(dataInPage.recruitment);
   };
 
   const reloadDataInPage = async () => {
-    const recruitmentData = await RecruitmentAPI.getMyRecruitment();
+    const recruitmentData = await RecruitmentAPI.getRecruitmentManagement();
     if (recruitmentData.success) {
       setRecruitments(recruitmentData.recruitment);
       setPageCount(recruitmentData.totalPages);
@@ -95,35 +91,34 @@ const MyRecruitment = () => {
     closeModalDelete();
   };
 
-  const handleLockRecruitment = async (recruitmentId) => {
-    const lockRecruitment = await RecruitmentAPI.lockRecruitmentById(
+  const handleMissRecruitment = async (recruitmentId) => {
+    const missRecruitment = await RecruitmentAPI.missRecruitmentById(
       recruitmentId,
     );
-    if (lockRecruitment.success) {
+    if (missRecruitment.success) {
       reloadDataInPage();
-      toast.success(lockRecruitment.message);
+      toast.success(missRecruitment.message);
     } else {
-      toast.error(lockRecruitment.message);
+      toast.error(missRecruitment.message);
     }
   };
 
-  const handleUnlockRecruitment = async (recruitmentId) => {
-    const unlockRecruitment = await RecruitmentAPI.unlockRecruitmentById(
+  const handleBrowseRecruitment = async (recruitmentId) => {
+    const browseRecruitment = await RecruitmentAPI.browseRecruitmentById(
       recruitmentId,
     );
-    if (unlockRecruitment.success) {
+    if (browseRecruitment.success) {
       reloadDataInPage();
-      toast.success(unlockRecruitment.message);
+      toast.success(browseRecruitment.message);
     } else {
-      toast.error(unlockRecruitment.message);
+      toast.error(browseRecruitment.message);
     }
   };
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    const recruitmentSearchData = await RecruitmentAPI.getSearchMyRecruitment(
-      key,
-    );
+    const recruitmentSearchData =
+      await RecruitmentAPI.getSearchRecruitmentManagement(key);
     if (recruitmentSearchData.success) {
       setSearched(true);
       setRecruitments(recruitmentSearchData.recruitment);
@@ -137,10 +132,8 @@ const MyRecruitment = () => {
 
   const handlePageSearchClick = async (data) => {
     let currentPage = data.selected;
-    const dataInPageSearch = await RecruitmentAPI.getSearchMyRecruitmentPage(
-      key,
-      currentPage,
-    );
+    const dataInPageSearch =
+      await RecruitmentAPI.getSearchRecruitmentManagementPage(key, currentPage);
     setSearched(true);
     setRecruitments(dataInPageSearch.recruitment);
   };
@@ -156,9 +149,11 @@ const MyRecruitment = () => {
     );
   } else {
     return (
-      <div className="my-recruitment-wrapper">
+      <div className="recruitment-management-wrapper">
         <Container className="mt-4">
-          <h1 className="my-recruitment-header">Quản lý tin tuyển dụng</h1>
+          <h1 className="recruitment-management-header">
+            Quản lý tin tuyển dụng
+          </h1>
         </Container>
 
         {existRecruitment ? (
@@ -168,7 +163,7 @@ const MyRecruitment = () => {
                 <Form className="d-flex" onSubmit={handleSearch}>
                   <Form.Control
                     type="search"
-                    placeholder="Tìm kiếm theo tiêu đề tin tuyển dụng"
+                    placeholder="Tìm kiếm theo tiêu đề, tên công ty, ngành nghề, khu vực tin tuyển dụng"
                     className="me-2"
                     name="key"
                     required
@@ -207,17 +202,13 @@ const MyRecruitment = () => {
                         <div className="d-flex justify-content-between">
                           <Badge
                             className={
-                              recruitment.status && recruitment.display
+                              recruitment.status
                                 ? 'bg-success fw-normal'
-                                : recruitment.status && !recruitment.display
-                                ? 'bg-danger fw-normal'
                                 : 'bg-secondary fw-normal'
                             }
                           >
-                            {recruitment.status && recruitment.display
-                              ? 'Đang hiển thị'
-                              : recruitment.status && !recruitment.display
-                              ? 'Khóa hiển thị'
+                            {recruitment.status
+                              ? 'Đã phê duyệt'
                               : 'Chưa phê duyệt'}
                           </Badge>
                           <Badge className="bg-secondary fw-normal">
@@ -226,25 +217,15 @@ const MyRecruitment = () => {
                             ).format('HH:mm-DD/MM/YYYY')}
                           </Badge>
                         </div>
-                        <Card.Title className="title-card-my-recruitment">
-                          <h1 className="title-my-recruitment text-capitalize mt-3 mb-0">
+                        <Card.Title className="title-card-recruitment-management">
+                          <h1 className="title-recruitment-management text-capitalize mt-3 mb-0">
                             {recruitment.title}
                           </h1>
+
+                          <p className="company-recruitment-management">
+                            {recruitment.companyName}
+                          </p>
                         </Card.Title>
-                        <Card.Text className="mt-3">
-                          <Link
-                            to={`/see-cv/${convertSlugUrl(recruitment.title)}/${
-                              recruitment._id
-                            }`}
-                            style={{ textDecoration: 'none', color: '#212529' }}
-                          >
-                            <span className="open-cv">
-                              Xem{' '}
-                              <span className="fw-bold text-success">CV</span>{' '}
-                              ứng tuyển
-                            </span>
-                          </Link>
-                        </Card.Text>
 
                         <div className="d-flex justify-content-between">
                           <div>
@@ -255,47 +236,36 @@ const MyRecruitment = () => {
                               target="_blank"
                             >
                               <img
-                                className="no-select show-btn me-4 btn-my-recruitment"
+                                className="no-select show-btn me-4 btn-recruitment-management"
                                 src={showIcon}
                                 alt="showIcon"
                               />
                             </Link>
-                            <Link
-                              to={`/update-recruitment/${convertSlugUrl(
-                                recruitment.title,
-                              )}/${recruitment._id}`}
-                            >
-                              <img
-                                className="no-select me-4 btn-my-recruitment"
-                                src={editIcon}
-                                alt="editIcon"
-                              />
-                            </Link>
                             <img
-                              className="no-select delete-btn me-4 btn-my-recruitment"
+                              className="no-select delete-btn me-4 btn-recruitment-management"
                               src={deleteIcon}
                               alt="deleteIcon"
                               onClick={() => openModalDelete(recruitment._id)}
                             />
-                            {recruitment.status && !recruitment.display ? (
+                            {!recruitment.status ? (
                               <img
-                                className="no-select btn-my-recruitment"
+                                className="no-select btn-recruitment-management"
                                 src={lockIcon}
                                 alt="lockIcon"
                                 onClick={() =>
-                                  handleUnlockRecruitment(recruitment._id)
+                                  handleBrowseRecruitment(recruitment._id)
                                 }
                               />
-                            ) : recruitment.status && recruitment.display ? (
+                            ) : (
                               <img
-                                className="no-select btn-my-recruitment"
+                                className="no-select btn-recruitment-management"
                                 src={unlockIcon}
                                 alt="unlockIcon"
                                 onClick={() =>
-                                  handleLockRecruitment(recruitment._id)
+                                  handleMissRecruitment(recruitment._id)
                                 }
                               />
-                            ) : null}
+                            )}
                           </div>
                           <div>
                             <Badge className="bg-secondary fw-normal">
@@ -344,32 +314,10 @@ const MyRecruitment = () => {
             </Alert>
           </Container>
         ) : (
-          <Container className="mt-4" style={{ paddingBottom: '350px' }}>
-            <Card className="text-center rounded-3">
-              <Card.Header as="h1" className="profile-header">
-                Xin chào <span className="text-success">{user.fullName}</span>
-              </Card.Header>
-              <Card.Body>
-                <Card.Title>
-                  Chào mừng bạn đến với{' '}
-                  <span className="fw-bold">
-                    Fast<span className="text-success">Job</span>
-                  </span>
-                </Card.Title>
-                <Card.Text>
-                  Bạn chưa đăng tin tuyển dụng nào, hãy nhấn vào nút bên dưới để
-                  bắt đầu đăng tin tuyển dụng !
-                </Card.Text>
-                <Button
-                  to={`/create-recruitment/${convertSlugUrl(user.fullName)}`}
-                  as={Link}
-                  size="lg"
-                  variant="success"
-                >
-                  Đăng tin tuyển dụng
-                </Button>
-              </Card.Body>
-            </Card>
+          <Container className="mt-4" style={{ paddingBottom: '500px' }}>
+            <Alert variant="warning">
+              Hiện chưa có tin tuyển dụng nào đăng tuyển.
+            </Alert>
           </Container>
         )}
 
@@ -409,4 +357,4 @@ const MyRecruitment = () => {
   }
 };
 
-export default MyRecruitment;
+export default RecruitmentManagement;

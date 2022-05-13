@@ -104,7 +104,7 @@ const NavbarMenu = () => {
             />
             Hồ sơ xin việc
           </NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3">
+          <NavDropdown.Item to="/my-cv" as={Link}>
             <img
               src={manageIcon}
               alt="manageIcon"
@@ -235,7 +235,7 @@ const NavbarMenu = () => {
               </div>
             </div>
           </NavDropdown.Header>
-          <NavDropdown.Item href="#action/3.2">
+          <NavDropdown.Item to="/account-management" as={Link}>
             <img
               src={manageIcon}
               alt="manageIcon"
@@ -245,7 +245,7 @@ const NavbarMenu = () => {
             />
             Quản lý tài khoản
           </NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3">
+          <NavDropdown.Item to="/recruitment-management" as={Link}>
             <img
               src={manageIcon}
               alt="manageIcon"

@@ -35,6 +35,14 @@ const AccountSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    keyName: {
+      type: String,
+      required: true,
+    },
+    keyRole: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true },
 );
@@ -45,7 +53,7 @@ const Account = mongoose.model('Account', AccountSchema);
 const validate = (data) => {
   const schema = Joi.object({
     email: Joi.string().email().required().label('Email'),
-    password: passwordComplexity().required().label('Password'),
+    password: passwordComplexity().required().label('Mật khẩu'),
   });
   return schema.validate(data);
 };

@@ -21,6 +21,16 @@ router.post(
   accountController.resetPassword,
 );
 router.get(
+  '/account-management',
+  passport.authenticate('jwt', { session: false }),
+  accountController.getAccountManagement,
+);
+router.get(
+  '/search-account-management',
+  passport.authenticate('jwt', { session: false }),
+  accountController.getSearchAccountManagement,
+);
+router.get(
   '/account-true',
   passport.authenticate('jwt', { session: false }),
   accountController.getTrueAccount,
@@ -30,12 +40,12 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   accountController.getFalseAccount,
 );
-router.post(
+router.put(
   '/lock/:id',
   passport.authenticate('jwt', { session: false }),
   accountController.lockAccount,
 );
-router.post(
+router.put(
   '/unlock/:id',
   passport.authenticate('jwt', { session: false }),
   accountController.unLockAccount,
