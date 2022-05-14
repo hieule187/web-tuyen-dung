@@ -18,12 +18,13 @@ import ReactPaginate from 'react-paginate';
 import RecruitmentAPI from '../../API/RecruitmentAPI';
 import bagIcon from '../../assets/bag.svg';
 import { Link } from 'react-router-dom';
-import convertSlugUrl from '../../utils/convertSlugUrl';
+import { Helmet } from 'react-helmet';
 
 const Home = () => {
   // Context
   const {
     accountState: { authLoading },
+    setQuickSearch,
   } = useContext(AccountContext);
 
   const [loading, setLoading] = useState(false);
@@ -99,6 +100,10 @@ const Home = () => {
     'Marketing / Truyền thông',
   ];
 
+  const linkJobsOutstanding = (value) => {
+    setQuickSearch(value);
+  };
+
   const aboutUs = [
     {
       title: '30.000+',
@@ -138,178 +143,186 @@ const Home = () => {
     );
   } else {
     return (
-      <div className="home-wrapper">
-        <SignupModal />
+      <>
+        <Helmet>
+          <title>FastJob - Tạo CV & Tìm việc miễn phí</title>
+        </Helmet>
+        <div className="home-wrapper">
+          <SignupModal />
 
-        <NavbarMenu />
+          <NavbarMenu />
 
-        <div className="div-slider-color">
-          <Container className="">
-            <h1 className="home-header">
-              Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc
-            </h1>
-            <p className="home-description">
-              Tiếp cận 30,000+ tin tuyển dụng việc làm mới mỗi ngày từ hàng
-              nghìn doanh nghiệp uy tín tại Việt Nam
-            </p>
-
-            <Slider {...settings} className="pointer mt-4">
-              {banner.map((imgName, index) => {
-                return (
-                  <div key={index}>
-                    <img
-                      className="w-100 rounded-3"
-                      src={`${imgUrl}/uploads/${imgName}`}
-                      alt={imgName}
-                    />
-                  </div>
-                );
-              })}
-            </Slider>
-          </Container>
-        </div>
-
-        <div className="div-jobs-color">
-          <Container className="">
-            <h1 className="jobs-header">Tin tuyển dụng, việc làm tốt nhất</h1>
-
-            <div className="jobs-wrapper mt-4 p-2 rounded-3">
-              <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto no-select">
-                {recruitments.map((recruitment) => (
-                  <Col key={recruitment._id} className="my-2">
-                    <InfoRecruitment recruitment={recruitment} />
-                  </Col>
-                ))}
-              </Row>
-            </div>
-
-            <div className="mt-3">
-              <ReactPaginate
-                previousLabel={'Trước'}
-                nextLabel={'Tiếp'}
-                breakLabel={'...'}
-                pageCount={pageCount}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={5}
-                onPageChange={handlePageClick}
-                containerClassName={'pagination justify-content-center mb-0'}
-                pageClassName={'page-item'}
-                pageLinkClassName={'page-link no-select'}
-                previousClassName={'page-item'}
-                previousLinkClassName={'page-link no-select'}
-                nextClassName={'page-item'}
-                nextLinkClassName={'page-link no-select'}
-                breakClassName={'page-item'}
-                breakLinkClassName={'page-link no-select'}
-                activeClassName={'active'}
-              />
-            </div>
-          </Container>
-        </div>
-
-        <div className="div-jobs-outstanding-color">
-          <Container className="no-select">
-            <h1 className="jobs-outstanding">Top ngành nghề nổi bật</h1>
-
-            <Slider {...settingsJobs} className="mt-3">
-              {jobsOutstanding.map((job, index) => {
-                return (
-                  <div key={index} className="pe-4 mt-2 mb-2">
-                    <Card className="card-jobs-outstanding">
-                      <Card.Body className="d-flex">
-                        <img
-                          src={bagIcon}
-                          alt="bagIcon"
-                          width="40"
-                          height="40"
-                          className="bagIcon no-select"
-                        />
-                        <Card.Title className="title-card">
-                          <Link
-                            to={`/search/${convertSlugUrl(job)}`}
-                            target="_blank"
-                            style={{ textDecoration: 'none', color: '#212529' }}
-                          >
-                            <p className="title-job-outstanding fw-bold">
-                              {job}
-                            </p>
-                          </Link>
-                        </Card.Title>
-                      </Card.Body>
-                    </Card>
-                  </div>
-                );
-              })}
-            </Slider>
-          </Container>
-        </div>
-
-        <div className="div-about-us-color">
-          <Container className="">
-            <div className="header-about-us">
-              <h1 className="title-about-us">Về chúng tôi</h1>
-
-              <p className="description-about-us mt-3">
-                FastJob là công ty công nghệ nhân sự (HR Tech) hàng đầu Việt
-                Nam. Với năng lực lõi là công nghệ, đặc biệt là trí tuệ nhân tạo
-                (AI), sứ mệnh của FastJob đặt ra cho mình là thay đổi thị trường
-                tuyển dụng - nhân sự ngày một hiệu quả hơn. Bằng công nghệ,
-                chúng tôi tạo ra nền tảng cho phép người lao động tạo CV, phát
-                triển được các kỹ năng cá nhân, xây dựng hình ảnh chuyên nghiệp
-                trong mắt nhà tuyển dụng và tiếp cận với các cơ hội việc làm phù
-                hợp.
+          <div className="div-slider-color">
+            <Container className="">
+              <h1 className="home-header">
+                Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc
+              </h1>
+              <p className="home-description">
+                Tiếp cận 30,000+ tin tuyển dụng việc làm mới mỗi ngày từ hàng
+                nghìn doanh nghiệp uy tín tại Việt Nam
               </p>
-            </div>
 
-            <div className="p-3 mt-4 details-about-us">
-              <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 mx-3">
-                {aboutUs.map((about, index) => {
+              <Slider {...settings} className="pointer mt-4">
+                {banner.map((imgName, index) => {
                   return (
-                    <Col key={index}>
-                      <div className="mt-2 mb-2">
-                        <h3 style={{ color: '#3d6089' }}>{about.title}</h3>
-                        <p>{about.description}</p>
-                      </div>
+                    <div key={index}>
+                      <img
+                        className="w-100 rounded-3"
+                        src={`${imgUrl}/uploads/${imgName}`}
+                        alt={imgName}
+                      />
+                    </div>
+                  );
+                })}
+              </Slider>
+            </Container>
+          </div>
+
+          <div className="div-jobs-color">
+            <Container className="">
+              <h1 className="jobs-header">Tin tuyển dụng, việc làm tốt nhất</h1>
+
+              <div className="jobs-wrapper mt-4 p-2 rounded-3">
+                <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto no-select">
+                  {recruitments.map((recruitment) => (
+                    <Col key={recruitment._id} className="my-2">
+                      <InfoRecruitment recruitment={recruitment} />
                     </Col>
+                  ))}
+                </Row>
+              </div>
+
+              <div className="mt-3">
+                <ReactPaginate
+                  previousLabel={'Trước'}
+                  nextLabel={'Tiếp'}
+                  breakLabel={'...'}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={5}
+                  onPageChange={handlePageClick}
+                  containerClassName={'pagination justify-content-center mb-0'}
+                  pageClassName={'page-item'}
+                  pageLinkClassName={'page-link no-select'}
+                  previousClassName={'page-item'}
+                  previousLinkClassName={'page-link no-select'}
+                  nextClassName={'page-item'}
+                  nextLinkClassName={'page-link no-select'}
+                  breakClassName={'page-item'}
+                  breakLinkClassName={'page-link no-select'}
+                  activeClassName={'active'}
+                />
+              </div>
+            </Container>
+          </div>
+
+          <div className="div-jobs-outstanding-color">
+            <Container className="no-select">
+              <h1 className="jobs-outstanding">Top ngành nghề nổi bật</h1>
+
+              <Slider {...settingsJobs} className="mt-3">
+                {jobsOutstanding.map((job, index) => {
+                  return (
+                    <div key={index} className="pe-4 mt-2 mb-2">
+                      <Card className="card-jobs-outstanding">
+                        <Card.Body className="d-flex">
+                          <img
+                            src={bagIcon}
+                            alt="bagIcon"
+                            width="40"
+                            height="40"
+                            className="bagIcon no-select"
+                          />
+                          <Card.Title className="title-card">
+                            <Link
+                              to="/search"
+                              style={{
+                                textDecoration: 'none',
+                                color: '#212529',
+                              }}
+                              onClick={() => linkJobsOutstanding(job)}
+                            >
+                              <p className="title-job-outstanding fw-bold">
+                                {job}
+                              </p>
+                            </Link>
+                          </Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </div>
+                  );
+                })}
+              </Slider>
+            </Container>
+          </div>
+
+          <div className="div-about-us-color">
+            <Container className="">
+              <div className="header-about-us">
+                <h1 className="title-about-us">Về chúng tôi</h1>
+
+                <p className="description-about-us mt-3">
+                  FastJob là công ty công nghệ nhân sự (HR Tech) hàng đầu Việt
+                  Nam. Với năng lực lõi là công nghệ, đặc biệt là trí tuệ nhân
+                  tạo (AI), sứ mệnh của FastJob đặt ra cho mình là thay đổi thị
+                  trường tuyển dụng - nhân sự ngày một hiệu quả hơn. Bằng công
+                  nghệ, chúng tôi tạo ra nền tảng cho phép người lao động tạo
+                  CV, phát triển được các kỹ năng cá nhân, xây dựng hình ảnh
+                  chuyên nghiệp trong mắt nhà tuyển dụng và tiếp cận với các cơ
+                  hội việc làm phù hợp.
+                </p>
+              </div>
+
+              <div className="p-3 mt-4 details-about-us">
+                <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 mx-3">
+                  {aboutUs.map((about, index) => {
+                    return (
+                      <Col key={index}>
+                        <div className="mt-2 mb-2">
+                          <h3 style={{ color: '#3d6089' }}>{about.title}</h3>
+                          <p>{about.description}</p>
+                        </div>
+                      </Col>
+                    );
+                  })}
+                </Row>
+              </div>
+            </Container>
+          </div>
+
+          <div className="div-jobs-top-company-color">
+            <Container className="">
+              <h1 className="title-top-company">
+                Các công ty tuyển dụng hàng đầu
+              </h1>
+
+              <Row className="row-cols-2 row-cols-md-3 row-cols-lg-6 mt-4">
+                {topCompany.map((company, index) => {
+                  return (
+                    <Link
+                      key={index}
+                      to={{ pathname: company.link }}
+                      target="_blank"
+                    >
+                      <Col>
+                        <div className="img-top-company rounded-3">
+                          <img
+                            src={`${imgUrl}/uploads/${company.img}`}
+                            alt={company.img}
+                            className="img-company no-select"
+                          />
+                        </div>
+                      </Col>
+                    </Link>
                   );
                 })}
               </Row>
-            </div>
-          </Container>
+            </Container>
+          </div>
+
+          <Footer />
         </div>
-
-        <div className="div-jobs-top-company-color">
-          <Container className="">
-            <h1 className="title-top-company">
-              Các công ty tuyển dụng hàng đầu
-            </h1>
-
-            <Row className="row-cols-2 row-cols-md-3 row-cols-lg-6 mt-4">
-              {topCompany.map((company, index) => {
-                return (
-                  <Link
-                    key={index}
-                    to={{ pathname: company.link }}
-                    target="_blank"
-                  >
-                    <Col>
-                      <div className="img-top-company rounded-3">
-                        <img
-                          src={`${imgUrl}/uploads/${company.img}`}
-                          alt={company.img}
-                          className="img-company no-select"
-                        />
-                      </div>
-                    </Col>
-                  </Link>
-                );
-              })}
-            </Row>
-          </Container>
-        </div>
-
-        <Footer />
-      </div>
+      </>
     );
   }
 };

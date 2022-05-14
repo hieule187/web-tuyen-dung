@@ -7,6 +7,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import { apiUrl } from '../../../contexts/constants';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 
 const EmailVerify = () => {
   const [loading, setLoading] = useState(false);
@@ -78,30 +79,35 @@ const EmailVerify = () => {
     );
 
   return (
-    <div className="emailVerify-bg">
-      <div className="emailVerify-form">
-        <h2 className="mb-4 fw-bold">
-          <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
-            Fast<span className="text-success">Job</span>
-          </Link>
-        </h2>
-        <h3 className="mb-0">Chào mừng bạn trở lại</h3>
-        <p className="mx-2 text-center">
-          Cùng xây dựng một hồ sơ nổi bật và nhận được các cơ hội sự nghiệp lý
-          tưởng.
-        </p>
-        {body}
-        <p className="mt-4">
-          <Link
-            style={{ textDecoration: 'none', color: '#2fb380' }}
-            to="/signup-recruiter"
-          >
-            Tạo tài khoản
-          </Link>{' '}
-          dành cho nhà tuyển dụng.
-        </p>
+    <>
+      <Helmet>
+        <title>Xác minh tài khoản - FastJob</title>
+      </Helmet>
+      <div className="emailVerify-bg">
+        <div className="emailVerify-form">
+          <h2 className="mb-4 fw-bold">
+            <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
+              Fast<span className="text-success">Job</span>
+            </Link>
+          </h2>
+          <h3 className="mb-0">Chào mừng bạn trở lại</h3>
+          <p className="mx-2 text-center">
+            Cùng xây dựng một hồ sơ nổi bật và nhận được các cơ hội sự nghiệp lý
+            tưởng.
+          </p>
+          {body}
+          <p className="mt-4">
+            <Link
+              style={{ textDecoration: 'none', color: '#2fb380' }}
+              to="/signup-recruiter"
+            >
+              Tạo tài khoản
+            </Link>{' '}
+            dành cho nhà tuyển dụng.
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

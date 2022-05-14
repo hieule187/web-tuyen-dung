@@ -42,16 +42,6 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   cvController.getCvById,
 );
-router.get(
-  '/cv-true',
-  passport.authenticate('jwt', { session: false }),
-  cvController.getTrueCv,
-);
-router.get(
-  '/cv-false',
-  passport.authenticate('jwt', { session: false }),
-  cvController.getFalseCv,
-);
 router.put(
   '/browse-cv/:id',
   passport.authenticate('jwt', { session: false }),

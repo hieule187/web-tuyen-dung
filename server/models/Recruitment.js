@@ -86,6 +86,18 @@ const RecruitmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    keyWkForm: {
+      type: String,
+      required: true,
+    },
+    keyLevel: {
+      type: String,
+      required: true,
+    },
+    keyExp: {
+      type: String,
+      required: true,
+    },
     cv: [
       {
         type: mongoose.Schema.Types.ObjectId,

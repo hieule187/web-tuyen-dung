@@ -28,6 +28,51 @@ const RecruitmentAPI = {
     }
   },
 
+  getSearchRecruitment: async (
+    key,
+    career,
+    location,
+    salary,
+    workingForm,
+    level,
+    experience,
+  ) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/recruitment/search?key=${key}&career=${career}&location=${location}&salary=${salary}&workingForm=${workingForm}&level=${level}&experience=${experience}&page=0`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
+  getSearchRecruitmentPage: async (
+    key,
+    career,
+    location,
+    salary,
+    workingForm,
+    level,
+    experience,
+    currentPage,
+  ) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/recruitment/search?key=${key}&career=${career}&location=${location}&salary=${salary}&workingForm=${workingForm}&level=${level}&experience=${experience}&page=${currentPage}`,
+      );
+      if (response.data.success) {
+        return response.data;
+      }
+    } catch (error) {
+      if (error.response.data) return error.response.data;
+      else return { success: false, message: error.message };
+    }
+  },
+
   getRecruitmentById: async (id) => {
     try {
       const response = await axios.get(`${apiUrl}/recruitment/${id}`);

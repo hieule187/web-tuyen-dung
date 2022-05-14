@@ -7,6 +7,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { AccountContext } from '../../../contexts/AccountContext';
 import Spinner from 'react-bootstrap/Spinner';
 import AlertMessage from '../AlertMessage';
+import { Helmet } from 'react-helmet';
 
 const SignupRecruiter = () => {
   // Context
@@ -192,32 +193,37 @@ const SignupRecruiter = () => {
     );
 
   return (
-    <div className="signup-recruiter-bg">
-      <div className="signup-recruiter-form">
-        <h2 className="mb-4 fw-bold">
-          <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
-            Fast<span className="text-success">Job</span>
-          </Link>
-        </h2>
-        <h3 className="mb-0 mx-2 text-center">
-          Đăng ký tài khoản nhà tuyển dụng
-        </h3>
-        <p className="mx-2 text-center">
-          Cùng tạo dựng lợi thế cho doanh nghiệp bằng trải nghiệm công nghệ
-          tuyển dụng online.
-        </p>
-        {body}
-        <p className="mt-4">
-          <Link
-            style={{ textDecoration: 'none', color: '#2fb380' }}
-            to="/signup-candidate"
-          >
-            Tạo tài khoản
-          </Link>{' '}
-          dành cho ứng viên.
-        </p>
+    <>
+      <Helmet>
+        <title>Đăng ký tài khoản nhà tuyển dụng - FastJob</title>
+      </Helmet>
+      <div className="signup-recruiter-bg">
+        <div className="signup-recruiter-form">
+          <h2 className="mb-4 fw-bold">
+            <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
+              Fast<span className="text-success">Job</span>
+            </Link>
+          </h2>
+          <h3 className="mb-0 mx-2 text-center">
+            Đăng ký tài khoản nhà tuyển dụng
+          </h3>
+          <p className="mx-2 text-center">
+            Cùng tạo dựng lợi thế cho doanh nghiệp bằng trải nghiệm công nghệ
+            tuyển dụng online.
+          </p>
+          {body}
+          <p className="mt-4">
+            <Link
+              style={{ textDecoration: 'none', color: '#2fb380' }}
+              to="/signup-candidate"
+            >
+              Tạo tài khoản
+            </Link>{' '}
+            dành cho ứng viên.
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

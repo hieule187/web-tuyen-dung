@@ -14,6 +14,7 @@ const AccountContextProvider = ({ children }) => {
   });
 
   const [showSignupPostModal, setShowSignupPostModal] = useState(false);
+  const [quickSearch, setQuickSearch] = useState('');
 
   // Authenticate user
   const loadUser = async () => {
@@ -117,6 +118,8 @@ const AccountContextProvider = ({ children }) => {
     accountState,
     showSignupPostModal,
     setShowSignupPostModal,
+    quickSearch,
+    setQuickSearch,
   };
 
   // Return provider

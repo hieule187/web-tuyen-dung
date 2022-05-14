@@ -9,6 +9,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import AlertMessage from '../AlertMessage';
 import { apiUrl } from '../../../contexts/constants';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 
 const ForgotPassword = () => {
   // Context
@@ -141,29 +142,34 @@ const ForgotPassword = () => {
     );
 
   return (
-    <div className="forgot-password-bg">
-      <div className="forgot-password-form">
-        <h2 className="mb-4 fw-bold">
-          <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
-            Fast<span className="text-success">Job</span>
-          </Link>
-        </h2>
-        <h3 className="mb-0">Quên mật khẩu</h3>
-        <p className="mx-2 text-center">
-          Vui lòng nhập địa chỉ email của bạn để thực hiện đổi mật khẩu.
-        </p>
-        {body}
-        <p className="mt-4">
-          <Link
-            style={{ textDecoration: 'none', color: '#2fb380' }}
-            to="/signup-recruiter"
-          >
-            Tạo tài khoản
-          </Link>{' '}
-          dành cho nhà tuyển dụng.
-        </p>
+    <>
+      <Helmet>
+        <title>Quên mật khẩu - FastJob</title>
+      </Helmet>
+      <div className="forgot-password-bg">
+        <div className="forgot-password-form">
+          <h2 className="mb-4 fw-bold">
+            <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
+              Fast<span className="text-success">Job</span>
+            </Link>
+          </h2>
+          <h3 className="mb-0">Quên mật khẩu</h3>
+          <p className="mx-2 text-center">
+            Vui lòng nhập địa chỉ email của bạn để thực hiện đổi mật khẩu.
+          </p>
+          {body}
+          <p className="mt-4">
+            <Link
+              style={{ textDecoration: 'none', color: '#2fb380' }}
+              to="/signup-recruiter"
+            >
+              Tạo tài khoản
+            </Link>{' '}
+            dành cho nhà tuyển dụng.
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

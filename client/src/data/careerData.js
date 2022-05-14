@@ -6,7 +6,7 @@ module.exports = [
   'Hành chính / Văn phòng',
   'Công nghệ thông tin',
   'Bất động sản',
-  'Marketing / Truyền thông / Quảng cáo',
+  'Marketing / Truyền thông',
   'Mỹ phẩm / Trang sức',
   'Thời trang',
   'Thực phẩm / Đồ uống',

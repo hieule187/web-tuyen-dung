@@ -30,16 +30,6 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   accountController.getSearchAccountManagement,
 );
-router.get(
-  '/account-true',
-  passport.authenticate('jwt', { session: false }),
-  accountController.getTrueAccount,
-);
-router.get(
-  '/account-false',
-  passport.authenticate('jwt', { session: false }),
-  accountController.getFalseAccount,
-);
 router.put(
   '/lock/:id',
   passport.authenticate('jwt', { session: false }),

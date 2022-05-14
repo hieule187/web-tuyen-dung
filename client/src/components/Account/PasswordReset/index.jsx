@@ -8,6 +8,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import AlertMessage from '../AlertMessage';
 import { apiUrl } from '../../../contexts/constants';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 
 const PasswordReset = () => {
   // Local state
@@ -169,30 +170,35 @@ const PasswordReset = () => {
     );
 
   return (
-    <div className="password-reset-bg">
-      <div className="password-reset-form">
-        <h2 className="mb-4 fw-bold">
-          <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
-            Fast<span className="text-success">Job</span>
-          </Link>
-        </h2>
-        <h3 className="mb-0">Đặt lại mật khẩu</h3>
-        <p className="mx-2 text-center">
-          Cùng xây dựng một hồ sơ nổi bật và nhận được các cơ hội sự nghiệp lý
-          tưởng.
-        </p>
-        {body}
-        <p className="mt-4">
-          <Link
-            style={{ textDecoration: 'none', color: '#2fb380' }}
-            to="/signup-recruiter"
-          >
-            Tạo tài khoản
-          </Link>{' '}
-          dành cho nhà tuyển dụng.
-        </p>
+    <>
+      <Helmet>
+        <title>Đặt lại mật khẩu - FastJob</title>
+      </Helmet>
+      <div className="password-reset-bg">
+        <div className="password-reset-form">
+          <h2 className="mb-4 fw-bold">
+            <Link style={{ textDecoration: 'none', color: '#212529' }} to="/">
+              Fast<span className="text-success">Job</span>
+            </Link>
+          </h2>
+          <h3 className="mb-0">Đặt lại mật khẩu</h3>
+          <p className="mx-2 text-center">
+            Cùng xây dựng một hồ sơ nổi bật và nhận được các cơ hội sự nghiệp lý
+            tưởng.
+          </p>
+          {body}
+          <p className="mt-4">
+            <Link
+              style={{ textDecoration: 'none', color: '#2fb380' }}
+              to="/signup-recruiter"
+            >
+              Tạo tài khoản
+            </Link>{' '}
+            dành cho nhà tuyển dụng.
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

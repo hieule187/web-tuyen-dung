@@ -60,6 +60,9 @@ class RecruitmentController {
             keyCompany: convertString(companyName),
             keyLocation: convertString(location),
             keyCareer: convertString(career),
+            keyWkForm: convertString(workingForm),
+            keyLevel: convertString(level),
+            keyExp: convertString(experience),
           });
           await newRecruitment.save((err, result) => {
             if (err) {
@@ -115,6 +118,97 @@ class RecruitmentController {
           totalPages: Math.ceil(total / PAGE_SIZE),
           quantity: recruitment.length,
           recruitment: recruitment,
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'Hiện chưa có tin tuyển dụng nào được phê duyệt.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  // [GET] /recruitment/search
+  // Tìm kiếm tin tuyển dụng
+  async getSearchRecruitment(req, res) {
+    try {
+      const PAGE_SIZE = 12;
+      const page = parseInt(req.query.page || '0');
+      const key = decodeURI(req.query.key.trim());
+      const career = decodeURI(req.query.career.trim());
+      const location = decodeURI(req.query.location.trim());
+      const salary = decodeURI(req.query.salary.trim());
+      const workingForm = decodeURI(req.query.workingForm.trim());
+      const level = decodeURI(req.query.level.trim());
+      const experience = decodeURI(req.query.experience.trim());
+      const total = await Recruitment.countDocuments({
+        status: true,
+        display: true,
+        $or: [
+          { title: { $regex: new RegExp(key, 'i') } },
+          { keyTitle: { $regex: new RegExp(key, 'i') } },
+          { companyName: { $regex: new RegExp(key, 'i') } },
+          { keyCompany: { $regex: new RegExp(key, 'i') } },
+          { location: { $regex: new RegExp(key, 'i') } },
+          { keyLocation: { $regex: new RegExp(key, 'i') } },
+          { career: { $regex: new RegExp(key, 'i') } },
+          { keyCareer: { $regex: new RegExp(key, 'i') } },
+          { workingForm: { $regex: new RegExp(key, 'i') } },
+          { keyWkForm: { $regex: new RegExp(key, 'i') } },
+          { level: { $regex: new RegExp(key, 'i') } },
+          { keyLevel: { $regex: new RegExp(key, 'i') } },
+          { experience: { $regex: new RegExp(key, 'i') } },
+          { keyExp: { $regex: new RegExp(key, 'i') } },
+        ],
+        career: { $regex: new RegExp(career) },
+        location: { $regex: new RegExp(location) },
+        salary: { $regex: new RegExp(salary) },
+        workingForm: { $regex: new RegExp(workingForm) },
+        level: { $regex: new RegExp(level) },
+        experience: { $regex: new RegExp(experience) },
+      });
+      const recruitment = await Recruitment.find({
+        status: true,
+        display: true,
+        $or: [
+          { title: { $regex: new RegExp(key, 'i') } },
+          { keyTitle: { $regex: new RegExp(key, 'i') } },
+          { companyName: { $regex: new RegExp(key, 'i') } },
+          { keyCompany: { $regex: new RegExp(key, 'i') } },
+          { location: { $regex: new RegExp(key, 'i') } },
+          { keyLocation: { $regex: new RegExp(key, 'i') } },
+          { career: { $regex: new RegExp(key, 'i') } },
+          { keyCareer: { $regex: new RegExp(key, 'i') } },
+          { workingForm: { $regex: new RegExp(key, 'i') } },
+          { keyWkForm: { $regex: new RegExp(key, 'i') } },
+          { level: { $regex: new RegExp(key, 'i') } },
+          { keyLevel: { $regex: new RegExp(key, 'i') } },
+          { experience: { $regex: new RegExp(key, 'i') } },
+          { keyExp: { $regex: new RegExp(key, 'i') } },
+        ],
+        career: { $regex: new RegExp(career) },
+        location: { $regex: new RegExp(location) },
+        salary: { $regex: new RegExp(salary) },
+        workingForm: { $regex: new RegExp(workingForm) },
+        level: { $regex: new RegExp(level) },
+        experience: { $regex: new RegExp(experience) },
+      })
+        .sort({ _id: -1 })
+        .limit(PAGE_SIZE)
+        .skip(PAGE_SIZE * page);
+      if (recruitment.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: 'Load danh sách tin tuyển dụng thành công.',
+          totalPages: Math.ceil(total / PAGE_SIZE),
+          quantity: recruitment.length,
+          recruitment: recruitment,
+          totalQuantity: total,
         });
       } else {
         return res.status(400).json({
@@ -382,6 +476,9 @@ class RecruitmentController {
         keyCompany: convertString(companyName),
         keyLocation: convertString(location),
         keyCareer: convertString(career),
+        keyWkForm: convertString(workingForm),
+        keyLevel: convertString(level),
+        keyExp: convertString(experience),
       };
 
       if (status && role === 'recruiter') {
@@ -510,66 +607,6 @@ class RecruitmentController {
     }
   }
 
-  // [POST] /recruitment/search
-  // Tìm kiếm tin tuyển dụng
-  async searchRecruitment(req, res) {
-    try {
-      const { keyWord } = req.body;
-      const searchedRecruitment = await Recruitment.find({
-        $text: { $search: keyWord },
-        status: true,
-      });
-
-      if (searchedRecruitment.length > 0) {
-        return res.status(200).json({
-          success: true,
-          message: 'Lấy dữ liệu thành công.',
-          recruitment: searchedRecruitment,
-        });
-      } else {
-        return res.status(400).json({
-          success: false,
-          message: 'Không tìm thấy dữ liệu phù hợp.',
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .json({ success: false, message: 'Internal server error' });
-    }
-  }
-
-  // [POST] /recruitment/quick-search
-  // Tìm kiếm nhanh tin tuyển dụng
-  async quickSearchRecruitment(req, res) {
-    try {
-      const { location, career } = req.body;
-      const searchedRecruitment = await Recruitment.find({
-        location: location,
-        career: career,
-      });
-
-      if (searchedRecruitment.length > 0) {
-        return res.status(200).json({
-          success: true,
-          message: 'Lấy dữ liệu thành công.',
-          recruitment: searchedRecruitment,
-        });
-      } else {
-        return res.status(400).json({
-          success: false,
-          message: 'Không tìm thấy dữ liệu phù hợp.',
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .json({ success: false, message: 'Internal server error' });
-    }
-  }
-
   // [PUT] /browse-recruitment/:id
   // Duyệt tin tuyển dụng
   async browseRecruitment(req, res) {
@@ -620,88 +657,6 @@ class RecruitmentController {
           success: true,
           message: 'Đã khóa tin tuyển dụng.',
         });
-      } else {
-        res.status(403).json({
-          success: false,
-          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .json({ success: false, message: 'Internal server error' });
-    }
-  }
-
-  // [GET] /recruitment/recruitment-true
-  // Lấy dữ liệu tất cả tin tuyển dụng đã duyệt qua
-  async getTrueRecruitment(req, res) {
-    try {
-      const { status, role } = req.user;
-      if (status && role === 'admin') {
-        const PAGE_SIZE = 5;
-        const page = parseInt(req.query.page || '0');
-        const total = await Recruitment.countDocuments({ status: true });
-        const recruitment = await Recruitment.find({ status: true })
-          .sort({ _id: -1 })
-          .limit(PAGE_SIZE)
-          .skip(PAGE_SIZE * page);
-        if (recruitment.length > 0) {
-          return res.status(200).json({
-            success: true,
-            message: 'Load danh sách tin tuyển dụng thành công.',
-            totalPages: Math.ceil(total / PAGE_SIZE),
-            quantity: recruitment.length,
-            recruitment: recruitment,
-          });
-        } else {
-          return res.status(400).json({
-            success: false,
-            message: 'Hiện chưa có tin tuyển dụng nào được phê duyệt.',
-          });
-        }
-      } else {
-        res.status(403).json({
-          success: false,
-          message: 'Tài khoản không có chức năng này hoặc đã bị khóa.',
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .json({ success: false, message: 'Internal server error' });
-    }
-  }
-
-  // [GET] /recruitment/recruitment-false
-  // Lấy dữ liệu tất cả tin tuyển dụng chưa được phê duyệt
-  async getFalseRecruitment(req, res) {
-    try {
-      const { status, role } = req.user;
-      if (status && role === 'admin') {
-        const PAGE_SIZE = 5;
-        const page = parseInt(req.query.page || '0');
-        const total = await Recruitment.countDocuments({ status: false });
-        const recruitment = await Recruitment.find({ status: false })
-          .sort({ _id: -1 })
-          .limit(PAGE_SIZE)
-          .skip(PAGE_SIZE * page);
-        if (recruitment.length > 0) {
-          return res.status(200).json({
-            success: true,
-            message: 'Load danh sách tin tuyển dụng thành công.',
-            totalPages: Math.ceil(total / PAGE_SIZE),
-            quantity: recruitment.length,
-            recruitment: recruitment,
-          });
-        } else {
-          return res.status(400).json({
-            success: false,
-            message: 'Hiện tất cả các tin tuyển dụng đã được phê duyệt.',
-          });
-        }
       } else {
         res.status(403).json({
           success: false,

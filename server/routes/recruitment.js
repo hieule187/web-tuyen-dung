@@ -15,6 +15,7 @@ router.post(
   recruitmentController.createRecruitment,
 );
 router.get('/', recruitmentController.getRecruitment);
+router.get('/search', recruitmentController.getSearchRecruitment);
 router.get(
   '/my-recruitment',
   passport.authenticate('jwt', { session: false }),
@@ -35,16 +36,6 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   recruitmentController.getSearchRecruitmentManagement,
 );
-router.get(
-  '/recruitment-true',
-  passport.authenticate('jwt', { session: false }),
-  recruitmentController.getTrueRecruitment,
-);
-router.get(
-  '/recruitment-false',
-  passport.authenticate('jwt', { session: false }),
-  recruitmentController.getFalseRecruitment,
-);
 router.get('/:id', recruitmentController.getRecruitmentById);
 router.put(
   '/:id',
@@ -56,8 +47,6 @@ router.delete(
   passport.authenticate('jwt', { session: false }),
   recruitmentController.deleteRecruitment,
 );
-router.post('/search', recruitmentController.searchRecruitment);
-router.post('/quick-search', recruitmentController.quickSearchRecruitment);
 router.put(
   '/browse-recruitment/:id',
   passport.authenticate('jwt', { session: false }),

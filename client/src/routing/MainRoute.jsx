@@ -22,6 +22,7 @@ import SeeProfile from '../components/Profile/SeeProfile';
 import AdminRoute from './AdminRoute';
 import RecruitmentManagement from '../components/Admin/RecruitManagement';
 import AccountManagement from '../components/Admin/AccountManagement';
+import Search from '../components/Search';
 
 const MainRoute = () => {
   return (
@@ -67,6 +68,7 @@ const MainRoute = () => {
         component={RecruitmentManagement}
       />
       <AdminRoute path="/account-management" component={AccountManagement} />
+      <Route exact path="/search" component={Search} />
     </Switch>
   );
 };

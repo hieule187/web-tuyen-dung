@@ -15,6 +15,7 @@ import searchIcon from '../../../assets/search.svg';
 import AccountAPI from '../../../API/AccountAPI';
 import ReactPaginate from 'react-paginate';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import 'moment/locale/vi';
 
@@ -105,6 +106,9 @@ const AccountManagement = () => {
   if (loading) {
     return (
       <>
+        <Helmet>
+          <title>Quản lý tài khoản - FastJob</title>
+        </Helmet>
         <div className="spinner-container">
           <Spinner animation="border" variant="success" />
         </div>
@@ -113,166 +117,173 @@ const AccountManagement = () => {
     );
   } else {
     return (
-      <div className="account-management-wrapper">
-        <Container className="mt-4">
-          <h1 className="account-management-header">Quản lý tài khoản</h1>
-        </Container>
+      <>
+        <Helmet>
+          <title>Quản lý tài khoản - FastJob</title>
+        </Helmet>
+        <div className="account-management-wrapper">
+          <Container className="mt-4">
+            <h1 className="account-management-header">Quản lý tài khoản</h1>
+          </Container>
 
-        {existAccount ? (
-          <Container className="mt-4 pb-5">
-            <Row>
-              <Col md={12} lg={6}>
-                <Form className="d-flex" onSubmit={handleSearch}>
-                  <Form.Control
-                    type="search"
-                    placeholder="Tìm kiếm theo tên, email, loại tài khoản"
-                    className="me-2"
-                    name="key"
-                    required
-                    value={key}
-                    onChange={(e) => setKey(e.target.value)}
-                  />
-                  <Button variant="success" type="submit">
-                    <img
-                      src={searchIcon}
-                      alt="searchIcon"
-                      width="20"
-                      height="20"
-                      className="no-select"
+          {existAccount ? (
+            <Container className="mt-4 pb-5">
+              <Row>
+                <Col md={12} lg={6}>
+                  <Form className="d-flex" onSubmit={handleSearch}>
+                    <Form.Control
+                      type="search"
+                      placeholder="Tìm kiếm theo tên, email, loại tài khoản"
+                      className="me-2"
+                      name="key"
+                      required
+                      value={key}
+                      onChange={(e) => setKey(e.target.value)}
                     />
-                  </Button>
-                </Form>
-              </Col>
-            </Row>
+                    <Button variant="success" type="submit">
+                      <img
+                        src={searchIcon}
+                        alt="searchIcon"
+                        width="20"
+                        height="20"
+                        className="no-select"
+                      />
+                    </Button>
+                  </Form>
+                </Col>
+              </Row>
 
-            {searched && (
-              <p className="mt-4 mb-0">
-                Tìm thấy{' '}
-                <span className="fw-bold text-success">
-                  {totalQuantitySearch}
-                </span>{' '}
-                tài khoản
-              </p>
-            )}
+              {searched && (
+                <p className="mt-4 mb-0">
+                  Tìm thấy{' '}
+                  <span className="fw-bold text-success">
+                    {totalQuantitySearch}
+                  </span>{' '}
+                  tài khoản
+                </p>
+              )}
 
-            <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3">
-              {accounts.map((account) => {
-                return (
-                  <Col key={account._id} className="mt-4">
-                    <Card className="card-border">
-                      <Card.Body className="p-3">
-                        <div className="d-flex justify-content-between">
-                          <Badge
-                            className={
-                              account.role === 'candidate'
-                                ? 'bg-warning fw-normal'
-                                : 'bg-info fw-normal'
-                            }
-                          >
-                            {account.role === 'candidate'
-                              ? 'Ứng viên'
-                              : 'Nhà tuyển dụng'}
-                          </Badge>
-                          <Badge className="bg-secondary fw-normal">
-                            Ngày tạo:{' '}
-                            {moment(account ? account.createdAt : null).format(
-                              'DD/MM/YYYY',
-                            )}
-                          </Badge>
-                        </div>
-                        <Card.Title className="title-card-account-management">
-                          <h1 className="title-account-management text-capitalize mt-3 mb-0">
-                            {account.fullName}
-                          </h1>
-
-                          <p className="company-account-management">
-                            {account.email}
-                          </p>
-                        </Card.Title>
-
-                        <div className="d-flex justify-content-between">
-                          <div>
-                            {!account.status ? (
-                              <Button
-                                variant="light"
-                                onClick={() => handleUnlockAccount(account._id)}
-                              >
-                                <img
-                                  className="no-select unlockAcc-btn"
-                                  src={lockIcon}
-                                  alt="lockIcon"
-                                />
-                                Mở khóa
-                              </Button>
-                            ) : (
-                              <Button
-                                variant="light"
-                                onClick={() => handleLockAccount(account._id)}
-                              >
-                                <img
-                                  className="no-select lockAcc-btn"
-                                  src={unlockIcon}
-                                  alt="unlockIcon"
-                                />
-                                Khóa
-                              </Button>
-                            )}
-                          </div>
-                          <div>
+              <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3">
+                {accounts.map((account) => {
+                  return (
+                    <Col key={account._id} className="mt-4">
+                      <Card className="card-border">
+                        <Card.Body className="p-3">
+                          <div className="d-flex justify-content-between">
                             <Badge
                               className={
-                                account.status
-                                  ? 'bg-success fw-normal badge-status'
-                                  : 'bg-danger fw-normal badge-status'
+                                account.role === 'candidate'
+                                  ? 'bg-warning fw-normal'
+                                  : 'bg-info fw-normal'
                               }
                             >
-                              {account.status ? 'Đã mở khóa' : 'Đã khóa'}
+                              {account.role === 'candidate'
+                                ? 'Ứng viên'
+                                : 'Nhà tuyển dụng'}
+                            </Badge>
+                            <Badge className="bg-secondary fw-normal">
+                              Ngày tạo:{' '}
+                              {moment(
+                                account ? account.createdAt : null,
+                              ).format('DD/MM/YYYY')}
                             </Badge>
                           </div>
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                );
-              })}
-            </Row>
+                          <Card.Title className="title-card-account-management">
+                            <h1 className="title-account-management text-capitalize mt-3 mb-0">
+                              {account.fullName}
+                            </h1>
 
-            <div className="mt-5">
-              <ReactPaginate
-                previousLabel={'Trước'}
-                nextLabel={'Tiếp'}
-                breakLabel={'...'}
-                pageCount={searched ? pageCountSearch : pageCount}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={5}
-                onPageChange={
-                  searched ? handlePageSearchClick : handlePageClick
-                }
-                containerClassName={'pagination justify-content-center mb-0'}
-                pageClassName={'page-item'}
-                pageLinkClassName={'page-link no-select'}
-                previousClassName={'page-item'}
-                previousLinkClassName={'page-link no-select'}
-                nextClassName={'page-item'}
-                nextLinkClassName={'page-link no-select'}
-                breakClassName={'page-item'}
-                breakLinkClassName={'page-link no-select'}
-                activeClassName={'active'}
-              />
-            </div>
-          </Container>
-        ) : searched ? (
-          <Container className="mt-4" style={{ paddingBottom: '500px' }}>
-            <Alert variant="warning">
-              Không tìm thấy tài khoản nào phù hợp.
-            </Alert>
-          </Container>
-        ) : (
-          <Container className="mt-4" style={{ paddingBottom: '500px' }}>
-            <Alert variant="warning">Hiện chưa có tài khoản nào.</Alert>
-          </Container>
-        )}
-      </div>
+                            <p className="company-account-management">
+                              {account.email}
+                            </p>
+                          </Card.Title>
+
+                          <div className="d-flex justify-content-between">
+                            <div>
+                              {!account.status ? (
+                                <Button
+                                  variant="light"
+                                  onClick={() =>
+                                    handleUnlockAccount(account._id)
+                                  }
+                                >
+                                  <img
+                                    className="no-select unlockAcc-btn"
+                                    src={lockIcon}
+                                    alt="lockIcon"
+                                  />
+                                  Mở khóa
+                                </Button>
+                              ) : (
+                                <Button
+                                  variant="light"
+                                  onClick={() => handleLockAccount(account._id)}
+                                >
+                                  <img
+                                    className="no-select lockAcc-btn"
+                                    src={unlockIcon}
+                                    alt="unlockIcon"
+                                  />
+                                  Khóa
+                                </Button>
+                              )}
+                            </div>
+                            <div>
+                              <Badge
+                                className={
+                                  account.status
+                                    ? 'bg-success fw-normal badge-status'
+                                    : 'bg-danger fw-normal badge-status'
+                                }
+                              >
+                                {account.status ? 'Đã mở khóa' : 'Đã khóa'}
+                              </Badge>
+                            </div>
+                          </div>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  );
+                })}
+              </Row>
+
+              <div className="mt-5">
+                <ReactPaginate
+                  previousLabel={'Trước'}
+                  nextLabel={'Tiếp'}
+                  breakLabel={'...'}
+                  pageCount={searched ? pageCountSearch : pageCount}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={5}
+                  onPageChange={
+                    searched ? handlePageSearchClick : handlePageClick
+                  }
+                  containerClassName={'pagination justify-content-center mb-0'}
+                  pageClassName={'page-item'}
+                  pageLinkClassName={'page-link no-select'}
+                  previousClassName={'page-item'}
+                  previousLinkClassName={'page-link no-select'}
+                  nextClassName={'page-item'}
+                  nextLinkClassName={'page-link no-select'}
+                  breakClassName={'page-item'}
+                  breakLinkClassName={'page-link no-select'}
+                  activeClassName={'active'}
+                />
+              </div>
+            </Container>
+          ) : searched ? (
+            <Container className="mt-4" style={{ paddingBottom: '500px' }}>
+              <Alert variant="warning">
+                Không tìm thấy tài khoản nào phù hợp.
+              </Alert>
+            </Container>
+          ) : (
+            <Container className="mt-4" style={{ paddingBottom: '500px' }}>
+              <Alert variant="warning">Hiện chưa có tài khoản nào.</Alert>
+            </Container>
+          )}
+        </div>
+      </>
     );
   }
 };
