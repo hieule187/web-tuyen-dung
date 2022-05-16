@@ -298,7 +298,7 @@ const RecruitmentManagement = () => {
                   breakLabel={'...'}
                   pageCount={searched ? pageCountSearch : pageCount}
                   marginPagesDisplayed={1}
-                  pageRangeDisplayed={5}
+                  pageRangeDisplayed={3}
                   onPageChange={
                     searched ? handlePageSearchClick : handlePageClick
                   }

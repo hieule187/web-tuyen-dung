@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 import SignupModal from '../Account/SignupModal';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -30,14 +31,20 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [recruitments, setRecruitments] = useState([]);
   const [pageCount, setPageCount] = useState(0);
+  const [existRecruitment, setExistRecruitment] = useState(true);
 
   useEffect(() => {
     setLoading(true);
     const getRecruitment = async () => {
       const recruitmentData = await RecruitmentAPI.getRecruitment();
-      setRecruitments(recruitmentData.recruitment);
-      setPageCount(recruitmentData.totalPages);
-      setLoading(false);
+      if (recruitmentData.success) {
+        setRecruitments(recruitmentData.recruitment);
+        setPageCount(recruitmentData.totalPages);
+        setLoading(false);
+      } else {
+        setExistRecruitment(false);
+        setLoading(false);
+      }
     };
     getRecruitment();
   }, []);
@@ -95,7 +102,7 @@ const Home = () => {
     'Kinh doanh / Bán hàng',
     'Kế toán / Kiểm toán',
     'Ngân hàng / Tài chính',
-    'Hành chính / Văn phòng',
+    'Bất động sản',
     'Công nghệ thông tin',
     'Marketing / Truyền thông',
   ];
@@ -182,15 +189,25 @@ const Home = () => {
             <Container className="">
               <h1 className="jobs-header">Tin tuyển dụng, việc làm tốt nhất</h1>
 
-              <div className="jobs-wrapper mt-4 p-2 rounded-3">
-                <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto no-select">
-                  {recruitments.map((recruitment) => (
-                    <Col key={recruitment._id} className="my-2">
-                      <InfoRecruitment recruitment={recruitment} />
-                    </Col>
-                  ))}
-                </Row>
-              </div>
+              {existRecruitment ? (
+                <div className="jobs-wrapper mt-4 p-2 rounded-3">
+                  <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto no-select">
+                    {recruitments.map((recruitment) => (
+                      <Col key={recruitment._id} className="my-2">
+                        <InfoRecruitment recruitment={recruitment} />
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
+              ) : (
+                <div className="jobs-wrapper mt-4 p-2 rounded-3">
+                  <Row className="row-cols-1 mx-auto no-select">
+                    <Alert variant="warning mb-0">
+                      Hiện chưa có tin tuyển dụng nào được đăng tuyển.
+                    </Alert>
+                  </Row>
+                </div>
+              )}
 
               <div className="mt-3">
                 <ReactPaginate
@@ -199,7 +216,7 @@ const Home = () => {
                   breakLabel={'...'}
                   pageCount={pageCount}
                   marginPagesDisplayed={1}
-                  pageRangeDisplayed={5}
+                  pageRangeDisplayed={3}
                   onPageChange={handlePageClick}
                   containerClassName={'pagination justify-content-center mb-0'}
                   pageClassName={'page-item'}

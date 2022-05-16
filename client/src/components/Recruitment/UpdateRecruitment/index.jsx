@@ -444,7 +444,7 @@ const UpdateRecruitment = () => {
             <Form.Group className="mt-3">
               <Editor
                 className="form-control"
-                placeholder="Nhập thông tin mô tả chi tiết tin tuyển dụng ..."
+                placeholder="Mô tả công việc - Yêu cầu ứng viên - Quyền lợi được hưởng"
                 editorState={description}
                 onEditorStateChange={onEditorDescription}
                 wrapperClassName="wrapper-class"

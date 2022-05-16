@@ -13,18 +13,6 @@ const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     const path = require('path');
-    const ext = path.extname(file.originalname);
-    if (
-      ext !== '.png' &&
-      ext !== '.PNG' &&
-      ext !== '.jpg' &&
-      ext !== '.JPG' &&
-      ext !== '.jpeg' &&
-      ext !== '.svg' &&
-      ext !== '.SVG'
-    ) {
-      return cb(new Error('Lỗi định dạng file.'));
-    }
     cb(null, true);
   },
 });

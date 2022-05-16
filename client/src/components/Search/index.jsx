@@ -28,8 +28,6 @@ const Search = () => {
   // Context
   const { quickSearch } = useContext(AccountContext);
 
-  console.log(quickSearch);
-
   const [searchForm, setSearchForm] = useState({
     key: '',
     career: '',
